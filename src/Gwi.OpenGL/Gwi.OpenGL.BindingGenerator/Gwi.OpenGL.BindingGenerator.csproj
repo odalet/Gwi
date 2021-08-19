@@ -9,6 +9,9 @@
     <AssemblyOriginatorKeyFile>..\..\gwi.snk</AssemblyOriginatorKeyFile>
     <DelaySign>False</DelaySign>
     <Nullable>enable</Nullable>
+    <AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>True</GenerateBindingRedirectsOutputType>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
   </PropertyGroup>
 
 </Project>
