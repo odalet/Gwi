@@ -1,0 +1,39 @@
+<Project>
+  <!-- Reference: https://docs.microsoft.com/en-us/visualstudio/msbuild/customize-your-build?view=vs-2017 -->
+  <PropertyGroup>
+    <Authors>Olivier DALET</Authors>
+    <Company>Delta</Company>
+    <Product>Gwi</Product>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/odalet/Gwi</PackageProjectUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/odalet/Gwi/master/art/delta.png</PackageIconUrl>
+    <PackageIcon>delta.png</PackageIcon>
+    <!-- Needed by WPF apps built by dotnet tooling -->
+    <DeterministicSourcePaths Condition="'$(EnableSourceLink)' == ''">false</DeterministicSourcePaths>
+  </PropertyGroup>
+
+  <!-- Deterministic Builds -->
+  <!-- https://github.com/clairernovotny/DeterministicBuilds -->
+  <PropertyGroup>
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    <!-- See https://docs.microsoft.com/en-us/dotnet/core/tools/csproj#includesymbols -->
+    <IncludeSymbols>True</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>portable</DebugType>
+    <!-- Source Link: https://github.com/dotnet/sourcelink/ -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <!-- Store PDBs in the nupkg until Azure DevOps supports correctly snupkg in its Symbols Server -->
+    <!--<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>-->
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(CI)' == 'true'">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
+  </ItemGroup>
+  
+  <!-- Required by "deterministic" local builds: see https://github.com/dotnet/roslyn/issues/37379 -->
+  <ItemGroup Condition="'$(CI)' != 'true'">
+    <SourceRoot Include="$(MSBuildThisFileDirectory)/"/>
+  </ItemGroup>
+</Project>
