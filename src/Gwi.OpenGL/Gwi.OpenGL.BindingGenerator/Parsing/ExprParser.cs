@@ -9,18 +9,14 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
     // - waitSemaphoreCount
     // - 3
     // - COMPSIZE(type,stride)
-    internal sealed class ExprParser
+    internal static class ExprParser
     {
-        public ExprParser(string expression) => Expression = expression;
-
-        private string Expression { get; }
-
-        public Expr Parse()
+        public static Expr Parse(string expression)
         {
-            var result = ParsePrio2(Expression, out var remainder);
+            var result = ParsePrio2(expression, out var remainder);
             return string.IsNullOrEmpty(remainder) ?
                 result :
-                throw new ParsingException($"Failed to parse expression '{Expression}': the remainder string '{remainder}' could not be matched");
+                throw new ParsingException($"Failed to parse expression '{expression}': the remainder string '{remainder}' could not be matched");
         }
 
         private static Expr ParsePrio2(string expression, out string remainder)

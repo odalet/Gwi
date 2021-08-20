@@ -37,28 +37,30 @@ namespace Gwi.OpenGL.BindingGenerator
             var parser = new Parser(glXmlSourceFile);
 
             var specification = parser.Parse();
+            using (var file = File.CreateText(@"c:\temp\gl.md"))
+                ParseTreeDumper.DumpToMarkdown(file, specification);
 
-            // Let's extract the expressions
-            //var exprs = specification.Commands.SelectMany(c => c.Parameters).Select(p => p.Length).Where(x => x != null && x is CompSize c && c.Parameters.Length > 3).ToArray();
+            ////////// Let's extract the expressions
+            //////////var exprs = specification.Commands.SelectMany(c => c.Parameters).Select(p => p.Length).Where(x => x != null && x is CompSize c && c.Parameters.Length > 3).ToArray();
 
-            // glClearTexImage
-            var exprs = specification.Commands.Where(c => c.EntryPoint == "glClearTexImage").SelectMany(c => c.Parameters).Select(p => p.Length)
-                //.Where(x => x != null && x is CompSize c && c.Parameters.Length > 3)
-                .ToArray();
+            ////////// glClearTexImage
+            ////////var exprs = specification.Commands.Where(c => c.EntryPoint == "glClearTexImage").SelectMany(c => c.Parameters).Select(p => p.Length)
+            ////////    //.Where(x => x != null && x is CompSize c && c.Parameters.Length > 3)
+            ////////    .ToArray();
 
-            //// Reading the gl.xml file.
-            //using var stream = Reader.ReadSpecFromGithub();
+            //////////// Reading the gl.xml file.
+            //////////using var stream = Reader.ReadSpecFromGithub();
 
-            //// TODO: Documentation.
+            //////////// TODO: Documentation.
 
-            //// Parsing into data structures.
-            //var specification = Parser.Parse(stream);
+            //////////// Parsing into data structures.
+            //////////var specification = Parser.Parse(stream);
 
-            //// Processer/overloading
-            //var outputSpec = Processor.ProcessSpec(specification);
+            //////////// Processer/overloading
+            //////////var outputSpec = Processor.ProcessSpec(specification);
 
-            //// Writing cs files.
-            //Writer.Write(outputSpec);
+            //////////// Writing cs files.
+            //////////Writer.Write(outputSpec);
         }
     }
 }
