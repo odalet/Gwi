@@ -11,11 +11,11 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
         Division,
     }
 
-    public record Expr();
-    public record Constant(int Value) : Expr;
-    public record CompSize(Expr[] Parameters) : Expr;
-    public record ParameterReference(string ParameterName) : Expr;
-    public record BinaryOperation(Expr Left, BinaryOperator Operator, Expr Right) : Expr;
+    public abstract record Expr();
+    public sealed record Constant(int Value) : Expr;
+    public sealed record CompSize(Expr[] Parameters) : Expr;
+    public sealed record ParameterReference(string ParameterName) : Expr;
+    public sealed record BinaryOperation(Expr Left, BinaryOperator Operator, Expr Right) : Expr;
 
     public static class ExprExtensions
     {

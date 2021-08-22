@@ -11,15 +11,13 @@ using NLog;
 
 namespace Gwi.OpenGL.BindingGenerator.Parsing
 {
-    internal sealed class Parser
+    internal sealed class Parser : BaseProcessor
     {
-        private readonly IndentedLogger log = new(LogManager.GetCurrentClassLogger());
-
-        public Parser(string filename) => FileName = filename;
+        public Parser(string filename) : base(LogManager.GetCurrentClassLogger()) => FileName = filename;
 
         private string FileName { get; }
 
-        public Specification Parse()
+        public ParseTree Parse()
         {
             if (!File.Exists(FileName)) throw new FileNotFoundException("Missing input OpenGL Api definition", FileName);
 
@@ -29,26 +27,20 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
                 Parse(xdoc.Root);
         }
 
-        private T LogScoped<T>(Func<T> todo, string message)
+        private ParseTree Parse(XElement root)
         {
-            using (log.NewScope(message))
-                return todo();
-        }
-
-        private Specification Parse(XElement root)
-        {
-            using (log.NewScope("Parse gl.xml"))
+            using (NewLogScope("Parse gl.xml"))
             {
                 var commands = LogScoped(() => ParseCommands(root), "Parse Commands");
                 var enumerations = LogScoped(() => ParseEnums(root), "Parse Enumerations");
                 var features = LogScoped(() => ParseFeatures(root), "Parse Features");
                 var extensions = LogScoped(() => ParseExtensions(root), "Parse Extensions");
 
-                return new Specification(commands, enumerations, features, extensions);
+                return new ParseTree(commands, enumerations, features, extensions);
             }
         }
 
-        private IEnumerable<Command> ParseCommands(XElement xe)
+        private IReadOnlyCollection<Command> ParseCommands(XElement xe)
         {
             var commands = new List<Command>();
             foreach (var xeCommands in xe.Elements("commands"))
@@ -61,7 +53,7 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
                 }
             }
 
-            log.Info($"{commands.Count} commands were parsed");
+            Log.Info($"{commands.Count} commands were parsed");
             return commands;
         }
 
@@ -120,7 +112,7 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
             return new PType(GLTypeParser.Parse(parameterType), handle, group);
         }
 
-        private IEnumerable<Enum> ParseEnums(XElement xe)
+        private IReadOnlyCollection<Enum> ParseEnums(XElement xe)
         {
             static EnumType parseEnumType(string value) => value switch
             {
@@ -163,7 +155,7 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
                 enums.Add(new Enum(ns, groups, enumType, vendor, range, comment, entries));
             }
 
-            log.Info($"{enums.Count} enums were parsed");
+            Log.Info($"{enums.Count} enums were parsed");
             return enums;
         }
 
@@ -201,7 +193,7 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
             return new EnumEntry(name, api, value, alias, comment, groups, suffix);
         }
 
-        private IEnumerable<Feature> ParseFeatures(XElement xe)
+        private IReadOnlyCollection<Feature> ParseFeatures(XElement xe)
         {
             var features = new List<Feature>();
             foreach (var xeFeature in xe.Elements("feature"))
@@ -229,11 +221,11 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
                 features.Add(new Feature(api, version, name, requireEntries, removeEntries));
             }
 
-            log.Info($"{features.Count} features were parsed");
+            Log.Info($"{features.Count} features were parsed");
             return features;
         }
 
-        private IEnumerable<Extension> ParseExtensions(XElement xe)
+        private IReadOnlyCollection<Extension> ParseExtensions(XElement xe)
         {
             var extensions = new List<Extension>();
             foreach (var xeExtension in xe.Element("extensions")!.Elements("extension"))
@@ -267,7 +259,7 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
                 extensions.Add(new Extension(name, vendor, supportedApis, comment, requires));
             }
 
-            log.Info($"{extensions.Count} extensions were parsed");
+            Log.Info($"{extensions.Count} extensions were parsed");
             return extensions;
         }
 

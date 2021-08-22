@@ -6,13 +6,13 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
     // The parse tree that is the result of parsing gl.xml
 
     // Root of the tree
-    public record Specification(
-        IEnumerable<Command> Commands,
-        IEnumerable<Enum> Enums,
-        IEnumerable<Feature> Features,
-        IEnumerable<Extension> Extensions);
+    public sealed record ParseTree(
+        IReadOnlyCollection<Command> Commands,
+        IReadOnlyCollection<Enum> Enums,
+        IReadOnlyCollection<Feature> Features,
+        IReadOnlyCollection<Extension> Extensions);
 
-    public record Command(
+    public sealed record Command(
         string Namespace,
         string EntryPoint,
         PType ReturnType,
@@ -25,14 +25,14 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
         Bitmask
     }
 
-    public record Enum(
+    public sealed record Enum(
         string Namespace,
         string[] Groups,
         EnumType Type,
         string Vendor,
         Range? Range,
         string Comment,
-        IEnumerable<EnumEntry> Entries);
+        IReadOnlyCollection<EnumEntry> Entries);
 
     /// <summary>
     /// "
@@ -73,7 +73,7 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
         Common,
     }
 
-    public record EnumEntry(
+    public sealed record EnumEntry(
         string Name,
         GLApi Api,
         ulong Value,
@@ -82,30 +82,30 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
         string[] Groups,
         TypeSuffix Type);
 
-    public record Feature(
+    public sealed record Feature(
         GLApi Api,
         Version Version,
         string Name,
-        IEnumerable<RequireEntry> Requires,
-        IEnumerable<RemoveEntry> Removes);
+        IReadOnlyCollection<RequireEntry> Requires,
+        IReadOnlyCollection<RemoveEntry> Removes);
 
-    public record Extension(
+    public sealed record Extension(
         string Name,
         string Vendor,
         GLApi[] SupportedApis,
         string? Comment,
-        IEnumerable<RequireEntry> Requires);
+        IReadOnlyCollection<RequireEntry> Requires);
 
-    public record RequireEntry(
+    public sealed record RequireEntry(
         GLApi Api,
         GLProfile Profile,
         string Comment,
-        IEnumerable<string> Commands,
-        IEnumerable<string> Enums);
+        IReadOnlyCollection<string> Commands,
+        IReadOnlyCollection<string> Enums);
 
-    public record RemoveEntry(
+    public sealed record RemoveEntry(
         GLProfile Profile,
         string Comment,
-        IEnumerable<string> Commands,
-        IEnumerable<string> Enums);
+        IReadOnlyCollection<string> Commands,
+        IReadOnlyCollection<string> Enums);
 }

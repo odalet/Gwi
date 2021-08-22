@@ -4,6 +4,12 @@ using NLog;
 
 namespace Gwi.OpenGL.BindingGenerator.Utils
 {
+    internal enum IndentedLoggerStyle
+    {
+        Default,
+        Braces
+    }
+
     internal sealed class IndentedLogger
     {
         private sealed class Scope : IDisposable
@@ -28,7 +34,7 @@ namespace Gwi.OpenGL.BindingGenerator.Utils
                 if (Message != null)
                 {
                     var level = LogLevel ?? LogLevel.Info;
-                    Logger.Log(level, "> " + Message);
+                    Logger.Log(level, GetBeginMessage(Logger.Style, Message));
                 }
 
                 Logger.Push();
@@ -41,20 +47,37 @@ namespace Gwi.OpenGL.BindingGenerator.Utils
                 if (Message != null)
                 {
                     var level = LogLevel ?? LogLevel.Info;
-                    Logger.Log(level, "< " + Message);
+                    Logger.Log(level, GetEndMessage(Logger.Style, Message)); 
                 }
             }
+
+            private static string GetBeginMessage(IndentedLoggerStyle style, string message) => style switch
+            {
+                IndentedLoggerStyle.Default => $"> {message}",
+                IndentedLoggerStyle.Braces => $"{message} {{",
+                _ => ""
+            };
+
+
+            private static string GetEndMessage(IndentedLoggerStyle style, string message) => style switch
+            {
+                IndentedLoggerStyle.Default => $"< {message}",
+                IndentedLoggerStyle.Braces => "}",
+                _ => ""
+            };
         }
 
         private readonly Stack<int> indentationLevels = new();
 
-        public IndentedLogger(ILogger logger)
+        public IndentedLogger(ILogger logger, IndentedLoggerStyle style = IndentedLoggerStyle.Default)
         {
             Logger = logger;
+            Style = style;
             indentationLevels.Push(0);
         }
 
         private ILogger Logger { get; }
+        private IndentedLoggerStyle Style { get; }
         private int IndentationLevel => indentationLevels.Peek();
         private string Indentation => new(' ', IndentationLevel * 2);
 

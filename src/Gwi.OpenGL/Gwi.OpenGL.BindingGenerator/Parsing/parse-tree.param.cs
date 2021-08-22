@@ -49,9 +49,9 @@
         GLVulkanProcNV
     }
 
-    public record GLParameter(PType Type, string Name, Expr? Length);
-    public record PType(GLType Type, HandleType? Handle, string? Group);
+    public sealed record GLParameter(PType Type, string Name, Expr? Length);
+    public sealed record PType(GLType Type, HandleType? Handle, string? Group);
     public abstract record GLType();
-    public record GLBaseType(string OriginalString, PrimitiveType Type, bool Constant) : GLType;
-    public record GLPointerType(GLType BaseType, bool Constant) : GLType;
+    public sealed record GLBaseType(string OriginalString, PrimitiveType Type, bool Constant) : GLType;
+    public sealed record GLPointerType(GLType BaseType, bool Constant) : GLType;
 }

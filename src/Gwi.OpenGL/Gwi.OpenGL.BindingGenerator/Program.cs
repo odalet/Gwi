@@ -34,11 +34,13 @@ namespace Gwi.OpenGL.BindingGenerator
         private void Run()
         {
             var glXmlSourceFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "input", "gl.xml");
+
             var parser = new Parser(glXmlSourceFile);
+            var tree = parser.Parse();
+            DumpParseTree(tree); // for debugging purpose
 
-            var specification = parser.Parse();
-
-            DumpParseTree(specification); // for debugging purpose
+            var transformer = new Transformer(tree);
+            var specification = transformer.Transform();
 
             ////////// Let's extract the expressions
             //////////var exprs = specification.Commands.SelectMany(c => c.Parameters).Select(p => p.Length).Where(x => x != null && x is CompSize c && c.Parameters.Length > 3).ToArray();
@@ -63,10 +65,10 @@ namespace Gwi.OpenGL.BindingGenerator
             //////////Writer.Write(outputSpec);
         }
 
-        private static void DumpParseTree(Specification specification)
+        private static void DumpParseTree(ParseTree tree)
         {
             using var file = File.CreateText(@"c:\temp\gl.md");
-            ParseTreeDumper.DumpToMarkdown(file, specification);
+            ParseTreeDumper.DumpToMarkdown(file, tree);
         }
     }
 }

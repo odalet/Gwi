@@ -7,7 +7,7 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
     // Debugging Helper
     internal static class ParseTreeDumper
     {
-        public static void DumpToMarkdown(TextWriter writer, Specification specification)
+        public static void DumpToMarkdown(TextWriter writer, ParseTree specification)
         {
             writer.WriteLine("# OpenGL Specification");
 
