@@ -1,1 +1,1 @@
-2021/08/08 - https://raw.githubusercontent.com/KhronosGroup/OpenGL-Registry/963994171fb35ed29e8c2605c94b20fcca8e47e7/xml/gl.xml
+2021/08/12 - https://raw.githubusercontent.com/KhronosGroup/OpenGL-Registry/acc094d2dc2a78b1f774dc1899e2e6f6850ec5ea/xml/gl.xml
