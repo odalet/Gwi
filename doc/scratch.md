@@ -9,6 +9,7 @@
   * OpenGLDotNet: <https://github.com/taylaninan/opengldotnet>
   * opengl4csharp: <https://github.com/giawa/opengl4csharp>
 * `gl.xml` @ OpenGL-Registry: <https://github.com/KhronosGroup/OpenGL-Registry/blob/963994171fb35ed29e8c2605c94b20fcca8e47e7/xml/gl.xml>
+  * `gl.xml` specification: <https://github.com/KhronosGroup/OpenGL-Registry/blob/master/xml/readme.pdf>
 * GLFW: <https://github.com/glfw/glfw>
 
 ## C# 9 function pointers
