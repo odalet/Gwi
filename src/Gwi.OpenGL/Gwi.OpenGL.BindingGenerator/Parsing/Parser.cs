@@ -201,7 +201,7 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
             return new EnumEntry(name, api, value, alias, comment, groups, suffix);
         }
 
-        private static IEnumerable<Feature> ParseFeatures(XElement xe)
+        private IEnumerable<Feature> ParseFeatures(XElement xe)
         {
             var features = new List<Feature>();
             foreach (var xeFeature in xe.Elements("feature"))
@@ -229,10 +229,11 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
                 features.Add(new Feature(api, version, name, requireEntries, removeEntries));
             }
 
+            log.Info($"{features.Count} features were parsed");
             return features;
         }
 
-        private static IEnumerable<Extension> ParseExtensions(XElement xe)
+        private IEnumerable<Extension> ParseExtensions(XElement xe)
         {
             var extensions = new List<Extension>();
             foreach (var xeExtension in xe.Element("extensions")!.Elements("extension"))
@@ -266,6 +267,7 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
                 extensions.Add(new Extension(name, vendor, supportedApis, comment, requires));
             }
 
+            log.Info($"{extensions.Count} extensions were parsed");
             return extensions;
         }
 
