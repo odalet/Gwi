@@ -41,6 +41,8 @@ namespace Gwi.OpenGL.BindingGenerator
             var transformer = new Transformer(tree);
             var specification = transformer.Transform();
 
+            var foo = 42;
+
             ////////// Let's extract the expressions
             //////////var exprs = specification.Commands.SelectMany(c => c.Parameters).Select(p => p.Length).Where(x => x != null && x is CompSize c && c.Parameters.Length > 3).ToArray();
 

@@ -16,5 +16,16 @@ namespace Gwi.OpenGL.BindingGenerator.Utils
 
             nestedDict.Add(key2, value);
         }
+
+        public static void Add<TKey, TValue>(this IDictionary<TKey, HashSet<TValue>> dict, TKey key, TValue value) where TKey : notnull
+        {
+            if (dict.TryGetValue(key, out var nestedCollection) == false)
+            {
+                nestedCollection = new HashSet<TValue>();
+                dict.Add(key, nestedCollection);
+            }
+
+            _ = nestedCollection.Add(value);
+        }
     }
 }

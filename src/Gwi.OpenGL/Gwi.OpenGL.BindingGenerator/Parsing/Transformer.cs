@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Gwi.OpenGL.BindingGenerator.Utils;
 using NLog;
@@ -26,6 +27,11 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
             public override int GetHashCode() => HashCode.Combine(GroupName);
         };
 
+        private sealed record ProcessedGLInformation(
+            IDictionary<string, OverloadedFunction> Functions,
+            IDictionary<OutputApi, Dictionary<string, EnumGroupEntry>> EnumsByApi,
+            IReadOnlyCollection<EnumGroupInfo> EnumGroupInfos);
+
         public Transformer(ParseTree specification) : base(LogManager.GetCurrentClassLogger()) => ParseTree = specification;
 
         private ParseTree ParseTree { get; }
@@ -34,11 +40,11 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
         {
             using (NewLogScope("Transform Parse Tree"))
             {
-                IDictionary<string, OverloadedFunction> allfunctions;
+                IDictionary<string, OverloadedFunction> functions;
                 using (NewLogScope("Create Native Functions and overloads"))
                 {
-                    allfunctions = MakeFunctionsAndOverloads();
-                    Log.Info($"{allfunctions.Count} functions and overloads were created");
+                    functions = MakeFunctionsAndOverloads();
+                    Log.Info($"{functions.Count} functions and overloads were created");
                 }
 
                 var enumsByApi = new Dictionary<OutputApi, Dictionary<string, EnumGroupEntry>>();
@@ -47,14 +53,42 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
                 {
                     CreateEnums(enumsByApi, enumGroups);
                     foreach (var api in enumsByApi.Keys)
-                        Log.Info($"API {api}: {enumsByApi[api].Count} enumerations were created");                    
+                        Log.Info($"API {api}: {enumsByApi[api].Count} enumerations were created");
                     Log.Info($"{enumGroups.Count} enumeration groups were created");
                 }
 
                 // Now that we have all of the functions and enums ready in dictionaries
                 // we can start building all of the API versions.
 
-                return new Specification(Array.Empty<OutputApiSpecification>());
+                // Filter the features and extensions we actually want to output.
+                var features = ParseTree.Features.Where(feature => feature.Api switch
+                {
+                    GLApi.GL or GLApi.GLES1 or GLApi.GLES2 => true,
+                    _ => false
+                });
+
+                var extensions = ParseTree.Extensions.Where(extension => extension.SupportedApis.Any(api => api switch
+                {
+                    GLApi.GL or GLApi.GLES1 or GLApi.GLES2 => true,
+                    _ => false
+                }));
+
+                var glRequires = GetRequireEntries(features, extensions, GLApi.GL);
+                var gles1Requires = GetRequireEntries(features, extensions, GLApi.GLES1);
+                var gles3Requires = GetRequireEntries(features, extensions, GLApi.GLES2);
+
+                var glRemoves = GetRemoveEntries(features, GLApi.GL);
+                var gles1Removes = GetRemoveEntries(features, GLApi.GLES1);
+                var gles3Removes = GetRemoveEntries(features, GLApi.GLES2);
+
+                var info = new ProcessedGLInformation(functions, enumsByApi, enumGroups.ToList());
+
+                var gl = GetOutputApiSpecificationFromRequireTags(OutputApi.GL, glRequires, glRemoves, info);
+                var glCompat = GetOutputApiSpecificationFromRequireTags(OutputApi.GLCompat, glRequires, new List<RemoveEntry>(), info);
+                var gles1 = GetOutputApiSpecificationFromRequireTags(OutputApi.GLES1, gles1Requires, new List<RemoveEntry>(), info);
+                var gles3 = GetOutputApiSpecificationFromRequireTags(OutputApi.GLES3, gles3Requires, gles3Removes, info);
+
+                return new Specification(new[] { gl, glCompat, gles1, gles3 });
             }
         }
 
@@ -194,6 +228,125 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
                     }
                 }
             }
+        }
+
+        private static List<(string vendor, RequireEntry entry)> GetRequireEntries(IEnumerable<Feature> features, IEnumerable<Extension> extensions, GLApi api)
+        {
+            var requireEntries = new List<(string vendor, RequireEntry entry)>();
+
+            foreach (var require in features.Where(feature => feature.Api == api).SelectMany(feature => feature.Requires))
+                requireEntries.Add(("", require));
+
+            foreach (var extension in extensions.Where(extension => extension.SupportedApis.Contains(api)))
+            {
+                foreach (var require in extension.Requires)
+                    requireEntries.Add((extension.Vendor, require));
+            }
+
+            return requireEntries;
+        }
+
+        private static List<RemoveEntry> GetRemoveEntries(IEnumerable<Feature> features, GLApi api) =>
+            features.Where(feature => feature.Api == api).SelectMany(feature => feature.Removes).ToList();
+
+        private static OutputApiSpecification GetOutputApiSpecificationFromRequireTags(
+            OutputApi api,
+            IEnumerable<(string vendor, RequireEntry requireEntry)> requireEntries,
+            IEnumerable<RemoveEntry> removeEntries,
+            ProcessedGLInformation glInformation)
+        {
+            var groupsReferencedByFunctions = new HashSet<string>();            
+            var functionsByVendor = new Dictionary<string, HashSet<OverloadedFunction>>();
+            var enums = new Dictionary<string, List<EnumGroupEntry>>();
+            var allEnumGroupEntries = new HashSet<EnumGroupEntry>();
+
+            // Go through all the functions that are required for this version and add them here.
+            foreach (var (vendor, requireEntry) in requireEntries)
+            {
+                foreach (var command in requireEntry.Commands)
+                {
+                    if (glInformation.Functions.TryGetValue(command, out var function))
+                    {
+                        functionsByVendor.Add(vendor, function);
+                        groupsReferencedByFunctions.UnionWith(function.NativeFunction.ReferencedEnumGroups);
+                    }
+                    else throw new ParsingException($"Could not find any function called '{command}'.");
+                }
+
+                foreach (var enumName in requireEntry.Enums)
+                {
+                    var enumGroupEntriesByEnumName = glInformation.EnumsByApi[api];
+                    if (enumGroupEntriesByEnumName.TryGetValue(enumName, out var enumGroupEntry))
+                    {
+                        foreach (var group in enumGroupEntry.Groups)
+                        {
+                            if (!enums.TryGetValue(group, out var groupEntries))
+                            {
+                                groupEntries = new List<EnumGroupEntry>();
+                                enums.Add(group, groupEntries);
+                            }
+
+                            if (groupEntries.Find(g => g.Name == enumGroupEntry.Name) == null)
+                                groupEntries.Add(enumGroupEntry);
+                        }
+
+                        if (enumGroupEntry.Value <= uint.MaxValue)
+                            _ = allEnumGroupEntries.Add(enumGroupEntry);
+                    }
+                    else throw new ParsingException($"Could not find any enum called '{enumName}'.");
+                }
+            }
+
+            foreach (var remove in removeEntries)
+                foreach (var command in remove.Commands)
+                    foreach (var functions in functionsByVendor.Values)
+                        _ = functions.RemoveWhere(f => f.NativeFunction.EntryPoint == command);
+
+            // Go through all of the enums and put them into their groups
+
+            // Add keys + lists for all enum names
+            var finalGroups = new List<EnumGroup>();
+            foreach (var (groupName, isFlags) in glInformation.EnumGroupInfos)
+            {
+                _ = enums.TryGetValue(groupName, out var members);
+                members ??= new List<EnumGroupEntry>();
+
+                // SpecialNumbers is not an enum group that we want to output.
+                // We handle these entries differently as some of the entries don't fit in an int.
+                if (groupName == "SpecialNumbers")
+                    continue;
+
+                // Remove all empty enum groups, except the empty groups referenced by included functions.
+                // In GL 4.1 to 4.5 there are functions that use the group "ShaderBinaryFormat"
+                // while not including any members for that enum group.
+                // This is needed to solve that case.
+                if (members.Count <= 0 && !groupsReferencedByFunctions.Contains(groupName))
+                    continue;
+
+                finalGroups.Add(new EnumGroup(groupName, isFlags, members));
+            }
+
+            var vendors = new Dictionary<string, GLVendorFunctions>();
+            foreach (var (vendor, overloadedFunctions) in functionsByVendor)
+                foreach (var overloadedFunction in overloadedFunctions)
+                {
+                    if (!vendors.TryGetValue(vendor, out var group))
+                    {
+                        group = new GLVendorFunctions(
+                            new List<NativeFunction>(), 
+                            new List<Overload[]>(), 
+                            new HashSet<NativeFunction>());
+                        vendors.Add(vendor, group);
+                    }
+
+                    group.NativeFunctions.Add(overloadedFunction.NativeFunction);
+                    group.OverloadsGroupedByNativeFunctions.Add(overloadedFunction.Overloads);
+
+                    if (overloadedFunction.ChangeNativeName)
+                        _ = group.NativeFunctionsWithPostfix.Add(overloadedFunction.NativeFunction);
+                }
+
+            return new OutputApiSpecification(api, vendors, allEnumGroupEntries.ToList(), finalGroups);
         }
     }
 }

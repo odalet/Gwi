@@ -12,8 +12,8 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
         IReadOnlyCollection<EnumGroup> EnumGroups);
 
     public sealed record GLVendorFunctions(
-        IReadOnlyCollection<NativeFunction> NativeFunctions,
-        IReadOnlyCollection<Overload[]> OverloadsGroupedByNativeFunctions,
+        ICollection<NativeFunction> NativeFunctions,
+        ICollection<Overload[]> OverloadsGroupedByNativeFunctions,
         HashSet<NativeFunction> NativeFunctionsWithPostfix);
 
     public sealed record NativeFunction(
