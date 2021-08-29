@@ -32,7 +32,7 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
             using (NewLogScope("Parse gl.xml"))
             {
                 var commands = LogScoped(() => ParseCommands(root), "Parse Commands");
-                var enumerations = LogScoped(() => ParseEnums(root), "Parse Enumerations");
+                var enumerations = LogScoped(() => ParseEnumerants(root), "Parse Enumerations");
                 var features = LogScoped(() => ParseFeatures(root), "Parse Features");
                 var extensions = LogScoped(() => ParseExtensions(root), "Parse Extensions");
 
@@ -112,16 +112,16 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
             return new PType(GLTypeParser.Parse(parameterType), handle, group);
         }
 
-        private IReadOnlyCollection<Enum> ParseEnums(XElement xe)
+        private IReadOnlyCollection<Enumerant> ParseEnumerants(XElement xe)
         {
-            static EnumType parseEnumType(string value) => value switch
+            static EnumerantType parseEnumerantType(string value) => value switch
             {
-                "" => EnumType.None,
-                "bitmask" => EnumType.Bitmask,
-                _ => EnumType.Invalid,
+                "" => EnumerantType.None,
+                "bitmask" => EnumerantType.Bitmask,
+                _ => EnumerantType.Invalid,
             };
 
-            var enums = new List<Enum>();
+            var enums = new List<Enumerant>();
             foreach (var xeEnums in xe.Elements("enums"))
             {
                 var ns = xeEnums.Attribute("namespace")?.Value;
@@ -129,7 +129,7 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
 
                 var groups = xeEnums.Attribute("group")?.Value?.Split(',', StringSplitOptions.RemoveEmptyEntries) ?? Array.Empty<string>();
                 var vendor = xeEnums.Attribute("vendor")?.Value ?? "";
-                var enumType = parseEnumType(xeEnums.Attribute("type")?.Value ?? "");
+                var enumType = parseEnumerantType(xeEnums.Attribute("type")?.Value ?? "");
 
                 // An Enums either has both start/end or none
                 var startString = xeEnums.Attribute("start")?.Value;
@@ -148,20 +148,20 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
                 var comment = xeEnums.Attribute("comment")?.Value ?? "";
 
                 // Should we parse 'unused' entries?
-                var entries = new List<EnumEntry>();
+                var entries = new List<EnumerantEntry>();
                 foreach (var xeEnum in xeEnums.Elements("enum"))
-                    entries.Add(ParseEnumEntry(xeEnum));
+                    entries.Add(ParseEnumerantEntry(xeEnum));
 
-                enums.Add(new Enum(ns, groups, enumType, vendor, range, comment, entries));
+                enums.Add(new Enumerant(ns, groups, enumType, vendor, range, comment, entries));
             }
 
             Log.Info($"{enums.Count} enums were parsed");
             return enums;
         }
 
-        private static EnumEntry ParseEnumEntry(XElement xe)
+        private static EnumerantEntry ParseEnumerantEntry(XElement xe)
         {
-            static TypeSuffix parseEnumTypeSuffix(string suffix) => suffix switch
+            static TypeSuffix parseSuffix(string suffix) => suffix switch
             {
                 "" => TypeSuffix.None,
                 "u" => TypeSuffix.U,
@@ -183,14 +183,14 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
             var valueString = xe.Attribute("value")?.Value;
             if (string.IsNullOrEmpty(valueString)) throw new ParsingException($"Enum entry '{name}' has no value");
 
-            var suffix = parseEnumTypeSuffix(xe.Attribute("type")?.Value ?? "");
+            var suffix = parseSuffix(xe.Attribute("type")?.Value ?? "");
             var value = convertToUInt64(valueString, suffix);
             var alias = xe.Attribute("alias")?.Value ?? "";
             var groups = xe.Attribute("group")?.Value?.Split(',', StringSplitOptions.RemoveEmptyEntries) ?? Array.Empty<string>();
             var comment = xe.Attribute("comment")?.Value ?? "";
             var api = ParseGLApi(xe.Attribute("api")?.Value ?? "");
 
-            return new EnumEntry(name, api, value, alias, comment, groups, suffix);
+            return new EnumerantEntry(name, api, value, alias, comment, groups, suffix);
         }
 
         private IReadOnlyCollection<Feature> ParseFeatures(XElement xe)

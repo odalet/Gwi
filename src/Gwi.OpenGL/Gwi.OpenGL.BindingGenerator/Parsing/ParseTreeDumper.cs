@@ -23,8 +23,8 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
             writer.WriteLine("## Enums");
             writer.WriteLine();
             writer.WriteLine("```csharp");
-            foreach (var enumeration in specification.Enums)
-                DumpEnumeration(writer, enumeration);
+            foreach (var enumerant in specification.Enumerants)
+                DumpEnumerant(writer, enumerant);
             writer.WriteLine("```");
 
             writer.WriteLine();
@@ -59,29 +59,29 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
         private static void IncTabs() => indentLevel++;
         private static void DecTabs() => indentLevel--;
 
-        private static void DumpEnumeration(TextWriter writer, Enum en)
+        private static void DumpEnumerant(TextWriter writer, Enumerant enumerant)
         {
-            if (en.Groups.Length == 0) return; // no name -> do not output
+            if (enumerant.Groups.Length == 0) return; // no name -> do not output
 
-            writer.WriteLine($"{Tabs}namespace {en.Namespace} {{");
+            writer.WriteLine($"{Tabs}namespace {enumerant.Namespace} {{");
             IncTabs();
 
-            if (en.Type == EnumType.Invalid)
+            if (enumerant.Type == EnumerantType.Invalid)
                 writer.WriteLine($"{Tabs}[Invalid]");
-            else if (en.Type == EnumType.Bitmask)
+            else if (enumerant.Type == EnumerantType.Bitmask)
                 writer.WriteLine($"{Tabs}[Flags]");
 
             var name = "?";
-                if (en.Groups.Length > 0)
-                    name = en.Groups[0];
-                if (en.Groups.Length > 1)
-                    name += $" /* {string.Join(", ", en.Groups.Skip(1))} */";
+                if (enumerant.Groups.Length > 0)
+                    name = enumerant.Groups[0];
+                if (enumerant.Groups.Length > 1)
+                    name += $" /* {string.Join(", ", enumerant.Groups.Skip(1))} */";
 
             writer.WriteLine($"{Tabs}enum {name} {{");
 
             IncTabs();
-            foreach (var entry in en.Entries)
-                DumpEnumerationEntry(writer, entry, name);
+            foreach (var entry in enumerant.Entries)
+                DumpEnumerantEntry(writer, entry, name);
             DecTabs();
 
             writer.WriteLine($"{Tabs}}}");
@@ -89,23 +89,23 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
             writer.WriteLine($"{Tabs}}}");
         }
 
-        private static void DumpEnumerationEntry(TextWriter writer, EnumEntry en, string enumName)
+        private static void DumpEnumerantEntry(TextWriter writer, EnumerantEntry entry, string enumerantName)
         {
-            if (!string.IsNullOrEmpty(en.Comment))
-                writer.WriteLine($"{Tabs}// {en.Comment}");
+            if (!string.IsNullOrEmpty(entry.Comment))
+                writer.WriteLine($"{Tabs}// {entry.Comment}");
 
             var info = new List<string>();
-            if (en.Api != GLApi.None) info.Add($"[{en.Api}]");
-            if (!string.IsNullOrEmpty(en.Alias)) info.Add($"aka {en.Alias}");
+            if (entry.Api != GLApi.None) info.Add($"[{entry.Api}]");
+            if (!string.IsNullOrEmpty(entry.Alias)) info.Add($"aka {entry.Alias}");
 
-            var groups = en.Groups.Where(g => g != enumName).ToArray();
+            var groups = entry.Groups.Where(g => g != enumerantName).ToArray();
             if (groups.Length > 0) info.Add($"groups: {string.Join(", ", groups)}");
 
             var infoText = "";
             if (info.Count > 0)
                 infoText = $" // {string.Join(", ", info)}";
 
-            writer.WriteLine($"{Tabs}{en.Name} = {en.Value},{infoText}");
+            writer.WriteLine($"{Tabs}{entry.Name} = {entry.Value},{infoText}");
         }
 
         private static string Dump(Expr expr) => expr switch

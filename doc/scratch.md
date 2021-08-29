@@ -1,5 +1,16 @@
 # Scratch
 
+## Articles
+
+* From the authors of [Gio](https://gioui.org/): [Immediate Mode GUI Programming](https://eliasnaur.com/blog/immediate-mode-gui-programming)
+
+## Libraries
+
+* Golang
+  * [Gio](https://gioui.org/)
+* Rust
+  * [egui](https://github.com/emilk/egui); Web demo: <https://emilk.github.io/egui/index.html>
+
 ## Links
 
 * OpenGL Language Bindings: <https://www.khronos.org/opengl/wiki/Language_bindings>

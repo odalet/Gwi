@@ -8,7 +8,7 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
     // Root of the tree
     public sealed record ParseTree(
         IReadOnlyCollection<Command> Commands,
-        IReadOnlyCollection<Enum> Enums,
+        IReadOnlyCollection<Enumerant> Enumerants,
         IReadOnlyCollection<Feature> Features,
         IReadOnlyCollection<Extension> Extensions);
 
@@ -18,39 +18,34 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
         PType ReturnType,
         GLParameter[] Parameters);
 
-    public enum EnumType
+    public enum EnumerantType
     {
         Invalid,
         None,
         Bitmask
     }
 
-    public sealed record Enum(
+    // 'Enumerant' is a weird name, but this is how it's named
+    // in https://github.com/KhronosGroup/OpenGL-Registry/blob/main/xml/readme.pdf
+    public sealed record Enumerant(
         string Namespace,
         string[] Groups,
-        EnumType Type,
+        EnumerantType Type,
         string Vendor,
         Range? Range,
         string Comment,
-        IReadOnlyCollection<EnumEntry> Entries);
+        IReadOnlyCollection<EnumerantEntry> Entries);
 
-    /// <summary>
-    /// "
-    /// Legal C suffix for the value to force it to a specific type.
-    /// Currently only \code{u} and \code{ull} are used,
-    /// for \code{unsigned} 32 - and 64 - bit integer values, respectively.
-    /// Separated from the \attr{value} field since this eases parsing and
-    /// sorting of values, and is rarely used.
-    /// "
-    /// <br/>
-    /// Taken from <see href="https://github.com/KhronosGroup/OpenGL-Registry/blob/0dc24166d162723781f1bf9fe433f71fa03a7aa0/xml/readme.tex#L383">KhronosGroup/OpenGL-Registry/xml/readme.tex#L383</see> 2020-11-22
-    /// </summary>
+    // legal C suffix for the value to force it to a specific type.
+    // Currently only u and ull are used, for unsigned 32- and 64-bit integer values, respectively.
+    // Separated from the value field since this eases parsing and sorting of values, and is rarely used.
+    // See https://github.com/KhronosGroup/OpenGL-Registry/blob/main/xml/readme.pdf § 9.1
     public enum TypeSuffix
     {
         Invalid,
         None,
-        U,
-        Ull,
+        U, // uint
+        Ull, // ulong
     }
 
     public enum GLApi
@@ -73,7 +68,7 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
         Common,
     }
 
-    public sealed record EnumEntry(
+    public sealed record EnumerantEntry(
         string Name,
         GLApi Api,
         ulong Value,

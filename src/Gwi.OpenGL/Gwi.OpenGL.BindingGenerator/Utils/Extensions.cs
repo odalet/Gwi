@@ -4,7 +4,7 @@ namespace Gwi.OpenGL.BindingGenerator.Utils
 {
     internal static class Extensions
     {
-        public static void AddToNestedDict<TKey1, TKey2, TValue>(this IDictionary<TKey1, Dictionary<TKey2, TValue>> dict, TKey1 key1, TKey2 key2, TValue value)
+        public static void Add<TKey1, TKey2, TValue>(this IDictionary<TKey1, Dictionary<TKey2, TValue>> dict, TKey1 key1, TKey2 key2, TValue value)
             where TKey1 : notnull
             where TKey2 : notnull
         {

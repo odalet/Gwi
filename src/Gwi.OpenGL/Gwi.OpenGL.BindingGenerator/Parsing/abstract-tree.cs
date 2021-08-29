@@ -8,7 +8,7 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
     public sealed record OutputApiSpecification(
         OutputApi Api,
         IReadOnlyDictionary<string, GLVendorFunctions> Vendors,
-        IReadOnlyCollection<EnumGroupMember> EnumGroupMembers,
+        IReadOnlyCollection<EnumGroupEntry> EnumGroupEntries,
         IReadOnlyCollection<EnumGroup> EnumGroups);
 
     public sealed record GLVendorFunctions(
@@ -42,9 +42,9 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
         GL,
         GLCompat,
         GLES1,
-        GLES3
+        GLES3 // GLES2 = GLES3
     }
 
-    public sealed record EnumGroup(string Name, bool IsFlags, List<EnumGroupMember> Members);
-    public sealed record EnumGroupMember(string Name, ulong Value, string[] Groups, bool IsFlag) : IEquatable<EnumGroupMember?>;
+    public sealed record EnumGroup(string Name, bool IsFlags, List<EnumGroupEntry> Members);
+    public sealed record EnumGroupEntry(string Name, ulong Value, string[] Groups, bool IsFlag) : IEquatable<EnumGroupEntry?>;
 }

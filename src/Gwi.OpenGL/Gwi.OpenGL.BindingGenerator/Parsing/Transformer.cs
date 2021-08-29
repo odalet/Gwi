@@ -41,12 +41,18 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
                     Log.Info($"{allfunctions.Count} functions and overloads were created");
                 }
 
-                var allEnumsPerApi = new Dictionary<OutputApi, Dictionary<string, EnumGroupMember>>();
-                var allEnumGroups = new HashSet<EnumGroupInfo>();
+                var enumsByApi = new Dictionary<OutputApi, Dictionary<string, EnumGroupEntry>>();
+                var enumGroups = new HashSet<EnumGroupInfo>();
                 using (NewLogScope("Create enums"))
                 {
-                    CreateEnums(allEnumsPerApi, allEnumGroups);
+                    CreateEnums(enumsByApi, enumGroups);
+                    foreach (var api in enumsByApi.Keys)
+                        Log.Info($"API {api}: {enumsByApi[api].Count} enumerations were created");                    
+                    Log.Info($"{enumGroups.Count} enumeration groups were created");
                 }
+
+                // Now that we have all of the functions and enums ready in dictionaries
+                // we can start building all of the API versions.
 
                 return new Specification(Array.Empty<OutputApiSpecification>());
             }
@@ -136,58 +142,54 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
             var changeNativeName = false;
             foreach (var overload in overloads)
             {
-                if (areSignaturesDifferent(nativeFunction, overload) == false)
+                if (!areSignaturesDifferent(nativeFunction, overload))
                     changeNativeName = true;
             }
 
             return new OverloadedFunction(nativeFunction, overloads, changeNativeName);
         }
 
-        private void CreateEnums(IDictionary<OutputApi, Dictionary<string, EnumGroupMember>> allEnumsPerAPI, HashSet<EnumGroupInfo> allEnumGroups)
+        private void CreateEnums(IDictionary<OutputApi, Dictionary<string, EnumGroupEntry>> enumsByApi, HashSet<EnumGroupInfo> enumGroups)
         {
-            foreach (var enumsEntry in ParseTree.Enums)
+            foreach (var enumerant in ParseTree.Enumerants)
             {
-                var isFlag = enumsEntry.Type == EnumType.Bitmask;
-                foreach (var @enum in enumsEntry.Entries)
+                var isFlags = enumerant.Type == EnumerantType.Bitmask;
+                foreach (var entry in enumerant.Entries)
                 {
-                    foreach (var group in @enum.Groups)
+                    foreach (var group in entry.Groups)
                     {
-                        // If the first enums tag wasn't flagged as a bitmask, but later ones in the same group are.
-                        // Then we want the group to be considered a bitmask.
-                        if (allEnumGroups.TryGetValue(new EnumGroupInfo(group, isFlag), out EnumGroupInfo? actual))
+                        // If the enumerant inside which the entry appeared for the first time tag wasn't flagged as a bitmask,
+                        // but now is, then we want the group to be considered a bitmask.
+                        if (enumGroups.TryGetValue(new EnumGroupInfo(group, isFlags), out var actual))
                         {
-                            // In the current spec this case never happens, but it could.
-                            // - 2021-07-04
-                            if (isFlag == true && actual.IsFlags == false)
+                            // In the current spec, this case never happens, but theoretically, it could...
+                            if (isFlags && !actual.IsFlags)
                             {
-                                _ = allEnumGroups.Remove(actual);
-                                _ = allEnumGroups.Add(actual with { IsFlags = true });
+                                _ = enumGroups.Remove(actual);
+                                _ = enumGroups.Add(actual with { IsFlags = true });
                             }
                         }
-                        else
-                        {
-                            _ = allEnumGroups.Add(new EnumGroupInfo(group, isFlag));
-                        }
+                        else _ = enumGroups.Add(new EnumGroupInfo(group, isFlags));
                     }
 
-                    var member = new EnumGroupMember(NameMangler.MangleEnumName(@enum.Name), @enum.Value, @enum.Groups, isFlag);
-                    switch (@enum.Api)
+                    var groupEntry = new EnumGroupEntry(NameMangler.MangleEnumName(entry.Name), entry.Value, entry.Groups, isFlags);
+                    switch (entry.Api)
                     {
                         case GLApi.None:
-                            allEnumsPerAPI.AddToNestedDict(OutputApi.GL, @enum.Name, member);
-                            allEnumsPerAPI.AddToNestedDict(OutputApi.GLCompat, @enum.Name, member);
-                            allEnumsPerAPI.AddToNestedDict(OutputApi.GLES1, @enum.Name, member);
-                            allEnumsPerAPI.AddToNestedDict(OutputApi.GLES3, @enum.Name, member);
+                            enumsByApi.Add(OutputApi.GL, entry.Name, groupEntry);
+                            enumsByApi.Add(OutputApi.GLCompat, entry.Name, groupEntry);
+                            enumsByApi.Add(OutputApi.GLES1, entry.Name, groupEntry);
+                            enumsByApi.Add(OutputApi.GLES3, entry.Name, groupEntry);
                             break;
                         case GLApi.GLES1:
-                            allEnumsPerAPI.AddToNestedDict(OutputApi.GLES1, @enum.Name, member);
+                            enumsByApi.Add(OutputApi.GLES1, entry.Name, groupEntry);
                             break;
                         case GLApi.GLES2:
-                            allEnumsPerAPI.AddToNestedDict(OutputApi.GLES3, @enum.Name, member);
+                            enumsByApi.Add(OutputApi.GLES3, entry.Name, groupEntry);
                             break;
                         case GLApi.GL:
-                            allEnumsPerAPI.AddToNestedDict(OutputApi.GL, @enum.Name, member);
-                            allEnumsPerAPI.AddToNestedDict(OutputApi.GLCompat, @enum.Name, member);
+                            enumsByApi.Add(OutputApi.GL, entry.Name, groupEntry);
+                            enumsByApi.Add(OutputApi.GLCompat, entry.Name, groupEntry);
                             break;
                     }
                 }
