@@ -29,7 +29,7 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
 
         private sealed record ProcessedGLInformation(
             IDictionary<string, OverloadedFunction> Functions,
-            IDictionary<OutputApi, Dictionary<string, EnumGroupEntry>> EnumsByApi,
+            IDictionary<OutputApi, Dictionary<string, EnumEntry>> EnumsByApi,
             IReadOnlyCollection<EnumGroupInfo> EnumGroupInfos);
 
         public Transformer(ParseTree specification) : base(LogManager.GetCurrentClassLogger()) => ParseTree = specification;
@@ -47,7 +47,7 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
                     Log.Info($"{functions.Count} functions and overloads were created");
                 }
 
-                var enumsByApi = new Dictionary<OutputApi, Dictionary<string, EnumGroupEntry>>();
+                var enumsByApi = new Dictionary<OutputApi, Dictionary<string, EnumEntry>>();
                 var enumGroups = new HashSet<EnumGroupInfo>();
                 using (NewLogScope("Create enums"))
                 {
@@ -183,7 +183,7 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
             return new OverloadedFunction(nativeFunction, overloads, changeNativeName);
         }
 
-        private void CreateEnums(IDictionary<OutputApi, Dictionary<string, EnumGroupEntry>> enumsByApi, HashSet<EnumGroupInfo> enumGroups)
+        private void CreateEnums(IDictionary<OutputApi, Dictionary<string, EnumEntry>> enumsByApi, HashSet<EnumGroupInfo> enumGroups)
         {
             foreach (var enumerant in ParseTree.Enumerants)
             {
@@ -206,7 +206,7 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
                         else _ = enumGroups.Add(new EnumGroupInfo(group, isFlags));
                     }
 
-                    var groupEntry = new EnumGroupEntry(NameMangler.MangleEnumName(entry.Name), entry.Value, entry.Groups, isFlags);
+                    var groupEntry = new EnumEntry(NameMangler.MangleEnumName(entry.Name), entry.Value, entry.Groups, isFlags);
                     switch (entry.Api)
                     {
                         case GLApi.None:
@@ -257,8 +257,8 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
         {
             var groupsReferencedByFunctions = new HashSet<string>();            
             var functionsByVendor = new Dictionary<string, HashSet<OverloadedFunction>>();
-            var enums = new Dictionary<string, List<EnumGroupEntry>>();
-            var allEnumGroupEntries = new HashSet<EnumGroupEntry>();
+            var enums = new Dictionary<string, List<EnumEntry>>();
+            var allEnumGroupEntries = new HashSet<EnumEntry>();
 
             // Go through all the functions that are required for this version and add them here.
             foreach (var (vendor, requireEntry) in requireEntries)
@@ -282,7 +282,7 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
                         {
                             if (!enums.TryGetValue(group, out var groupEntries))
                             {
-                                groupEntries = new List<EnumGroupEntry>();
+                                groupEntries = new List<EnumEntry>();
                                 enums.Add(group, groupEntries);
                             }
 
@@ -309,7 +309,7 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
             foreach (var (groupName, isFlags) in glInformation.EnumGroupInfos)
             {
                 _ = enums.TryGetValue(groupName, out var members);
-                members ??= new List<EnumGroupEntry>();
+                members ??= new List<EnumEntry>();
 
                 // SpecialNumbers is not an enum group that we want to output.
                 // We handle these entries differently as some of the entries don't fit in an int.

@@ -17,5 +17,11 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
             using (NewLogScope(message))
                 return todo();
         }
+
+        protected void LogScoped(Action todo, string message)
+        {
+            using (NewLogScope(message))
+                todo();
+        }
     }
 }

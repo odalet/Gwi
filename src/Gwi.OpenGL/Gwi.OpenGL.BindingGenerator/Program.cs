@@ -41,7 +41,8 @@ namespace Gwi.OpenGL.BindingGenerator
             var transformer = new Transformer(tree);
             var specification = transformer.Transform();
 
-            var foo = 42;
+            var writer = new CodeWriter(@"C:\work\repositories\_odalet\Gwi\src\Gwi.OpenGL\Gwi.OpenGL\generated\");
+            writer.Write(specification);
 
             ////////// Let's extract the expressions
             //////////var exprs = specification.Commands.SelectMany(c => c.Parameters).Select(p => p.Length).Where(x => x != null && x is CompSize c && c.Parameters.Length > 3).ToArray();

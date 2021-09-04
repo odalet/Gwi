@@ -1126,7 +1126,7 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
             var newParameters = new Parameter[oldParameters.Length - 1];
             Parameter? outParameter = null;
             CSRef? outType = null;
-
+            var destinationIndex = 0;
             for (var i = 0; i < oldParameters.Length; i++)
             {
                 var parameter = oldParameters[i];
@@ -1141,8 +1141,11 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
                     outType = pRef;
                     outParameter = parameter;
                 }
-                else if (i != oldParameters.Length - 1)
-                    newParameters[outParameter != null ? i + 1 : i] = parameter;
+                else if (destinationIndex != newParameters.Length)
+                {
+                    newParameters[destinationIndex] = parameter;
+                    destinationIndex++;
+                }
             }
 
             if (outType == null || outParameter == null)

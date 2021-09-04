@@ -31,7 +31,7 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
                 PrimitiveType.Char8 => new CSChar8(baseType.Constant),
 
                 // Enum
-                PrimitiveType.Enum => new CSPrimitive(group ?? "All", baseType.Constant),
+                PrimitiveType.Enum => new CSPrimitive(group ?? Constants.GLEnumName, baseType.Constant),
 
                 // Pointers
                 PrimitiveType.IntPtr => new CSPrimitive("IntPtr", baseType.Constant),

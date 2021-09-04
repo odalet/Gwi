@@ -8,12 +8,12 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
     public sealed record OutputApiSpecification(
         OutputApi Api,
         IReadOnlyDictionary<string, GLVendorFunctions> Vendors,
-        IReadOnlyCollection<EnumGroupEntry> EnumGroupEntries,
+        IReadOnlyCollection<EnumEntry> EnumEntries,
         IReadOnlyCollection<EnumGroup> EnumGroups);
 
     public sealed record GLVendorFunctions(
-        ICollection<NativeFunction> NativeFunctions,
-        ICollection<Overload[]> OverloadsGroupedByNativeFunctions,
+        IList<NativeFunction> NativeFunctions,
+        IList<Overload[]> OverloadsGroupedByNativeFunctions,
         HashSet<NativeFunction> NativeFunctionsWithPostfix);
 
     public sealed record NativeFunction(
@@ -45,6 +45,6 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
         GLES3 // GLES2 = GLES3
     }
 
-    public sealed record EnumGroup(string Name, bool IsFlags, List<EnumGroupEntry> Members);
-    public sealed record EnumGroupEntry(string Name, ulong Value, string[] Groups, bool IsFlag) : IEquatable<EnumGroupEntry?>;
+    public sealed record EnumGroup(string Name, bool IsFlags, List<EnumEntry> Entries);
+    public sealed record EnumEntry(string Name, ulong Value, string[] Groups, bool IsFlag) : IEquatable<EnumEntry?>;
 }

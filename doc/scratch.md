@@ -30,3 +30,4 @@
 ## Misc code
 
 * [scratch.cs](./scratch.cs)
+* SDL-based text editor: <https://github.com/rxi/lite>
