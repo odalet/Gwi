@@ -1,21 +1,24 @@
 // This file is auto generated, do not edit.
 using System;
-using System.Runtime.InteropServices;
 
 namespace Gwi.OpenGL.GL4
 {
-#pragma warning disable S1144 // Unused private types or members should be removed
-#pragma warning disable S1121 // Assignments should not be made from within sub-expressions
 #pragma warning disable IDE1006 // Naming Styles
 
     unsafe partial class GL
     {
-        public sealed unsafe partial class _3DFX
+        private _3DFXExtension? __3DFX;
+        public _3DFXExtension _3DFX => __3DFX ??= new _3DFXExtension(this);
+
+        public sealed unsafe partial class _3DFXExtension
         {
+            private readonly VTable vtable;
+
+            internal _3DFXExtension(GL gl) => vtable = new VTable(gl.Lib);
+
+            public void TbufferMask3DFX(uint mask) => ((delegate* unmanaged[Cdecl]<uint, void>)vtable.glTbufferMask3DFX)(mask);
         }
     }
 
 #pragma warning restore IDE1006 // Naming Styles
-#pragma warning restore S1121 // Assignments should not be made from within sub-expressions
-#pragma warning restore S1144 // Unused private types or members should be removed
 }

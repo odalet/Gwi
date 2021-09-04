@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using Gwi.OpenGL.BindingGenerator.Parsing;
 using NLog;
 
@@ -41,7 +42,9 @@ namespace Gwi.OpenGL.BindingGenerator
             var transformer = new Transformer(tree);
             var specification = transformer.Transform();
 
-            var writer = new CodeWriter(@"C:\work\repositories\_odalet\Gwi\src\Gwi.OpenGL\Gwi.OpenGL\generated\");
+            var here = AppDomain.CurrentDomain.BaseDirectory;
+            var target = Path.Combine(here, "../../../..", "Gwi.OpenGL", "generated");
+            var writer = new CodeWriter(target);
             writer.Write(specification);
 
             ////////// Let's extract the expressions

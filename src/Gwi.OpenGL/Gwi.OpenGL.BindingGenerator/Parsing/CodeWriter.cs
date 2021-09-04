@@ -49,6 +49,9 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
             {
                 var apiName = api.Api.GetNameInCode();
                 var directory = Path.Combine(OutputDirectory, apiName);
+                if (!Directory.Exists(directory))
+                    _ = Directory.CreateDirectory(directory);
+
                 using (NewLogScope($"Processing {api.Api} API"))
                 {
                     LogScoped(() => WriteNativeFunctions(directory, api.Api, api.Vendors), "Write Functions");
@@ -61,122 +64,193 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
 
         private static void WriteNativeFunctions(string directory, OutputApi api, IReadOnlyDictionary<string, GLVendorFunctions> groups)
         {
-            if (!Directory.Exists(directory))
-                _ = Directory.CreateDirectory(directory);
+            WriteVTables(directory, api, groups);
 
-            const string className = "GL";
             foreach (var vendor in groups.Keys)
             {
                 var isGeneralGroup = string.IsNullOrEmpty(vendor);
 
-                // Main file goes to generated/<api>.api.cs
-                var apiFileName = Path.Combine(directory, $"{className}.api.cs");
-                var vtableFileName = Path.Combine(directory, $"{className}.vtable.cs");
+                // Main file goes to generated/<api>/GL.api.cs
+                var filename = Path.Combine(directory, $"GL.api.cs");
                 if (!isGeneralGroup)
                 {
                     var dir = Path.Combine(directory, vendor);
                     if (!Directory.Exists(dir))
                         _ = Directory.CreateDirectory(dir);
 
-                    // Extensions files goes to generated/<vendor>/<api>.<vendor>.cs
-                    apiFileName = Path.Combine(dir, $"{className}.{vendor}.cs");
-                    vtableFileName = Path.Combine(dir, $"{className}.{vendor}.vtable.cs");
+                    // Extensions files goes to generated/<vendor>/<api>/GL.<vendor>.cs
+                    filename = Path.Combine(dir, $"GL.{vendor}.cs");
                 }
 
-                using var apiStream = File.CreateText(apiFileName);
-                using var apiWriter = new IndentedTextWriter(apiStream);
-                using var vtableStream = File.CreateText(vtableFileName);
-                using var vtableWriter = new IndentedTextWriter(vtableStream);
+                using var stream = File.CreateText(filename);
+                using var writer = new IndentedTextWriter(stream);
 
-                apiWriter.WriteLine("// This file is auto generated, do not edit.");
-                apiWriter.WriteLine("using System;");
-                apiWriter.WriteLine("using System.Runtime.InteropServices;");
-                apiWriter.WriteLine();
-                apiWriter.WriteLine($"namespace {rootNamespace}.{api.GetNameInCode()}");
+                writer.WriteLine("// This file is auto generated, do not edit.");
+                writer.WriteLine("using System;");
+                writer.WriteLine();
+                writer.WriteLine($"namespace {rootNamespace}.{api.GetNameInCode()}");
 
-                vtableWriter.WriteLine("// This file is auto generated, do not edit.");
-                vtableWriter.WriteLine();
-                vtableWriter.WriteLine($"namespace {rootNamespace}.{api.GetNameInCode()}");
-
-                using (apiWriter.CsScope())
-                using (vtableWriter.CsScope())
+                using (writer.CsScope())
                 {
                     // pragmas
-                    apiWriter.WriteLineNoTabs("#pragma warning disable S1144 // Unused private types or members should be removed");
-                    apiWriter.WriteLineNoTabs("#pragma warning disable S1121 // Assignments should not be made from within sub-expressions");
-                    apiWriter.WriteLineNoTabs("#pragma warning disable IDE1006 // Naming Styles");
-                    apiWriter.WriteLineNoTabs("");
+                    writer.WriteLineNoTabs("#pragma warning disable IDE1006 // Naming Styles");
+                    writer.WriteLineNoTabs("");
 
-                    vtableWriter.WriteLineNoTabs("#pragma warning disable S1144 // Unused private types or members should be removed");
-                    vtableWriter.WriteLineNoTabs("#pragma warning disable S1121 // Assignments should not be made from within sub-expressions");
-                    vtableWriter.WriteLineNoTabs("#pragma warning disable IDE1006 // Naming Styles");
-                    vtableWriter.WriteLineNoTabs("");
-
-                    apiWriter.WriteLine($"unsafe partial class {className}");
-                    vtableWriter.WriteLine($"unsafe partial class {className}");
-                    using (apiWriter.CsScope())
-                    using (vtableWriter.CsScope())
+                    writer.WriteLine($"unsafe partial class GL");
+                    using (writer.CsScope())
                     {
                         CsScope? extensionApiScope = null;
-                        CsScope? extensionVTableScope = null;
                         if (!isGeneralGroup)
                         {
-                            apiWriter.WriteLine($"public sealed unsafe partial class {vendor}");
-                            vtableWriter.WriteLine($"unsafe partial class {vendor}");
-                            extensionApiScope = apiWriter.CsScope();
-                            extensionVTableScope = vtableWriter.CsScope();
+                            writer.WriteLine($"private {vendor}Extension? _{vendor};");
+                            writer.WriteLine($"public {vendor}Extension {vendor} => _{vendor} ??= new {vendor}Extension(this);");
+                            writer.WriteLineNoTabs("");
+                            writer.WriteLine($"public sealed unsafe partial class {vendor}Extension");
+                            extensionApiScope = writer.CsScope();
+                            writer.WriteLine("private readonly VTable vtable;");
+                            writer.WriteLineNoTabs("");
+                            writer.WriteLine($"internal {vendor}Extension(GL gl) => vtable = new VTable(gl.Lib);");
+                            writer.WriteLineNoTabs("");
                         }
 
-                        vtableWriter.WriteLine($"private sealed unsafe class VTable : BaseVTable");
-                        using (vtableWriter.CsScope())
+                        foreach (var nativeFunction in groups[vendor].NativeFunctions)
                         {
-                            vtableWriter.WriteLine("public VTable(INativeLib lib) : base(lib) { }");
-                            vtableWriter.WriteLineNoTabs("");
-
-                            var count = 0;
-                            foreach (var nativeFunction in groups[vendor].NativeFunctions)
-                            {
-                                var hasPostfix = groups[vendor].NativeFunctionsWithPostfix.Contains(nativeFunction);
-                                WriteNativeMethod(apiWriter, vtableWriter, nativeFunction, hasPostfix);
-
-                                count++;
-                                if (count != groups[vendor].NativeFunctions.Count)
-                                {
-                                    apiWriter.WriteLineNoTabs("");
-                                    vtableWriter.WriteLineNoTabs("");
-                                }
-                            }
+                            var hasPostfix = groups[vendor].NativeFunctionsWithPostfix.Contains(nativeFunction);
+                            WriteMethod(writer, nativeFunction, hasPostfix);
                         }
 
-                        extensionVTableScope?.Dispose();
                         extensionApiScope?.Dispose();
                     }
 
                     // pragmas
-                    vtableWriter.WriteLineNoTabs("");
-                    vtableWriter.WriteLineNoTabs("#pragma warning restore IDE1006 // Naming Styles");
-                    vtableWriter.WriteLineNoTabs("#pragma warning restore S1121 // Assignments should not be made from within sub-expressions");
-                    vtableWriter.WriteLineNoTabs("#pragma warning restore S1144 // Unused private types or members should be removed");
-
-                    apiWriter.WriteLineNoTabs("");
-                    apiWriter.WriteLineNoTabs("#pragma warning restore IDE1006 // Naming Styles");
-                    apiWriter.WriteLineNoTabs("#pragma warning restore S1121 // Assignments should not be made from within sub-expressions");
-                    apiWriter.WriteLineNoTabs("#pragma warning restore S1144 // Unused private types or members should be removed");
+                    writer.WriteLineNoTabs("");
+                    writer.WriteLineNoTabs("#pragma warning restore IDE1006 // Naming Styles");
                 }
 
-                vtableWriter.Flush();
-                apiWriter.Flush();
+                writer.Flush();
             }
         }
 
-        private static void WriteNativeMethod(IndentedTextWriter apiWriter, IndentedTextWriter vtableWriter, NativeFunction function, bool hasPostfix)
+        private static void WriteVTables(string directory, OutputApi api, IReadOnlyDictionary<string, GLVendorFunctions> groups)
+        {
+            foreach (var vendor in groups.Keys)
+            {
+                var isGeneralGroup = string.IsNullOrEmpty(vendor);
+
+                // Main file goes to generated/<api>/GL.vtable.cs
+                var filename = Path.Combine(directory, $"GL.vtable.cs");
+                if (!isGeneralGroup)
+                {
+                    var dir = Path.Combine(directory, vendor);
+                    if (!Directory.Exists(dir))
+                        _ = Directory.CreateDirectory(dir);
+
+                    // Extensions go to generated/<vendor>/<api>/GL.<vendor>.vtable.cs
+                    filename = Path.Combine(dir, $"GL.{vendor}.vtable.cs");
+                }
+
+                using var stream = File.CreateText(filename);
+                using var writer = new IndentedTextWriter(stream);
+
+                writer.WriteLine("// This file is auto generated, do not edit.");
+                writer.WriteLine();
+                writer.WriteLine($"namespace {rootNamespace}.{api.GetNameInCode()}");
+
+                using (writer.CsScope())
+                {
+                    // pragmas
+                    writer.WriteLineNoTabs("#pragma warning disable IDE1006 // Naming Styles");
+                    writer.WriteLineNoTabs("");
+
+                    writer.WriteLine($"unsafe partial class GL");
+                    using (writer.CsScope())
+                    {
+                        CsScope? extensionVTableScope = null;
+                        if (!isGeneralGroup)
+                        {
+                            writer.WriteLine($"unsafe partial class {vendor}Extension");
+                            extensionVTableScope = writer.CsScope();
+                        }
+
+                        writer.WriteLine($"private sealed unsafe class VTable : BaseVTable");
+                        using (writer.CsScope())
+                        {
+                            writer.WriteLine("public VTable(INativeLib lib) : base(lib) { }");
+                            writer.WriteLineNoTabs("");
+
+                            var count = 0;
+                            foreach (var nativeFunction in groups[vendor].NativeFunctions)
+                            {
+                                WriteVTable(writer, nativeFunction);
+                                count++;
+                                if (count != groups[vendor].NativeFunctions.Count)
+                                    writer.WriteLineNoTabs("");
+                            }
+                        }
+
+                        extensionVTableScope?.Dispose();
+                    }
+
+                    // pragmas
+                    writer.WriteLineNoTabs("");
+                    writer.WriteLineNoTabs("#pragma warning restore IDE1006 // Naming Styles");
+                }
+
+                writer.Flush();
+            }
+        }
+
+        private static void WriteVTable(IndentedTextWriter writer, NativeFunction function)
         {
             // Write the VTable
             var ep = function.EntryPoint;
-            vtableWriter.WriteLine($"public nint {ep} => _{ep} != 0 ? _{ep} : _{ep} = Lib.GetProcAddress(\"{ep}\");");
-            vtableWriter.WriteLine($"private nint _{ep};");
+            writer.WriteLine($"public nint {ep} => _{ep} != 0 ? _{ep} : _{ep} = Lib.GetProcAddress(\"{ep}\");");
+            writer.WriteLine($"private nint _{ep};");
+        }
+
+        private static void WriteMethod(IndentedTextWriter writer, NativeFunction function, bool hasPostfix)
+        {
+            var functionName = function.Name;
+            if (hasPostfix) functionName += "_";
 
             // Write the API
+            var signatures = new List<string>();
+            var delegateTypes = new List<string>();
+            var parameterNames = new List<string>();
+            for (var i = 0; i < function.Parameters.Count; i++)
+            {
+                var name = function.Parameters[i].Name;
+                var type = function.Parameters[i].Type.ToCSString();
+                signatures.Add($"{type} {name}");
+                delegateTypes.Add(type);
+                parameterNames.Add(name);
+            }
+
+            var returnType = function.ReturnType.ToCSString();
+            var underlyingReturnType = returnType;
+            var requireCast = false;
+            if (function.ReturnType is CSStruct returnStruct)
+            {
+                if (returnStruct.UnderlyingType == null) throw new ParsingException(
+                    "A function returned a struct, but didn't have an underlying representation.");
+                underlyingReturnType = returnStruct.UnderlyingType.ToCSString();
+                requireCast = true;
+            }
+
+            delegateTypes.Add(underlyingReturnType);
+
+            var signature = string.Join(", ", signatures);
+            var call = string.Join(", ", parameterNames);
+            var delegateSignature = string.Join(", ", delegateTypes);
+
+            var body = $"((delegate* unmanaged[Cdecl]<{delegateSignature}>)vtable.{function.EntryPoint})({call})";
+
+            if (function.ReturnType is CSVoid)
+                writer.WriteLine($"public {returnType} {functionName}({signature}) => {body};");
+            else if (requireCast)
+                writer.WriteLine($"public {returnType} {functionName}({signature}) => ({returnType}){body};");
+            else
+                writer.WriteLine($"public {returnType} {functionName}({signature}) => {body};");
         }
 
         private static void __WriteNativeMethod(IndentedTextWriter apiWriter, IndentedTextWriter vtableWriter, NativeFunction function, bool hasPostfix)

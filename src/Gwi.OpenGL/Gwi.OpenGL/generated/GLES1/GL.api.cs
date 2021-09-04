@@ -1,161 +1,157 @@
 // This file is auto generated, do not edit.
 using System;
-using System.Runtime.InteropServices;
 
 namespace Gwi.OpenGL.GLES1
 {
-#pragma warning disable S1144 // Unused private types or members should be removed
-#pragma warning disable S1121 // Assignments should not be made from within sub-expressions
 #pragma warning disable IDE1006 // Naming Styles
 
     unsafe partial class GL
     {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        public void AlphaFunc(AlphaFunction func, float reference) => ((delegate* unmanaged[Cdecl]<AlphaFunction, float, void>)vtable.glAlphaFunc)(func, reference);
+        public void ClearColor(float red, float green, float blue, float alpha) => ((delegate* unmanaged[Cdecl]<float, float, float, float, void>)vtable.glClearColor)(red, green, blue, alpha);
+        public void ClearDepthf(float d) => ((delegate* unmanaged[Cdecl]<float, void>)vtable.glClearDepthf)(d);
+        public void ClipPlanef(ClipPlaneName p, float* eqn) => ((delegate* unmanaged[Cdecl]<ClipPlaneName, float*, void>)vtable.glClipPlanef)(p, eqn);
+        public void Color4f(float red, float green, float blue, float alpha) => ((delegate* unmanaged[Cdecl]<float, float, float, float, void>)vtable.glColor4f)(red, green, blue, alpha);
+        public void DepthRangef(float n, float f) => ((delegate* unmanaged[Cdecl]<float, float, void>)vtable.glDepthRangef)(n, f);
+        public void Fogf(FogParameter pname, float param) => ((delegate* unmanaged[Cdecl]<FogParameter, float, void>)vtable.glFogf)(pname, param);
+        public void Fogfv(FogParameter pname, float* parameters) => ((delegate* unmanaged[Cdecl]<FogParameter, float*, void>)vtable.glFogfv)(pname, parameters);
+        public void Frustumf(float l, float r, float b, float t, float n, float f) => ((delegate* unmanaged[Cdecl]<float, float, float, float, float, float, void>)vtable.glFrustumf)(l, r, b, t, n, f);
+        public void GetClipPlanef(ClipPlaneName plane, float* equation) => ((delegate* unmanaged[Cdecl]<ClipPlaneName, float*, void>)vtable.glGetClipPlanef)(plane, equation);
+        public void GetFloatv(GetPName pname, float* data) => ((delegate* unmanaged[Cdecl]<GetPName, float*, void>)vtable.glGetFloatv)(pname, data);
+        public void GetLightfv(LightName light, LightParameter pname, float* parameters) => ((delegate* unmanaged[Cdecl]<LightName, LightParameter, float*, void>)vtable.glGetLightfv)(light, pname, parameters);
+        public void GetMaterialfv(MaterialFace face, MaterialParameter pname, float* parameters) => ((delegate* unmanaged[Cdecl]<MaterialFace, MaterialParameter, float*, void>)vtable.glGetMaterialfv)(face, pname, parameters);
+        public void GetTexEnvfv(TextureEnvTarget target, TextureEnvParameter pname, float* parameters) => ((delegate* unmanaged[Cdecl]<TextureEnvTarget, TextureEnvParameter, float*, void>)vtable.glGetTexEnvfv)(target, pname, parameters);
+        public void GetTexParameterfv(TextureTarget target, GetTextureParameter pname, float* parameters) => ((delegate* unmanaged[Cdecl]<TextureTarget, GetTextureParameter, float*, void>)vtable.glGetTexParameterfv)(target, pname, parameters);
+        public void LightModelf(LightModelParameter pname, float param) => ((delegate* unmanaged[Cdecl]<LightModelParameter, float, void>)vtable.glLightModelf)(pname, param);
+        public void LightModelfv(LightModelParameter pname, float* parameters) => ((delegate* unmanaged[Cdecl]<LightModelParameter, float*, void>)vtable.glLightModelfv)(pname, parameters);
+        public void Lightf(LightName light, LightParameter pname, float param) => ((delegate* unmanaged[Cdecl]<LightName, LightParameter, float, void>)vtable.glLightf)(light, pname, param);
+        public void Lightfv(LightName light, LightParameter pname, float* parameters) => ((delegate* unmanaged[Cdecl]<LightName, LightParameter, float*, void>)vtable.glLightfv)(light, pname, parameters);
+        public void LineWidth(float width) => ((delegate* unmanaged[Cdecl]<float, void>)vtable.glLineWidth)(width);
+        public void LoadMatrixf(float* m) => ((delegate* unmanaged[Cdecl]<float*, void>)vtable.glLoadMatrixf)(m);
+        public void Materialf(MaterialFace face, MaterialParameter pname, float param) => ((delegate* unmanaged[Cdecl]<MaterialFace, MaterialParameter, float, void>)vtable.glMaterialf)(face, pname, param);
+        public void Materialfv(MaterialFace face, MaterialParameter pname, float* parameters) => ((delegate* unmanaged[Cdecl]<MaterialFace, MaterialParameter, float*, void>)vtable.glMaterialfv)(face, pname, parameters);
+        public void MultMatrixf(float* m) => ((delegate* unmanaged[Cdecl]<float*, void>)vtable.glMultMatrixf)(m);
+        public void MultiTexCoord4f(TextureUnit target, float s, float t, float r, float q) => ((delegate* unmanaged[Cdecl]<TextureUnit, float, float, float, float, void>)vtable.glMultiTexCoord4f)(target, s, t, r, q);
+        public void Normal3f(float nx, float ny, float nz) => ((delegate* unmanaged[Cdecl]<float, float, float, void>)vtable.glNormal3f)(nx, ny, nz);
+        public void Orthof(float l, float r, float b, float t, float n, float f) => ((delegate* unmanaged[Cdecl]<float, float, float, float, float, float, void>)vtable.glOrthof)(l, r, b, t, n, f);
+        public void PointParameterf(PointParameterNameARB pname, float param) => ((delegate* unmanaged[Cdecl]<PointParameterNameARB, float, void>)vtable.glPointParameterf)(pname, param);
+        public void PointParameterfv(PointParameterNameARB pname, float* parameters) => ((delegate* unmanaged[Cdecl]<PointParameterNameARB, float*, void>)vtable.glPointParameterfv)(pname, parameters);
+        public void PointSize(float size) => ((delegate* unmanaged[Cdecl]<float, void>)vtable.glPointSize)(size);
+        public void PolygonOffset(float factor, float units) => ((delegate* unmanaged[Cdecl]<float, float, void>)vtable.glPolygonOffset)(factor, units);
+        public void Rotatef(float angle, float x, float y, float z) => ((delegate* unmanaged[Cdecl]<float, float, float, float, void>)vtable.glRotatef)(angle, x, y, z);
+        public void Scalef(float x, float y, float z) => ((delegate* unmanaged[Cdecl]<float, float, float, void>)vtable.glScalef)(x, y, z);
+        public void TexEnvf(TextureEnvTarget target, TextureEnvParameter pname, float param) => ((delegate* unmanaged[Cdecl]<TextureEnvTarget, TextureEnvParameter, float, void>)vtable.glTexEnvf)(target, pname, param);
+        public void TexEnvfv(TextureEnvTarget target, TextureEnvParameter pname, float* parameters) => ((delegate* unmanaged[Cdecl]<TextureEnvTarget, TextureEnvParameter, float*, void>)vtable.glTexEnvfv)(target, pname, parameters);
+        public void TexParameterf(TextureTarget target, TextureParameterName pname, float param) => ((delegate* unmanaged[Cdecl]<TextureTarget, TextureParameterName, float, void>)vtable.glTexParameterf)(target, pname, param);
+        public void TexParameterfv(TextureTarget target, TextureParameterName pname, float* parameters) => ((delegate* unmanaged[Cdecl]<TextureTarget, TextureParameterName, float*, void>)vtable.glTexParameterfv)(target, pname, parameters);
+        public void Translatef(float x, float y, float z) => ((delegate* unmanaged[Cdecl]<float, float, float, void>)vtable.glTranslatef)(x, y, z);
+        public void ActiveTexture(TextureUnit texture) => ((delegate* unmanaged[Cdecl]<TextureUnit, void>)vtable.glActiveTexture)(texture);
+        public void AlphaFuncx(AlphaFunction func, int reference) => ((delegate* unmanaged[Cdecl]<AlphaFunction, int, void>)vtable.glAlphaFuncx)(func, reference);
+        public void BindBuffer(BufferTargetARB target, BufferHandle buffer) => ((delegate* unmanaged[Cdecl]<BufferTargetARB, BufferHandle, void>)vtable.glBindBuffer)(target, buffer);
+        public void BindTexture(TextureTarget target, TextureHandle texture) => ((delegate* unmanaged[Cdecl]<TextureTarget, TextureHandle, void>)vtable.glBindTexture)(target, texture);
+        public void BlendFunc(BlendingFactor sfactor, BlendingFactor dfactor) => ((delegate* unmanaged[Cdecl]<BlendingFactor, BlendingFactor, void>)vtable.glBlendFunc)(sfactor, dfactor);
+        public void BufferData(BufferTargetARB target, nint size, void* data, BufferUsageARB usage) => ((delegate* unmanaged[Cdecl]<BufferTargetARB, nint, void*, BufferUsageARB, void>)vtable.glBufferData)(target, size, data, usage);
+        public void BufferSubData(BufferTargetARB target, IntPtr offset, nint size, void* data) => ((delegate* unmanaged[Cdecl]<BufferTargetARB, IntPtr, nint, void*, void>)vtable.glBufferSubData)(target, offset, size, data);
+        public void Clear(ClearBufferMask mask) => ((delegate* unmanaged[Cdecl]<ClearBufferMask, void>)vtable.glClear)(mask);
+        public void ClearColorx(int red, int green, int blue, int alpha) => ((delegate* unmanaged[Cdecl]<int, int, int, int, void>)vtable.glClearColorx)(red, green, blue, alpha);
+        public void ClearDepthx(int depth) => ((delegate* unmanaged[Cdecl]<int, void>)vtable.glClearDepthx)(depth);
+        public void ClearStencil(int s) => ((delegate* unmanaged[Cdecl]<int, void>)vtable.glClearStencil)(s);
+        public void ClientActiveTexture(TextureUnit texture) => ((delegate* unmanaged[Cdecl]<TextureUnit, void>)vtable.glClientActiveTexture)(texture);
+        public void ClipPlanex(ClipPlaneName plane, int* equation) => ((delegate* unmanaged[Cdecl]<ClipPlaneName, int*, void>)vtable.glClipPlanex)(plane, equation);
+        public void Color4ub(byte red, byte green, byte blue, byte alpha) => ((delegate* unmanaged[Cdecl]<byte, byte, byte, byte, void>)vtable.glColor4ub)(red, green, blue, alpha);
+        public void Color4x(int red, int green, int blue, int alpha) => ((delegate* unmanaged[Cdecl]<int, int, int, int, void>)vtable.glColor4x)(red, green, blue, alpha);
+        public void ColorMask(byte red, byte green, byte blue, byte alpha) => ((delegate* unmanaged[Cdecl]<byte, byte, byte, byte, void>)vtable.glColorMask)(red, green, blue, alpha);
+        public void ColorPointer(int size, ColorPointerType type, int stride, void* pointer) => ((delegate* unmanaged[Cdecl]<int, ColorPointerType, int, void*, void>)vtable.glColorPointer)(size, type, stride, pointer);
+        public void CompressedTexImage2D(TextureTarget target, int level, InternalFormat internalformat, int width, int height, int border, int imageSize, void* data) => ((delegate* unmanaged[Cdecl]<TextureTarget, int, InternalFormat, int, int, int, int, void*, void>)vtable.glCompressedTexImage2D)(target, level, internalformat, width, height, border, imageSize, data);
+        public void CompressedTexSubImage2D(TextureTarget target, int level, int xoffset, int yoffset, int width, int height, InternalFormat format, int imageSize, void* data) => ((delegate* unmanaged[Cdecl]<TextureTarget, int, int, int, int, int, InternalFormat, int, void*, void>)vtable.glCompressedTexSubImage2D)(target, level, xoffset, yoffset, width, height, format, imageSize, data);
+        public void CopyTexImage2D(TextureTarget target, int level, InternalFormat internalformat, int x, int y, int width, int height, int border) => ((delegate* unmanaged[Cdecl]<TextureTarget, int, InternalFormat, int, int, int, int, int, void>)vtable.glCopyTexImage2D)(target, level, internalformat, x, y, width, height, border);
+        public void CopyTexSubImage2D(TextureTarget target, int level, int xoffset, int yoffset, int x, int y, int width, int height) => ((delegate* unmanaged[Cdecl]<TextureTarget, int, int, int, int, int, int, int, void>)vtable.glCopyTexSubImage2D)(target, level, xoffset, yoffset, x, y, width, height);
+        public void CullFace(CullFaceMode mode) => ((delegate* unmanaged[Cdecl]<CullFaceMode, void>)vtable.glCullFace)(mode);
+        public void DeleteBuffers(int n, BufferHandle* buffers) => ((delegate* unmanaged[Cdecl]<int, BufferHandle*, void>)vtable.glDeleteBuffers)(n, buffers);
+        public void DeleteTextures(int n, TextureHandle* textures) => ((delegate* unmanaged[Cdecl]<int, TextureHandle*, void>)vtable.glDeleteTextures)(n, textures);
+        public void DepthFunc(DepthFunction func) => ((delegate* unmanaged[Cdecl]<DepthFunction, void>)vtable.glDepthFunc)(func);
+        public void DepthMask(byte flag) => ((delegate* unmanaged[Cdecl]<byte, void>)vtable.glDepthMask)(flag);
+        public void DepthRangex(int n, int f) => ((delegate* unmanaged[Cdecl]<int, int, void>)vtable.glDepthRangex)(n, f);
+        public void Disable(EnableCap cap) => ((delegate* unmanaged[Cdecl]<EnableCap, void>)vtable.glDisable)(cap);
+        public void DisableClientState(EnableCap array) => ((delegate* unmanaged[Cdecl]<EnableCap, void>)vtable.glDisableClientState)(array);
+        public void DrawArrays(PrimitiveType mode, int first, int count) => ((delegate* unmanaged[Cdecl]<PrimitiveType, int, int, void>)vtable.glDrawArrays)(mode, first, count);
+        public void DrawElements(PrimitiveType mode, int count, DrawElementsType type, void* indices) => ((delegate* unmanaged[Cdecl]<PrimitiveType, int, DrawElementsType, void*, void>)vtable.glDrawElements)(mode, count, type, indices);
+        public void Enable(EnableCap cap) => ((delegate* unmanaged[Cdecl]<EnableCap, void>)vtable.glEnable)(cap);
+        public void EnableClientState(EnableCap array) => ((delegate* unmanaged[Cdecl]<EnableCap, void>)vtable.glEnableClientState)(array);
+        public void Finish() => ((delegate* unmanaged[Cdecl]<void>)vtable.glFinish)();
+        public void Flush() => ((delegate* unmanaged[Cdecl]<void>)vtable.glFlush)();
+        public void Fogx(FogPName pname, int param) => ((delegate* unmanaged[Cdecl]<FogPName, int, void>)vtable.glFogx)(pname, param);
+        public void Fogxv(FogPName pname, int* param) => ((delegate* unmanaged[Cdecl]<FogPName, int*, void>)vtable.glFogxv)(pname, param);
+        public void FrontFace(FrontFaceDirection mode) => ((delegate* unmanaged[Cdecl]<FrontFaceDirection, void>)vtable.glFrontFace)(mode);
+        public void Frustumx(int l, int r, int b, int t, int n, int f) => ((delegate* unmanaged[Cdecl]<int, int, int, int, int, int, void>)vtable.glFrustumx)(l, r, b, t, n, f);
+        public void GetBooleanv(GetPName pname, byte* data) => ((delegate* unmanaged[Cdecl]<GetPName, byte*, void>)vtable.glGetBooleanv)(pname, data);
+        public void GetBufferParameteriv(BufferTargetARB target, BufferPNameARB pname, int* parameters) => ((delegate* unmanaged[Cdecl]<BufferTargetARB, BufferPNameARB, int*, void>)vtable.glGetBufferParameteriv)(target, pname, parameters);
+        public void GetClipPlanex(ClipPlaneName plane, int* equation) => ((delegate* unmanaged[Cdecl]<ClipPlaneName, int*, void>)vtable.glGetClipPlanex)(plane, equation);
+        public void GenBuffers(int n, BufferHandle* buffers) => ((delegate* unmanaged[Cdecl]<int, BufferHandle*, void>)vtable.glGenBuffers)(n, buffers);
+        public void GenTextures(int n, TextureHandle* textures) => ((delegate* unmanaged[Cdecl]<int, TextureHandle*, void>)vtable.glGenTextures)(n, textures);
+        public ErrorCode GetError() => ((delegate* unmanaged[Cdecl]<ErrorCode>)vtable.glGetError)();
+        public void GetFixedv(GetPName pname, int* parameters) => ((delegate* unmanaged[Cdecl]<GetPName, int*, void>)vtable.glGetFixedv)(pname, parameters);
+        public void GetIntegerv(GetPName pname, int* data) => ((delegate* unmanaged[Cdecl]<GetPName, int*, void>)vtable.glGetIntegerv)(pname, data);
+        public void GetLightxv(LightName light, LightParameter pname, int* parameters) => ((delegate* unmanaged[Cdecl]<LightName, LightParameter, int*, void>)vtable.glGetLightxv)(light, pname, parameters);
+        public void GetMaterialxv(MaterialFace face, MaterialParameter pname, int* parameters) => ((delegate* unmanaged[Cdecl]<MaterialFace, MaterialParameter, int*, void>)vtable.glGetMaterialxv)(face, pname, parameters);
+        public void GetPointerv(GetPointervPName pname, void** parameters) => ((delegate* unmanaged[Cdecl]<GetPointervPName, void**, void>)vtable.glGetPointerv)(pname, parameters);
+        public byte* GetString_(StringName name) => ((delegate* unmanaged[Cdecl]<StringName, byte*>)vtable.glGetString)(name);
+        public void GetTexEnviv(TextureEnvTarget target, TextureEnvParameter pname, int* parameters) => ((delegate* unmanaged[Cdecl]<TextureEnvTarget, TextureEnvParameter, int*, void>)vtable.glGetTexEnviv)(target, pname, parameters);
+        public void GetTexEnvxv(TextureEnvTarget target, TextureEnvParameter pname, int* parameters) => ((delegate* unmanaged[Cdecl]<TextureEnvTarget, TextureEnvParameter, int*, void>)vtable.glGetTexEnvxv)(target, pname, parameters);
+        public void GetTexParameteriv(TextureTarget target, GetTextureParameter pname, int* parameters) => ((delegate* unmanaged[Cdecl]<TextureTarget, GetTextureParameter, int*, void>)vtable.glGetTexParameteriv)(target, pname, parameters);
+        public void GetTexParameterxv(TextureTarget target, GetTextureParameter pname, int* parameters) => ((delegate* unmanaged[Cdecl]<TextureTarget, GetTextureParameter, int*, void>)vtable.glGetTexParameterxv)(target, pname, parameters);
+        public void Hint(HintTarget target, HintMode mode) => ((delegate* unmanaged[Cdecl]<HintTarget, HintMode, void>)vtable.glHint)(target, mode);
+        public byte IsBuffer(BufferHandle buffer) => ((delegate* unmanaged[Cdecl]<BufferHandle, byte>)vtable.glIsBuffer)(buffer);
+        public byte IsEnabled(EnableCap cap) => ((delegate* unmanaged[Cdecl]<EnableCap, byte>)vtable.glIsEnabled)(cap);
+        public byte IsTexture(TextureHandle texture) => ((delegate* unmanaged[Cdecl]<TextureHandle, byte>)vtable.glIsTexture)(texture);
+        public void LightModelx(LightModelParameter pname, int param) => ((delegate* unmanaged[Cdecl]<LightModelParameter, int, void>)vtable.glLightModelx)(pname, param);
+        public void LightModelxv(LightModelParameter pname, int* param) => ((delegate* unmanaged[Cdecl]<LightModelParameter, int*, void>)vtable.glLightModelxv)(pname, param);
+        public void Lightx(LightName light, LightParameter pname, int param) => ((delegate* unmanaged[Cdecl]<LightName, LightParameter, int, void>)vtable.glLightx)(light, pname, param);
+        public void Lightxv(LightName light, LightParameter pname, int* parameters) => ((delegate* unmanaged[Cdecl]<LightName, LightParameter, int*, void>)vtable.glLightxv)(light, pname, parameters);
+        public void LineWidthx(int width) => ((delegate* unmanaged[Cdecl]<int, void>)vtable.glLineWidthx)(width);
+        public void LoadIdentity() => ((delegate* unmanaged[Cdecl]<void>)vtable.glLoadIdentity)();
+        public void LoadMatrixx(int* m) => ((delegate* unmanaged[Cdecl]<int*, void>)vtable.glLoadMatrixx)(m);
+        public void LogicOp(LogicOp opcode) => ((delegate* unmanaged[Cdecl]<LogicOp, void>)vtable.glLogicOp)(opcode);
+        public void Materialx(MaterialFace face, MaterialParameter pname, int param) => ((delegate* unmanaged[Cdecl]<MaterialFace, MaterialParameter, int, void>)vtable.glMaterialx)(face, pname, param);
+        public void Materialxv(MaterialFace face, MaterialParameter pname, int* param) => ((delegate* unmanaged[Cdecl]<MaterialFace, MaterialParameter, int*, void>)vtable.glMaterialxv)(face, pname, param);
+        public void MatrixMode(MatrixMode mode) => ((delegate* unmanaged[Cdecl]<MatrixMode, void>)vtable.glMatrixMode)(mode);
+        public void MultMatrixx(int* m) => ((delegate* unmanaged[Cdecl]<int*, void>)vtable.glMultMatrixx)(m);
+        public void MultiTexCoord4x(TextureUnit texture, int s, int t, int r, int q) => ((delegate* unmanaged[Cdecl]<TextureUnit, int, int, int, int, void>)vtable.glMultiTexCoord4x)(texture, s, t, r, q);
+        public void Normal3x(int nx, int ny, int nz) => ((delegate* unmanaged[Cdecl]<int, int, int, void>)vtable.glNormal3x)(nx, ny, nz);
+        public void NormalPointer(NormalPointerType type, int stride, void* pointer) => ((delegate* unmanaged[Cdecl]<NormalPointerType, int, void*, void>)vtable.glNormalPointer)(type, stride, pointer);
+        public void Orthox(int l, int r, int b, int t, int n, int f) => ((delegate* unmanaged[Cdecl]<int, int, int, int, int, int, void>)vtable.glOrthox)(l, r, b, t, n, f);
+        public void PixelStorei(PixelStoreParameter pname, int param) => ((delegate* unmanaged[Cdecl]<PixelStoreParameter, int, void>)vtable.glPixelStorei)(pname, param);
+        public void PointParameterx(PointParameterNameARB pname, int param) => ((delegate* unmanaged[Cdecl]<PointParameterNameARB, int, void>)vtable.glPointParameterx)(pname, param);
+        public void PointParameterxv(PointParameterNameARB pname, int* parameters) => ((delegate* unmanaged[Cdecl]<PointParameterNameARB, int*, void>)vtable.glPointParameterxv)(pname, parameters);
+        public void PointSizex(int size) => ((delegate* unmanaged[Cdecl]<int, void>)vtable.glPointSizex)(size);
+        public void PolygonOffsetx(int factor, int units) => ((delegate* unmanaged[Cdecl]<int, int, void>)vtable.glPolygonOffsetx)(factor, units);
+        public void PopMatrix() => ((delegate* unmanaged[Cdecl]<void>)vtable.glPopMatrix)();
+        public void PushMatrix() => ((delegate* unmanaged[Cdecl]<void>)vtable.glPushMatrix)();
+        public void ReadPixels(int x, int y, int width, int height, PixelFormat format, PixelType type, void* pixels) => ((delegate* unmanaged[Cdecl]<int, int, int, int, PixelFormat, PixelType, void*, void>)vtable.glReadPixels)(x, y, width, height, format, type, pixels);
+        public void Rotatex(int angle, int x, int y, int z) => ((delegate* unmanaged[Cdecl]<int, int, int, int, void>)vtable.glRotatex)(angle, x, y, z);
+        public void SampleCoverage(float value, byte invert) => ((delegate* unmanaged[Cdecl]<float, byte, void>)vtable.glSampleCoverage)(value, invert);
+        public void SampleCoveragex(int value, byte invert) => ((delegate* unmanaged[Cdecl]<int, byte, void>)vtable.glSampleCoveragex)(value, invert);
+        public void Scalex(int x, int y, int z) => ((delegate* unmanaged[Cdecl]<int, int, int, void>)vtable.glScalex)(x, y, z);
+        public void Scissor(int x, int y, int width, int height) => ((delegate* unmanaged[Cdecl]<int, int, int, int, void>)vtable.glScissor)(x, y, width, height);
+        public void ShadeModel(ShadingModel mode) => ((delegate* unmanaged[Cdecl]<ShadingModel, void>)vtable.glShadeModel)(mode);
+        public void StencilFunc(StencilFunction func, int reference, uint mask) => ((delegate* unmanaged[Cdecl]<StencilFunction, int, uint, void>)vtable.glStencilFunc)(func, reference, mask);
+        public void StencilMask(uint mask) => ((delegate* unmanaged[Cdecl]<uint, void>)vtable.glStencilMask)(mask);
+        public void StencilOp(StencilOp fail, StencilOp zfail, StencilOp zpass) => ((delegate* unmanaged[Cdecl]<StencilOp, StencilOp, StencilOp, void>)vtable.glStencilOp)(fail, zfail, zpass);
+        public void TexCoordPointer(int size, TexCoordPointerType type, int stride, void* pointer) => ((delegate* unmanaged[Cdecl]<int, TexCoordPointerType, int, void*, void>)vtable.glTexCoordPointer)(size, type, stride, pointer);
+        public void TexEnvi(TextureEnvTarget target, TextureEnvParameter pname, int param) => ((delegate* unmanaged[Cdecl]<TextureEnvTarget, TextureEnvParameter, int, void>)vtable.glTexEnvi)(target, pname, param);
+        public void TexEnvx(TextureEnvTarget target, TextureEnvParameter pname, int param) => ((delegate* unmanaged[Cdecl]<TextureEnvTarget, TextureEnvParameter, int, void>)vtable.glTexEnvx)(target, pname, param);
+        public void TexEnviv(TextureEnvTarget target, TextureEnvParameter pname, int* parameters) => ((delegate* unmanaged[Cdecl]<TextureEnvTarget, TextureEnvParameter, int*, void>)vtable.glTexEnviv)(target, pname, parameters);
+        public void TexEnvxv(TextureEnvTarget target, TextureEnvParameter pname, int* parameters) => ((delegate* unmanaged[Cdecl]<TextureEnvTarget, TextureEnvParameter, int*, void>)vtable.glTexEnvxv)(target, pname, parameters);
+        public void TexImage2D(TextureTarget target, int level, int internalformat, int width, int height, int border, PixelFormat format, PixelType type, void* pixels) => ((delegate* unmanaged[Cdecl]<TextureTarget, int, int, int, int, int, PixelFormat, PixelType, void*, void>)vtable.glTexImage2D)(target, level, internalformat, width, height, border, format, type, pixels);
+        public void TexParameteri(TextureTarget target, TextureParameterName pname, int param) => ((delegate* unmanaged[Cdecl]<TextureTarget, TextureParameterName, int, void>)vtable.glTexParameteri)(target, pname, param);
+        public void TexParameterx(TextureTarget target, GetTextureParameter pname, int param) => ((delegate* unmanaged[Cdecl]<TextureTarget, GetTextureParameter, int, void>)vtable.glTexParameterx)(target, pname, param);
+        public void TexParameteriv(TextureTarget target, TextureParameterName pname, int* parameters) => ((delegate* unmanaged[Cdecl]<TextureTarget, TextureParameterName, int*, void>)vtable.glTexParameteriv)(target, pname, parameters);
+        public void TexParameterxv(TextureTarget target, GetTextureParameter pname, int* parameters) => ((delegate* unmanaged[Cdecl]<TextureTarget, GetTextureParameter, int*, void>)vtable.glTexParameterxv)(target, pname, parameters);
+        public void TexSubImage2D(TextureTarget target, int level, int xoffset, int yoffset, int width, int height, PixelFormat format, PixelType type, void* pixels) => ((delegate* unmanaged[Cdecl]<TextureTarget, int, int, int, int, int, PixelFormat, PixelType, void*, void>)vtable.glTexSubImage2D)(target, level, xoffset, yoffset, width, height, format, type, pixels);
+        public void Translatex(int x, int y, int z) => ((delegate* unmanaged[Cdecl]<int, int, int, void>)vtable.glTranslatex)(x, y, z);
+        public void VertexPointer(int size, VertexPointerType type, int stride, void* pointer) => ((delegate* unmanaged[Cdecl]<int, VertexPointerType, int, void*, void>)vtable.glVertexPointer)(size, type, stride, pointer);
+        public void Viewport(int x, int y, int width, int height) => ((delegate* unmanaged[Cdecl]<int, int, int, int, void>)vtable.glViewport)(x, y, width, height);
     }
 
 #pragma warning restore IDE1006 // Naming Styles
-#pragma warning restore S1121 // Assignments should not be made from within sub-expressions
-#pragma warning restore S1144 // Unused private types or members should be removed
 }

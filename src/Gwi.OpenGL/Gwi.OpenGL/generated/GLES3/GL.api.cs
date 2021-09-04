@@ -1,375 +1,371 @@
 // This file is auto generated, do not edit.
 using System;
-using System.Runtime.InteropServices;
 
 namespace Gwi.OpenGL.GLES3
 {
-#pragma warning disable S1144 // Unused private types or members should be removed
-#pragma warning disable S1121 // Assignments should not be made from within sub-expressions
 #pragma warning disable IDE1006 // Naming Styles
 
     unsafe partial class GL
     {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        public void ActiveTexture(TextureUnit texture) => ((delegate* unmanaged[Cdecl]<TextureUnit, void>)vtable.glActiveTexture)(texture);
+        public void AttachShader(ProgramHandle program, ShaderHandle shader) => ((delegate* unmanaged[Cdecl]<ProgramHandle, ShaderHandle, void>)vtable.glAttachShader)(program, shader);
+        public void BindAttribLocation(ProgramHandle program, uint index, byte* name) => ((delegate* unmanaged[Cdecl]<ProgramHandle, uint, byte*, void>)vtable.glBindAttribLocation)(program, index, name);
+        public void BindBuffer(BufferTargetARB target, BufferHandle buffer) => ((delegate* unmanaged[Cdecl]<BufferTargetARB, BufferHandle, void>)vtable.glBindBuffer)(target, buffer);
+        public void BindFramebuffer(FramebufferTarget target, FramebufferHandle framebuffer) => ((delegate* unmanaged[Cdecl]<FramebufferTarget, FramebufferHandle, void>)vtable.glBindFramebuffer)(target, framebuffer);
+        public void BindRenderbuffer(RenderbufferTarget target, RenderbufferHandle renderbuffer) => ((delegate* unmanaged[Cdecl]<RenderbufferTarget, RenderbufferHandle, void>)vtable.glBindRenderbuffer)(target, renderbuffer);
+        public void BindTexture(TextureTarget target, TextureHandle texture) => ((delegate* unmanaged[Cdecl]<TextureTarget, TextureHandle, void>)vtable.glBindTexture)(target, texture);
+        public void BlendColor(float red, float green, float blue, float alpha) => ((delegate* unmanaged[Cdecl]<float, float, float, float, void>)vtable.glBlendColor)(red, green, blue, alpha);
+        public void BlendEquation(BlendEquationModeEXT mode) => ((delegate* unmanaged[Cdecl]<BlendEquationModeEXT, void>)vtable.glBlendEquation)(mode);
+        public void BlendEquationSeparate(BlendEquationModeEXT modeRGB, BlendEquationModeEXT modeAlpha) => ((delegate* unmanaged[Cdecl]<BlendEquationModeEXT, BlendEquationModeEXT, void>)vtable.glBlendEquationSeparate)(modeRGB, modeAlpha);
+        public void BlendFunc(BlendingFactor sfactor, BlendingFactor dfactor) => ((delegate* unmanaged[Cdecl]<BlendingFactor, BlendingFactor, void>)vtable.glBlendFunc)(sfactor, dfactor);
+        public void BlendFuncSeparate(BlendingFactor sfactorRGB, BlendingFactor dfactorRGB, BlendingFactor sfactorAlpha, BlendingFactor dfactorAlpha) => ((delegate* unmanaged[Cdecl]<BlendingFactor, BlendingFactor, BlendingFactor, BlendingFactor, void>)vtable.glBlendFuncSeparate)(sfactorRGB, dfactorRGB, sfactorAlpha, dfactorAlpha);
+        public void BufferData(BufferTargetARB target, nint size, void* data, BufferUsageARB usage) => ((delegate* unmanaged[Cdecl]<BufferTargetARB, nint, void*, BufferUsageARB, void>)vtable.glBufferData)(target, size, data, usage);
+        public void BufferSubData(BufferTargetARB target, IntPtr offset, nint size, void* data) => ((delegate* unmanaged[Cdecl]<BufferTargetARB, IntPtr, nint, void*, void>)vtable.glBufferSubData)(target, offset, size, data);
+        public FramebufferStatus CheckFramebufferStatus(FramebufferTarget target) => ((delegate* unmanaged[Cdecl]<FramebufferTarget, FramebufferStatus>)vtable.glCheckFramebufferStatus)(target);
+        public void Clear(ClearBufferMask mask) => ((delegate* unmanaged[Cdecl]<ClearBufferMask, void>)vtable.glClear)(mask);
+        public void ClearColor(float red, float green, float blue, float alpha) => ((delegate* unmanaged[Cdecl]<float, float, float, float, void>)vtable.glClearColor)(red, green, blue, alpha);
+        public void ClearDepthf(float d) => ((delegate* unmanaged[Cdecl]<float, void>)vtable.glClearDepthf)(d);
+        public void ClearStencil(int s) => ((delegate* unmanaged[Cdecl]<int, void>)vtable.glClearStencil)(s);
+        public void ColorMask(byte red, byte green, byte blue, byte alpha) => ((delegate* unmanaged[Cdecl]<byte, byte, byte, byte, void>)vtable.glColorMask)(red, green, blue, alpha);
+        public void CompileShader(ShaderHandle shader) => ((delegate* unmanaged[Cdecl]<ShaderHandle, void>)vtable.glCompileShader)(shader);
+        public void CompressedTexImage2D(TextureTarget target, int level, InternalFormat internalformat, int width, int height, int border, int imageSize, void* data) => ((delegate* unmanaged[Cdecl]<TextureTarget, int, InternalFormat, int, int, int, int, void*, void>)vtable.glCompressedTexImage2D)(target, level, internalformat, width, height, border, imageSize, data);
+        public void CompressedTexSubImage2D(TextureTarget target, int level, int xoffset, int yoffset, int width, int height, InternalFormat format, int imageSize, void* data) => ((delegate* unmanaged[Cdecl]<TextureTarget, int, int, int, int, int, InternalFormat, int, void*, void>)vtable.glCompressedTexSubImage2D)(target, level, xoffset, yoffset, width, height, format, imageSize, data);
+        public void CopyTexImage2D(TextureTarget target, int level, InternalFormat internalformat, int x, int y, int width, int height, int border) => ((delegate* unmanaged[Cdecl]<TextureTarget, int, InternalFormat, int, int, int, int, int, void>)vtable.glCopyTexImage2D)(target, level, internalformat, x, y, width, height, border);
+        public void CopyTexSubImage2D(TextureTarget target, int level, int xoffset, int yoffset, int x, int y, int width, int height) => ((delegate* unmanaged[Cdecl]<TextureTarget, int, int, int, int, int, int, int, void>)vtable.glCopyTexSubImage2D)(target, level, xoffset, yoffset, x, y, width, height);
+        public ProgramHandle CreateProgram() => (ProgramHandle)((delegate* unmanaged[Cdecl]<int>)vtable.glCreateProgram)();
+        public ShaderHandle CreateShader(ShaderType type) => (ShaderHandle)((delegate* unmanaged[Cdecl]<ShaderType, int>)vtable.glCreateShader)(type);
+        public void CullFace(CullFaceMode mode) => ((delegate* unmanaged[Cdecl]<CullFaceMode, void>)vtable.glCullFace)(mode);
+        public void DeleteBuffers(int n, BufferHandle* buffers) => ((delegate* unmanaged[Cdecl]<int, BufferHandle*, void>)vtable.glDeleteBuffers)(n, buffers);
+        public void DeleteFramebuffers(int n, FramebufferHandle* framebuffers) => ((delegate* unmanaged[Cdecl]<int, FramebufferHandle*, void>)vtable.glDeleteFramebuffers)(n, framebuffers);
+        public void DeleteProgram(ProgramHandle program) => ((delegate* unmanaged[Cdecl]<ProgramHandle, void>)vtable.glDeleteProgram)(program);
+        public void DeleteRenderbuffers(int n, RenderbufferHandle* renderbuffers) => ((delegate* unmanaged[Cdecl]<int, RenderbufferHandle*, void>)vtable.glDeleteRenderbuffers)(n, renderbuffers);
+        public void DeleteShader(ShaderHandle shader) => ((delegate* unmanaged[Cdecl]<ShaderHandle, void>)vtable.glDeleteShader)(shader);
+        public void DeleteTextures(int n, TextureHandle* textures) => ((delegate* unmanaged[Cdecl]<int, TextureHandle*, void>)vtable.glDeleteTextures)(n, textures);
+        public void DepthFunc(DepthFunction func) => ((delegate* unmanaged[Cdecl]<DepthFunction, void>)vtable.glDepthFunc)(func);
+        public void DepthMask(byte flag) => ((delegate* unmanaged[Cdecl]<byte, void>)vtable.glDepthMask)(flag);
+        public void DepthRangef(float n, float f) => ((delegate* unmanaged[Cdecl]<float, float, void>)vtable.glDepthRangef)(n, f);
+        public void DetachShader(ProgramHandle program, ShaderHandle shader) => ((delegate* unmanaged[Cdecl]<ProgramHandle, ShaderHandle, void>)vtable.glDetachShader)(program, shader);
+        public void Disable(EnableCap cap) => ((delegate* unmanaged[Cdecl]<EnableCap, void>)vtable.glDisable)(cap);
+        public void DisableVertexAttribArray(uint index) => ((delegate* unmanaged[Cdecl]<uint, void>)vtable.glDisableVertexAttribArray)(index);
+        public void DrawArrays(PrimitiveType mode, int first, int count) => ((delegate* unmanaged[Cdecl]<PrimitiveType, int, int, void>)vtable.glDrawArrays)(mode, first, count);
+        public void DrawElements(PrimitiveType mode, int count, DrawElementsType type, void* indices) => ((delegate* unmanaged[Cdecl]<PrimitiveType, int, DrawElementsType, void*, void>)vtable.glDrawElements)(mode, count, type, indices);
+        public void Enable(EnableCap cap) => ((delegate* unmanaged[Cdecl]<EnableCap, void>)vtable.glEnable)(cap);
+        public void EnableVertexAttribArray(uint index) => ((delegate* unmanaged[Cdecl]<uint, void>)vtable.glEnableVertexAttribArray)(index);
+        public void Finish() => ((delegate* unmanaged[Cdecl]<void>)vtable.glFinish)();
+        public void Flush() => ((delegate* unmanaged[Cdecl]<void>)vtable.glFlush)();
+        public void FramebufferRenderbuffer(FramebufferTarget target, FramebufferAttachment attachment, RenderbufferTarget renderbuffertarget, RenderbufferHandle renderbuffer) => ((delegate* unmanaged[Cdecl]<FramebufferTarget, FramebufferAttachment, RenderbufferTarget, RenderbufferHandle, void>)vtable.glFramebufferRenderbuffer)(target, attachment, renderbuffertarget, renderbuffer);
+        public void FramebufferTexture2D(FramebufferTarget target, FramebufferAttachment attachment, TextureTarget textarget, TextureHandle texture, int level) => ((delegate* unmanaged[Cdecl]<FramebufferTarget, FramebufferAttachment, TextureTarget, TextureHandle, int, void>)vtable.glFramebufferTexture2D)(target, attachment, textarget, texture, level);
+        public void FrontFace(FrontFaceDirection mode) => ((delegate* unmanaged[Cdecl]<FrontFaceDirection, void>)vtable.glFrontFace)(mode);
+        public void GenBuffers(int n, BufferHandle* buffers) => ((delegate* unmanaged[Cdecl]<int, BufferHandle*, void>)vtable.glGenBuffers)(n, buffers);
+        public void GenerateMipmap(TextureTarget target) => ((delegate* unmanaged[Cdecl]<TextureTarget, void>)vtable.glGenerateMipmap)(target);
+        public void GenFramebuffers(int n, FramebufferHandle* framebuffers) => ((delegate* unmanaged[Cdecl]<int, FramebufferHandle*, void>)vtable.glGenFramebuffers)(n, framebuffers);
+        public void GenRenderbuffers(int n, RenderbufferHandle* renderbuffers) => ((delegate* unmanaged[Cdecl]<int, RenderbufferHandle*, void>)vtable.glGenRenderbuffers)(n, renderbuffers);
+        public void GenTextures(int n, TextureHandle* textures) => ((delegate* unmanaged[Cdecl]<int, TextureHandle*, void>)vtable.glGenTextures)(n, textures);
+        public void GetActiveAttrib(ProgramHandle program, uint index, int bufSize, int* length, int* size, AttributeType* type, byte* name) => ((delegate* unmanaged[Cdecl]<ProgramHandle, uint, int, int*, int*, AttributeType*, byte*, void>)vtable.glGetActiveAttrib)(program, index, bufSize, length, size, type, name);
+        public void GetActiveUniform(ProgramHandle program, uint index, int bufSize, int* length, int* size, UniformType* type, byte* name) => ((delegate* unmanaged[Cdecl]<ProgramHandle, uint, int, int*, int*, UniformType*, byte*, void>)vtable.glGetActiveUniform)(program, index, bufSize, length, size, type, name);
+        public void GetAttachedShaders(ProgramHandle program, int maxCount, int* count, ShaderHandle* shaders) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, int*, ShaderHandle*, void>)vtable.glGetAttachedShaders)(program, maxCount, count, shaders);
+        public int GetAttribLocation(ProgramHandle program, byte* name) => ((delegate* unmanaged[Cdecl]<ProgramHandle, byte*, int>)vtable.glGetAttribLocation)(program, name);
+        public void GetBooleanv(GetPName pname, byte* data) => ((delegate* unmanaged[Cdecl]<GetPName, byte*, void>)vtable.glGetBooleanv)(pname, data);
+        public void GetBufferParameteriv(BufferTargetARB target, BufferPNameARB pname, int* parameters) => ((delegate* unmanaged[Cdecl]<BufferTargetARB, BufferPNameARB, int*, void>)vtable.glGetBufferParameteriv)(target, pname, parameters);
+        public ErrorCode GetError() => ((delegate* unmanaged[Cdecl]<ErrorCode>)vtable.glGetError)();
+        public void GetFloatv(GetPName pname, float* data) => ((delegate* unmanaged[Cdecl]<GetPName, float*, void>)vtable.glGetFloatv)(pname, data);
+        public void GetFramebufferAttachmentParameteriv(FramebufferTarget target, FramebufferAttachment attachment, FramebufferAttachmentParameterName pname, int* parameters) => ((delegate* unmanaged[Cdecl]<FramebufferTarget, FramebufferAttachment, FramebufferAttachmentParameterName, int*, void>)vtable.glGetFramebufferAttachmentParameteriv)(target, attachment, pname, parameters);
+        public void GetIntegerv(GetPName pname, int* data) => ((delegate* unmanaged[Cdecl]<GetPName, int*, void>)vtable.glGetIntegerv)(pname, data);
+        public void GetProgramiv(ProgramHandle program, ProgramPropertyARB pname, int* parameters) => ((delegate* unmanaged[Cdecl]<ProgramHandle, ProgramPropertyARB, int*, void>)vtable.glGetProgramiv)(program, pname, parameters);
+        public void GetProgramInfoLog(ProgramHandle program, int bufSize, int* length, byte* infoLog) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, int*, byte*, void>)vtable.glGetProgramInfoLog)(program, bufSize, length, infoLog);
+        public void GetRenderbufferParameteriv(RenderbufferTarget target, RenderbufferParameterName pname, int* parameters) => ((delegate* unmanaged[Cdecl]<RenderbufferTarget, RenderbufferParameterName, int*, void>)vtable.glGetRenderbufferParameteriv)(target, pname, parameters);
+        public void GetShaderiv(ShaderHandle shader, ShaderParameterName pname, int* parameters) => ((delegate* unmanaged[Cdecl]<ShaderHandle, ShaderParameterName, int*, void>)vtable.glGetShaderiv)(shader, pname, parameters);
+        public void GetShaderInfoLog(ShaderHandle shader, int bufSize, int* length, byte* infoLog) => ((delegate* unmanaged[Cdecl]<ShaderHandle, int, int*, byte*, void>)vtable.glGetShaderInfoLog)(shader, bufSize, length, infoLog);
+        public void GetShaderPrecisionFormat(ShaderType shadertype, PrecisionType precisiontype, int* range, int* precision) => ((delegate* unmanaged[Cdecl]<ShaderType, PrecisionType, int*, int*, void>)vtable.glGetShaderPrecisionFormat)(shadertype, precisiontype, range, precision);
+        public void GetShaderSource(ShaderHandle shader, int bufSize, int* length, byte* source) => ((delegate* unmanaged[Cdecl]<ShaderHandle, int, int*, byte*, void>)vtable.glGetShaderSource)(shader, bufSize, length, source);
+        public byte* GetString_(StringName name) => ((delegate* unmanaged[Cdecl]<StringName, byte*>)vtable.glGetString)(name);
+        public void GetTexParameterfv(TextureTarget target, GetTextureParameter pname, float* parameters) => ((delegate* unmanaged[Cdecl]<TextureTarget, GetTextureParameter, float*, void>)vtable.glGetTexParameterfv)(target, pname, parameters);
+        public void GetTexParameteriv(TextureTarget target, GetTextureParameter pname, int* parameters) => ((delegate* unmanaged[Cdecl]<TextureTarget, GetTextureParameter, int*, void>)vtable.glGetTexParameteriv)(target, pname, parameters);
+        public void GetUniformfv(ProgramHandle program, int location, float* parameters) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, float*, void>)vtable.glGetUniformfv)(program, location, parameters);
+        public void GetUniformiv(ProgramHandle program, int location, int* parameters) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, int*, void>)vtable.glGetUniformiv)(program, location, parameters);
+        public int GetUniformLocation(ProgramHandle program, byte* name) => ((delegate* unmanaged[Cdecl]<ProgramHandle, byte*, int>)vtable.glGetUniformLocation)(program, name);
+        public void GetVertexAttribfv(uint index, VertexAttribPropertyARB pname, float* parameters) => ((delegate* unmanaged[Cdecl]<uint, VertexAttribPropertyARB, float*, void>)vtable.glGetVertexAttribfv)(index, pname, parameters);
+        public void GetVertexAttribiv(uint index, VertexAttribPropertyARB pname, int* parameters) => ((delegate* unmanaged[Cdecl]<uint, VertexAttribPropertyARB, int*, void>)vtable.glGetVertexAttribiv)(index, pname, parameters);
+        public void GetVertexAttribPointerv(uint index, VertexAttribPointerPropertyARB pname, void** pointer) => ((delegate* unmanaged[Cdecl]<uint, VertexAttribPointerPropertyARB, void**, void>)vtable.glGetVertexAttribPointerv)(index, pname, pointer);
+        public void Hint(HintTarget target, HintMode mode) => ((delegate* unmanaged[Cdecl]<HintTarget, HintMode, void>)vtable.glHint)(target, mode);
+        public byte IsBuffer(BufferHandle buffer) => ((delegate* unmanaged[Cdecl]<BufferHandle, byte>)vtable.glIsBuffer)(buffer);
+        public byte IsEnabled(EnableCap cap) => ((delegate* unmanaged[Cdecl]<EnableCap, byte>)vtable.glIsEnabled)(cap);
+        public byte IsFramebuffer(FramebufferHandle framebuffer) => ((delegate* unmanaged[Cdecl]<FramebufferHandle, byte>)vtable.glIsFramebuffer)(framebuffer);
+        public byte IsProgram(ProgramHandle program) => ((delegate* unmanaged[Cdecl]<ProgramHandle, byte>)vtable.glIsProgram)(program);
+        public byte IsRenderbuffer(RenderbufferHandle renderbuffer) => ((delegate* unmanaged[Cdecl]<RenderbufferHandle, byte>)vtable.glIsRenderbuffer)(renderbuffer);
+        public byte IsShader(ShaderHandle shader) => ((delegate* unmanaged[Cdecl]<ShaderHandle, byte>)vtable.glIsShader)(shader);
+        public byte IsTexture(TextureHandle texture) => ((delegate* unmanaged[Cdecl]<TextureHandle, byte>)vtable.glIsTexture)(texture);
+        public void LineWidth(float width) => ((delegate* unmanaged[Cdecl]<float, void>)vtable.glLineWidth)(width);
+        public void LinkProgram(ProgramHandle program) => ((delegate* unmanaged[Cdecl]<ProgramHandle, void>)vtable.glLinkProgram)(program);
+        public void PixelStorei(PixelStoreParameter pname, int param) => ((delegate* unmanaged[Cdecl]<PixelStoreParameter, int, void>)vtable.glPixelStorei)(pname, param);
+        public void PolygonOffset(float factor, float units) => ((delegate* unmanaged[Cdecl]<float, float, void>)vtable.glPolygonOffset)(factor, units);
+        public void ReadPixels(int x, int y, int width, int height, PixelFormat format, PixelType type, void* pixels) => ((delegate* unmanaged[Cdecl]<int, int, int, int, PixelFormat, PixelType, void*, void>)vtable.glReadPixels)(x, y, width, height, format, type, pixels);
+        public void ReleaseShaderCompiler() => ((delegate* unmanaged[Cdecl]<void>)vtable.glReleaseShaderCompiler)();
+        public void RenderbufferStorage(RenderbufferTarget target, InternalFormat internalformat, int width, int height) => ((delegate* unmanaged[Cdecl]<RenderbufferTarget, InternalFormat, int, int, void>)vtable.glRenderbufferStorage)(target, internalformat, width, height);
+        public void SampleCoverage(float value, byte invert) => ((delegate* unmanaged[Cdecl]<float, byte, void>)vtable.glSampleCoverage)(value, invert);
+        public void Scissor(int x, int y, int width, int height) => ((delegate* unmanaged[Cdecl]<int, int, int, int, void>)vtable.glScissor)(x, y, width, height);
+        public void ShaderBinary(int count, ShaderHandle* shaders, ShaderBinaryFormat binaryFormat, void* binary, int length) => ((delegate* unmanaged[Cdecl]<int, ShaderHandle*, ShaderBinaryFormat, void*, int, void>)vtable.glShaderBinary)(count, shaders, binaryFormat, binary, length);
+        public void ShaderSource(ShaderHandle shader, int count, byte** str, int* length) => ((delegate* unmanaged[Cdecl]<ShaderHandle, int, byte**, int*, void>)vtable.glShaderSource)(shader, count, str, length);
+        public void StencilFunc(StencilFunction func, int reference, uint mask) => ((delegate* unmanaged[Cdecl]<StencilFunction, int, uint, void>)vtable.glStencilFunc)(func, reference, mask);
+        public void StencilFuncSeparate(StencilFaceDirection face, StencilFunction func, int reference, uint mask) => ((delegate* unmanaged[Cdecl]<StencilFaceDirection, StencilFunction, int, uint, void>)vtable.glStencilFuncSeparate)(face, func, reference, mask);
+        public void StencilMask(uint mask) => ((delegate* unmanaged[Cdecl]<uint, void>)vtable.glStencilMask)(mask);
+        public void StencilMaskSeparate(StencilFaceDirection face, uint mask) => ((delegate* unmanaged[Cdecl]<StencilFaceDirection, uint, void>)vtable.glStencilMaskSeparate)(face, mask);
+        public void StencilOp(StencilOp fail, StencilOp zfail, StencilOp zpass) => ((delegate* unmanaged[Cdecl]<StencilOp, StencilOp, StencilOp, void>)vtable.glStencilOp)(fail, zfail, zpass);
+        public void StencilOpSeparate(StencilFaceDirection face, StencilOp sfail, StencilOp dpfail, StencilOp dppass) => ((delegate* unmanaged[Cdecl]<StencilFaceDirection, StencilOp, StencilOp, StencilOp, void>)vtable.glStencilOpSeparate)(face, sfail, dpfail, dppass);
+        public void TexImage2D(TextureTarget target, int level, int internalformat, int width, int height, int border, PixelFormat format, PixelType type, void* pixels) => ((delegate* unmanaged[Cdecl]<TextureTarget, int, int, int, int, int, PixelFormat, PixelType, void*, void>)vtable.glTexImage2D)(target, level, internalformat, width, height, border, format, type, pixels);
+        public void TexParameterf(TextureTarget target, TextureParameterName pname, float param) => ((delegate* unmanaged[Cdecl]<TextureTarget, TextureParameterName, float, void>)vtable.glTexParameterf)(target, pname, param);
+        public void TexParameterfv(TextureTarget target, TextureParameterName pname, float* parameters) => ((delegate* unmanaged[Cdecl]<TextureTarget, TextureParameterName, float*, void>)vtable.glTexParameterfv)(target, pname, parameters);
+        public void TexParameteri(TextureTarget target, TextureParameterName pname, int param) => ((delegate* unmanaged[Cdecl]<TextureTarget, TextureParameterName, int, void>)vtable.glTexParameteri)(target, pname, param);
+        public void TexParameteriv(TextureTarget target, TextureParameterName pname, int* parameters) => ((delegate* unmanaged[Cdecl]<TextureTarget, TextureParameterName, int*, void>)vtable.glTexParameteriv)(target, pname, parameters);
+        public void TexSubImage2D(TextureTarget target, int level, int xoffset, int yoffset, int width, int height, PixelFormat format, PixelType type, void* pixels) => ((delegate* unmanaged[Cdecl]<TextureTarget, int, int, int, int, int, PixelFormat, PixelType, void*, void>)vtable.glTexSubImage2D)(target, level, xoffset, yoffset, width, height, format, type, pixels);
+        public void Uniform1f(int location, float v0) => ((delegate* unmanaged[Cdecl]<int, float, void>)vtable.glUniform1f)(location, v0);
+        public void Uniform1fv(int location, int count, float* value) => ((delegate* unmanaged[Cdecl]<int, int, float*, void>)vtable.glUniform1fv)(location, count, value);
+        public void Uniform1i(int location, int v0) => ((delegate* unmanaged[Cdecl]<int, int, void>)vtable.glUniform1i)(location, v0);
+        public void Uniform1iv(int location, int count, int* value) => ((delegate* unmanaged[Cdecl]<int, int, int*, void>)vtable.glUniform1iv)(location, count, value);
+        public void Uniform2f(int location, float v0, float v1) => ((delegate* unmanaged[Cdecl]<int, float, float, void>)vtable.glUniform2f)(location, v0, v1);
+        public void Uniform2fv(int location, int count, float* value) => ((delegate* unmanaged[Cdecl]<int, int, float*, void>)vtable.glUniform2fv)(location, count, value);
+        public void Uniform2i(int location, int v0, int v1) => ((delegate* unmanaged[Cdecl]<int, int, int, void>)vtable.glUniform2i)(location, v0, v1);
+        public void Uniform2iv(int location, int count, int* value) => ((delegate* unmanaged[Cdecl]<int, int, int*, void>)vtable.glUniform2iv)(location, count, value);
+        public void Uniform3f(int location, float v0, float v1, float v2) => ((delegate* unmanaged[Cdecl]<int, float, float, float, void>)vtable.glUniform3f)(location, v0, v1, v2);
+        public void Uniform3fv(int location, int count, float* value) => ((delegate* unmanaged[Cdecl]<int, int, float*, void>)vtable.glUniform3fv)(location, count, value);
+        public void Uniform3i(int location, int v0, int v1, int v2) => ((delegate* unmanaged[Cdecl]<int, int, int, int, void>)vtable.glUniform3i)(location, v0, v1, v2);
+        public void Uniform3iv(int location, int count, int* value) => ((delegate* unmanaged[Cdecl]<int, int, int*, void>)vtable.glUniform3iv)(location, count, value);
+        public void Uniform4f(int location, float v0, float v1, float v2, float v3) => ((delegate* unmanaged[Cdecl]<int, float, float, float, float, void>)vtable.glUniform4f)(location, v0, v1, v2, v3);
+        public void Uniform4fv(int location, int count, float* value) => ((delegate* unmanaged[Cdecl]<int, int, float*, void>)vtable.glUniform4fv)(location, count, value);
+        public void Uniform4i(int location, int v0, int v1, int v2, int v3) => ((delegate* unmanaged[Cdecl]<int, int, int, int, int, void>)vtable.glUniform4i)(location, v0, v1, v2, v3);
+        public void Uniform4iv(int location, int count, int* value) => ((delegate* unmanaged[Cdecl]<int, int, int*, void>)vtable.glUniform4iv)(location, count, value);
+        public void UniformMatrix2fv(int location, int count, byte transpose, float* value) => ((delegate* unmanaged[Cdecl]<int, int, byte, float*, void>)vtable.glUniformMatrix2fv)(location, count, transpose, value);
+        public void UniformMatrix3fv(int location, int count, byte transpose, float* value) => ((delegate* unmanaged[Cdecl]<int, int, byte, float*, void>)vtable.glUniformMatrix3fv)(location, count, transpose, value);
+        public void UniformMatrix4fv(int location, int count, byte transpose, float* value) => ((delegate* unmanaged[Cdecl]<int, int, byte, float*, void>)vtable.glUniformMatrix4fv)(location, count, transpose, value);
+        public void UseProgram(ProgramHandle program) => ((delegate* unmanaged[Cdecl]<ProgramHandle, void>)vtable.glUseProgram)(program);
+        public void ValidateProgram(ProgramHandle program) => ((delegate* unmanaged[Cdecl]<ProgramHandle, void>)vtable.glValidateProgram)(program);
+        public void VertexAttrib1f(uint index, float x) => ((delegate* unmanaged[Cdecl]<uint, float, void>)vtable.glVertexAttrib1f)(index, x);
+        public void VertexAttrib1fv(uint index, float* v) => ((delegate* unmanaged[Cdecl]<uint, float*, void>)vtable.glVertexAttrib1fv)(index, v);
+        public void VertexAttrib2f(uint index, float x, float y) => ((delegate* unmanaged[Cdecl]<uint, float, float, void>)vtable.glVertexAttrib2f)(index, x, y);
+        public void VertexAttrib2fv(uint index, float* v) => ((delegate* unmanaged[Cdecl]<uint, float*, void>)vtable.glVertexAttrib2fv)(index, v);
+        public void VertexAttrib3f(uint index, float x, float y, float z) => ((delegate* unmanaged[Cdecl]<uint, float, float, float, void>)vtable.glVertexAttrib3f)(index, x, y, z);
+        public void VertexAttrib3fv(uint index, float* v) => ((delegate* unmanaged[Cdecl]<uint, float*, void>)vtable.glVertexAttrib3fv)(index, v);
+        public void VertexAttrib4f(uint index, float x, float y, float z, float w) => ((delegate* unmanaged[Cdecl]<uint, float, float, float, float, void>)vtable.glVertexAttrib4f)(index, x, y, z, w);
+        public void VertexAttrib4fv(uint index, float* v) => ((delegate* unmanaged[Cdecl]<uint, float*, void>)vtable.glVertexAttrib4fv)(index, v);
+        public void VertexAttribPointer(uint index, int size, VertexAttribPointerType type, byte normalized, int stride, void* pointer) => ((delegate* unmanaged[Cdecl]<uint, int, VertexAttribPointerType, byte, int, void*, void>)vtable.glVertexAttribPointer)(index, size, type, normalized, stride, pointer);
+        public void Viewport(int x, int y, int width, int height) => ((delegate* unmanaged[Cdecl]<int, int, int, int, void>)vtable.glViewport)(x, y, width, height);
+        public void ReadBuffer(ReadBufferMode src) => ((delegate* unmanaged[Cdecl]<ReadBufferMode, void>)vtable.glReadBuffer)(src);
+        public void DrawRangeElements(PrimitiveType mode, uint start, uint end, int count, DrawElementsType type, void* indices) => ((delegate* unmanaged[Cdecl]<PrimitiveType, uint, uint, int, DrawElementsType, void*, void>)vtable.glDrawRangeElements)(mode, start, end, count, type, indices);
+        public void TexImage3D(TextureTarget target, int level, int internalformat, int width, int height, int depth, int border, PixelFormat format, PixelType type, void* pixels) => ((delegate* unmanaged[Cdecl]<TextureTarget, int, int, int, int, int, int, PixelFormat, PixelType, void*, void>)vtable.glTexImage3D)(target, level, internalformat, width, height, depth, border, format, type, pixels);
+        public void TexSubImage3D(TextureTarget target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, PixelFormat format, PixelType type, void* pixels) => ((delegate* unmanaged[Cdecl]<TextureTarget, int, int, int, int, int, int, int, PixelFormat, PixelType, void*, void>)vtable.glTexSubImage3D)(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, pixels);
+        public void CopyTexSubImage3D(TextureTarget target, int level, int xoffset, int yoffset, int zoffset, int x, int y, int width, int height) => ((delegate* unmanaged[Cdecl]<TextureTarget, int, int, int, int, int, int, int, int, void>)vtable.glCopyTexSubImage3D)(target, level, xoffset, yoffset, zoffset, x, y, width, height);
+        public void CompressedTexImage3D(TextureTarget target, int level, InternalFormat internalformat, int width, int height, int depth, int border, int imageSize, void* data) => ((delegate* unmanaged[Cdecl]<TextureTarget, int, InternalFormat, int, int, int, int, int, void*, void>)vtable.glCompressedTexImage3D)(target, level, internalformat, width, height, depth, border, imageSize, data);
+        public void CompressedTexSubImage3D(TextureTarget target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, InternalFormat format, int imageSize, void* data) => ((delegate* unmanaged[Cdecl]<TextureTarget, int, int, int, int, int, int, int, InternalFormat, int, void*, void>)vtable.glCompressedTexSubImage3D)(target, level, xoffset, yoffset, zoffset, width, height, depth, format, imageSize, data);
+        public void GenQueries(int n, QueryHandle* ids) => ((delegate* unmanaged[Cdecl]<int, QueryHandle*, void>)vtable.glGenQueries)(n, ids);
+        public void DeleteQueries(int n, QueryHandle* ids) => ((delegate* unmanaged[Cdecl]<int, QueryHandle*, void>)vtable.glDeleteQueries)(n, ids);
+        public byte IsQuery(QueryHandle id) => ((delegate* unmanaged[Cdecl]<QueryHandle, byte>)vtable.glIsQuery)(id);
+        public void BeginQuery(QueryTarget target, QueryHandle id) => ((delegate* unmanaged[Cdecl]<QueryTarget, QueryHandle, void>)vtable.glBeginQuery)(target, id);
+        public void EndQuery(QueryTarget target) => ((delegate* unmanaged[Cdecl]<QueryTarget, void>)vtable.glEndQuery)(target);
+        public void GetQueryiv(QueryTarget target, QueryParameterName pname, int* parameters) => ((delegate* unmanaged[Cdecl]<QueryTarget, QueryParameterName, int*, void>)vtable.glGetQueryiv)(target, pname, parameters);
+        public void GetQueryObjectuiv(QueryHandle id, QueryObjectParameterName pname, uint* parameters) => ((delegate* unmanaged[Cdecl]<QueryHandle, QueryObjectParameterName, uint*, void>)vtable.glGetQueryObjectuiv)(id, pname, parameters);
+        public byte UnmapBuffer(BufferTargetARB target) => ((delegate* unmanaged[Cdecl]<BufferTargetARB, byte>)vtable.glUnmapBuffer)(target);
+        public void GetBufferPointerv(BufferTargetARB target, BufferPointerNameARB pname, void** parameters) => ((delegate* unmanaged[Cdecl]<BufferTargetARB, BufferPointerNameARB, void**, void>)vtable.glGetBufferPointerv)(target, pname, parameters);
+        public void DrawBuffers(int n, DrawBufferMode* bufs) => ((delegate* unmanaged[Cdecl]<int, DrawBufferMode*, void>)vtable.glDrawBuffers)(n, bufs);
+        public void UniformMatrix2x3fv(int location, int count, byte transpose, float* value) => ((delegate* unmanaged[Cdecl]<int, int, byte, float*, void>)vtable.glUniformMatrix2x3fv)(location, count, transpose, value);
+        public void UniformMatrix3x2fv(int location, int count, byte transpose, float* value) => ((delegate* unmanaged[Cdecl]<int, int, byte, float*, void>)vtable.glUniformMatrix3x2fv)(location, count, transpose, value);
+        public void UniformMatrix2x4fv(int location, int count, byte transpose, float* value) => ((delegate* unmanaged[Cdecl]<int, int, byte, float*, void>)vtable.glUniformMatrix2x4fv)(location, count, transpose, value);
+        public void UniformMatrix4x2fv(int location, int count, byte transpose, float* value) => ((delegate* unmanaged[Cdecl]<int, int, byte, float*, void>)vtable.glUniformMatrix4x2fv)(location, count, transpose, value);
+        public void UniformMatrix3x4fv(int location, int count, byte transpose, float* value) => ((delegate* unmanaged[Cdecl]<int, int, byte, float*, void>)vtable.glUniformMatrix3x4fv)(location, count, transpose, value);
+        public void UniformMatrix4x3fv(int location, int count, byte transpose, float* value) => ((delegate* unmanaged[Cdecl]<int, int, byte, float*, void>)vtable.glUniformMatrix4x3fv)(location, count, transpose, value);
+        public void BlitFramebuffer(int srcX0, int srcY0, int srcX1, int srcY1, int dstX0, int dstY0, int dstX1, int dstY1, ClearBufferMask mask, BlitFramebufferFilter filter) => ((delegate* unmanaged[Cdecl]<int, int, int, int, int, int, int, int, ClearBufferMask, BlitFramebufferFilter, void>)vtable.glBlitFramebuffer)(srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter);
+        public void RenderbufferStorageMultisample(RenderbufferTarget target, int samples, InternalFormat internalformat, int width, int height) => ((delegate* unmanaged[Cdecl]<RenderbufferTarget, int, InternalFormat, int, int, void>)vtable.glRenderbufferStorageMultisample)(target, samples, internalformat, width, height);
+        public void FramebufferTextureLayer(FramebufferTarget target, FramebufferAttachment attachment, TextureHandle texture, int level, int layer) => ((delegate* unmanaged[Cdecl]<FramebufferTarget, FramebufferAttachment, TextureHandle, int, int, void>)vtable.glFramebufferTextureLayer)(target, attachment, texture, level, layer);
+        public void* MapBufferRange(BufferTargetARB target, IntPtr offset, nint length, MapBufferAccessMask access) => ((delegate* unmanaged[Cdecl]<BufferTargetARB, IntPtr, nint, MapBufferAccessMask, void*>)vtable.glMapBufferRange)(target, offset, length, access);
+        public void FlushMappedBufferRange(BufferTargetARB target, IntPtr offset, nint length) => ((delegate* unmanaged[Cdecl]<BufferTargetARB, IntPtr, nint, void>)vtable.glFlushMappedBufferRange)(target, offset, length);
+        public void BindVertexArray(VertexArrayHandle array) => ((delegate* unmanaged[Cdecl]<VertexArrayHandle, void>)vtable.glBindVertexArray)(array);
+        public void DeleteVertexArrays(int n, VertexArrayHandle* arrays) => ((delegate* unmanaged[Cdecl]<int, VertexArrayHandle*, void>)vtable.glDeleteVertexArrays)(n, arrays);
+        public void GenVertexArrays(int n, VertexArrayHandle* arrays) => ((delegate* unmanaged[Cdecl]<int, VertexArrayHandle*, void>)vtable.glGenVertexArrays)(n, arrays);
+        public byte IsVertexArray(VertexArrayHandle array) => ((delegate* unmanaged[Cdecl]<VertexArrayHandle, byte>)vtable.glIsVertexArray)(array);
+        public void GetIntegeri_v(GetPName target, uint index, int* data) => ((delegate* unmanaged[Cdecl]<GetPName, uint, int*, void>)vtable.glGetIntegeri_v)(target, index, data);
+        public void BeginTransformFeedback(PrimitiveType primitiveMode) => ((delegate* unmanaged[Cdecl]<PrimitiveType, void>)vtable.glBeginTransformFeedback)(primitiveMode);
+        public void EndTransformFeedback() => ((delegate* unmanaged[Cdecl]<void>)vtable.glEndTransformFeedback)();
+        public void BindBufferRange(BufferTargetARB target, uint index, BufferHandle buffer, IntPtr offset, nint size) => ((delegate* unmanaged[Cdecl]<BufferTargetARB, uint, BufferHandle, IntPtr, nint, void>)vtable.glBindBufferRange)(target, index, buffer, offset, size);
+        public void BindBufferBase(BufferTargetARB target, uint index, BufferHandle buffer) => ((delegate* unmanaged[Cdecl]<BufferTargetARB, uint, BufferHandle, void>)vtable.glBindBufferBase)(target, index, buffer);
+        public void TransformFeedbackVaryings(ProgramHandle program, int count, byte** varyings, TransformFeedbackBufferMode bufferMode) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, byte**, TransformFeedbackBufferMode, void>)vtable.glTransformFeedbackVaryings)(program, count, varyings, bufferMode);
+        public void GetTransformFeedbackVarying(ProgramHandle program, uint index, int bufSize, int* length, int* size, AttributeType* type, byte* name) => ((delegate* unmanaged[Cdecl]<ProgramHandle, uint, int, int*, int*, AttributeType*, byte*, void>)vtable.glGetTransformFeedbackVarying)(program, index, bufSize, length, size, type, name);
+        public void VertexAttribIPointer(uint index, int size, VertexAttribIType type, int stride, void* pointer) => ((delegate* unmanaged[Cdecl]<uint, int, VertexAttribIType, int, void*, void>)vtable.glVertexAttribIPointer)(index, size, type, stride, pointer);
+        public void GetVertexAttribIiv(uint index, VertexAttribEnum pname, int* parameters) => ((delegate* unmanaged[Cdecl]<uint, VertexAttribEnum, int*, void>)vtable.glGetVertexAttribIiv)(index, pname, parameters);
+        public void GetVertexAttribIuiv(uint index, VertexAttribEnum pname, uint* parameters) => ((delegate* unmanaged[Cdecl]<uint, VertexAttribEnum, uint*, void>)vtable.glGetVertexAttribIuiv)(index, pname, parameters);
+        public void VertexAttribI4i(uint index, int x, int y, int z, int w) => ((delegate* unmanaged[Cdecl]<uint, int, int, int, int, void>)vtable.glVertexAttribI4i)(index, x, y, z, w);
+        public void VertexAttribI4ui(uint index, uint x, uint y, uint z, uint w) => ((delegate* unmanaged[Cdecl]<uint, uint, uint, uint, uint, void>)vtable.glVertexAttribI4ui)(index, x, y, z, w);
+        public void VertexAttribI4iv(uint index, int* v) => ((delegate* unmanaged[Cdecl]<uint, int*, void>)vtable.glVertexAttribI4iv)(index, v);
+        public void VertexAttribI4uiv(uint index, uint* v) => ((delegate* unmanaged[Cdecl]<uint, uint*, void>)vtable.glVertexAttribI4uiv)(index, v);
+        public void GetUniformuiv(ProgramHandle program, int location, uint* parameters) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, uint*, void>)vtable.glGetUniformuiv)(program, location, parameters);
+        public int GetFragDataLocation(ProgramHandle program, byte* name) => ((delegate* unmanaged[Cdecl]<ProgramHandle, byte*, int>)vtable.glGetFragDataLocation)(program, name);
+        public void Uniform1ui(int location, uint v0) => ((delegate* unmanaged[Cdecl]<int, uint, void>)vtable.glUniform1ui)(location, v0);
+        public void Uniform2ui(int location, uint v0, uint v1) => ((delegate* unmanaged[Cdecl]<int, uint, uint, void>)vtable.glUniform2ui)(location, v0, v1);
+        public void Uniform3ui(int location, uint v0, uint v1, uint v2) => ((delegate* unmanaged[Cdecl]<int, uint, uint, uint, void>)vtable.glUniform3ui)(location, v0, v1, v2);
+        public void Uniform4ui(int location, uint v0, uint v1, uint v2, uint v3) => ((delegate* unmanaged[Cdecl]<int, uint, uint, uint, uint, void>)vtable.glUniform4ui)(location, v0, v1, v2, v3);
+        public void Uniform1uiv(int location, int count, uint* value) => ((delegate* unmanaged[Cdecl]<int, int, uint*, void>)vtable.glUniform1uiv)(location, count, value);
+        public void Uniform2uiv(int location, int count, uint* value) => ((delegate* unmanaged[Cdecl]<int, int, uint*, void>)vtable.glUniform2uiv)(location, count, value);
+        public void Uniform3uiv(int location, int count, uint* value) => ((delegate* unmanaged[Cdecl]<int, int, uint*, void>)vtable.glUniform3uiv)(location, count, value);
+        public void Uniform4uiv(int location, int count, uint* value) => ((delegate* unmanaged[Cdecl]<int, int, uint*, void>)vtable.glUniform4uiv)(location, count, value);
+        public void ClearBufferiv(Buffer buffer, int drawbuffer, int* value) => ((delegate* unmanaged[Cdecl]<Buffer, int, int*, void>)vtable.glClearBufferiv)(buffer, drawbuffer, value);
+        public void ClearBufferuiv(Buffer buffer, int drawbuffer, uint* value) => ((delegate* unmanaged[Cdecl]<Buffer, int, uint*, void>)vtable.glClearBufferuiv)(buffer, drawbuffer, value);
+        public void ClearBufferfv(Buffer buffer, int drawbuffer, float* value) => ((delegate* unmanaged[Cdecl]<Buffer, int, float*, void>)vtable.glClearBufferfv)(buffer, drawbuffer, value);
+        public void ClearBufferfi(Buffer buffer, int drawbuffer, float depth, int stencil) => ((delegate* unmanaged[Cdecl]<Buffer, int, float, int, void>)vtable.glClearBufferfi)(buffer, drawbuffer, depth, stencil);
+        public byte* GetStringi_(StringName name, uint index) => ((delegate* unmanaged[Cdecl]<StringName, uint, byte*>)vtable.glGetStringi)(name, index);
+        public void CopyBufferSubData(CopyBufferSubDataTarget readTarget, CopyBufferSubDataTarget writeTarget, IntPtr readOffset, IntPtr writeOffset, nint size) => ((delegate* unmanaged[Cdecl]<CopyBufferSubDataTarget, CopyBufferSubDataTarget, IntPtr, IntPtr, nint, void>)vtable.glCopyBufferSubData)(readTarget, writeTarget, readOffset, writeOffset, size);
+        public void GetUniformIndices(ProgramHandle program, int uniformCount, byte** uniformNames, uint* uniformIndices) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, byte**, uint*, void>)vtable.glGetUniformIndices)(program, uniformCount, uniformNames, uniformIndices);
+        public void GetActiveUniformsiv(ProgramHandle program, int uniformCount, uint* uniformIndices, UniformPName pname, int* parameters) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, uint*, UniformPName, int*, void>)vtable.glGetActiveUniformsiv)(program, uniformCount, uniformIndices, pname, parameters);
+        public uint GetUniformBlockIndex(ProgramHandle program, byte* uniformBlockName) => ((delegate* unmanaged[Cdecl]<ProgramHandle, byte*, uint>)vtable.glGetUniformBlockIndex)(program, uniformBlockName);
+        public void GetActiveUniformBlockiv(ProgramHandle program, uint uniformBlockIndex, UniformBlockPName pname, int* parameters) => ((delegate* unmanaged[Cdecl]<ProgramHandle, uint, UniformBlockPName, int*, void>)vtable.glGetActiveUniformBlockiv)(program, uniformBlockIndex, pname, parameters);
+        public void GetActiveUniformBlockName(ProgramHandle program, uint uniformBlockIndex, int bufSize, int* length, byte* uniformBlockName) => ((delegate* unmanaged[Cdecl]<ProgramHandle, uint, int, int*, byte*, void>)vtable.glGetActiveUniformBlockName)(program, uniformBlockIndex, bufSize, length, uniformBlockName);
+        public void UniformBlockBinding(ProgramHandle program, uint uniformBlockIndex, uint uniformBlockBinding) => ((delegate* unmanaged[Cdecl]<ProgramHandle, uint, uint, void>)vtable.glUniformBlockBinding)(program, uniformBlockIndex, uniformBlockBinding);
+        public void DrawArraysInstanced(PrimitiveType mode, int first, int count, int instancecount) => ((delegate* unmanaged[Cdecl]<PrimitiveType, int, int, int, void>)vtable.glDrawArraysInstanced)(mode, first, count, instancecount);
+        public void DrawElementsInstanced(PrimitiveType mode, int count, DrawElementsType type, void* indices, int instancecount) => ((delegate* unmanaged[Cdecl]<PrimitiveType, int, DrawElementsType, void*, int, void>)vtable.glDrawElementsInstanced)(mode, count, type, indices, instancecount);
+        public GLSync FenceSync(SyncCondition condition, SyncBehaviorFlags flags) => (GLSync)((delegate* unmanaged[Cdecl]<SyncCondition, SyncBehaviorFlags, IntPtr>)vtable.glFenceSync)(condition, flags);
+        public byte IsSync(GLSync sync) => ((delegate* unmanaged[Cdecl]<GLSync, byte>)vtable.glIsSync)(sync);
+        public void DeleteSync(GLSync sync) => ((delegate* unmanaged[Cdecl]<GLSync, void>)vtable.glDeleteSync)(sync);
+        public SyncStatus ClientWaitSync(GLSync sync, SyncObjectMask flags, ulong timeout) => ((delegate* unmanaged[Cdecl]<GLSync, SyncObjectMask, ulong, SyncStatus>)vtable.glClientWaitSync)(sync, flags, timeout);
+        public void WaitSync(GLSync sync, SyncBehaviorFlags flags, ulong timeout) => ((delegate* unmanaged[Cdecl]<GLSync, SyncBehaviorFlags, ulong, void>)vtable.glWaitSync)(sync, flags, timeout);
+        public void GetInteger64v(GetPName pname, long* data) => ((delegate* unmanaged[Cdecl]<GetPName, long*, void>)vtable.glGetInteger64v)(pname, data);
+        public void GetSynciv(GLSync sync, SyncParameterName pname, int count, int* length, int* values) => ((delegate* unmanaged[Cdecl]<GLSync, SyncParameterName, int, int*, int*, void>)vtable.glGetSynciv)(sync, pname, count, length, values);
+        public void GetInteger64i_v(GetPName target, uint index, long* data) => ((delegate* unmanaged[Cdecl]<GetPName, uint, long*, void>)vtable.glGetInteger64i_v)(target, index, data);
+        public void GetBufferParameteri64v(BufferTargetARB target, BufferPNameARB pname, long* parameters) => ((delegate* unmanaged[Cdecl]<BufferTargetARB, BufferPNameARB, long*, void>)vtable.glGetBufferParameteri64v)(target, pname, parameters);
+        public void GenSamplers(int count, SamplerHandle* samplers) => ((delegate* unmanaged[Cdecl]<int, SamplerHandle*, void>)vtable.glGenSamplers)(count, samplers);
+        public void DeleteSamplers(int count, SamplerHandle* samplers) => ((delegate* unmanaged[Cdecl]<int, SamplerHandle*, void>)vtable.glDeleteSamplers)(count, samplers);
+        public byte IsSampler(SamplerHandle sampler) => ((delegate* unmanaged[Cdecl]<SamplerHandle, byte>)vtable.glIsSampler)(sampler);
+        public void BindSampler(uint unit, SamplerHandle sampler) => ((delegate* unmanaged[Cdecl]<uint, SamplerHandle, void>)vtable.glBindSampler)(unit, sampler);
+        public void SamplerParameteri(SamplerHandle sampler, SamplerParameterI pname, int param) => ((delegate* unmanaged[Cdecl]<SamplerHandle, SamplerParameterI, int, void>)vtable.glSamplerParameteri)(sampler, pname, param);
+        public void SamplerParameteriv(SamplerHandle sampler, SamplerParameterI pname, int* param) => ((delegate* unmanaged[Cdecl]<SamplerHandle, SamplerParameterI, int*, void>)vtable.glSamplerParameteriv)(sampler, pname, param);
+        public void SamplerParameterf(SamplerHandle sampler, SamplerParameterF pname, float param) => ((delegate* unmanaged[Cdecl]<SamplerHandle, SamplerParameterF, float, void>)vtable.glSamplerParameterf)(sampler, pname, param);
+        public void SamplerParameterfv(SamplerHandle sampler, SamplerParameterF pname, float* param) => ((delegate* unmanaged[Cdecl]<SamplerHandle, SamplerParameterF, float*, void>)vtable.glSamplerParameterfv)(sampler, pname, param);
+        public void GetSamplerParameteriv(SamplerHandle sampler, SamplerParameterI pname, int* parameters) => ((delegate* unmanaged[Cdecl]<SamplerHandle, SamplerParameterI, int*, void>)vtable.glGetSamplerParameteriv)(sampler, pname, parameters);
+        public void GetSamplerParameterfv(SamplerHandle sampler, SamplerParameterF pname, float* parameters) => ((delegate* unmanaged[Cdecl]<SamplerHandle, SamplerParameterF, float*, void>)vtable.glGetSamplerParameterfv)(sampler, pname, parameters);
+        public void VertexAttribDivisor(uint index, uint divisor) => ((delegate* unmanaged[Cdecl]<uint, uint, void>)vtable.glVertexAttribDivisor)(index, divisor);
+        public void BindTransformFeedback(BindTransformFeedbackTarget target, TransformFeedbackHandle id) => ((delegate* unmanaged[Cdecl]<BindTransformFeedbackTarget, TransformFeedbackHandle, void>)vtable.glBindTransformFeedback)(target, id);
+        public void DeleteTransformFeedbacks(int n, TransformFeedbackHandle* ids) => ((delegate* unmanaged[Cdecl]<int, TransformFeedbackHandle*, void>)vtable.glDeleteTransformFeedbacks)(n, ids);
+        public void GenTransformFeedbacks(int n, TransformFeedbackHandle* ids) => ((delegate* unmanaged[Cdecl]<int, TransformFeedbackHandle*, void>)vtable.glGenTransformFeedbacks)(n, ids);
+        public byte IsTransformFeedback(TransformFeedbackHandle id) => ((delegate* unmanaged[Cdecl]<TransformFeedbackHandle, byte>)vtable.glIsTransformFeedback)(id);
+        public void PauseTransformFeedback() => ((delegate* unmanaged[Cdecl]<void>)vtable.glPauseTransformFeedback)();
+        public void ResumeTransformFeedback() => ((delegate* unmanaged[Cdecl]<void>)vtable.glResumeTransformFeedback)();
+        public void GetProgramBinary(ProgramHandle program, int bufSize, int* length, GLEnum* binaryFormat, void* binary) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, int*, GLEnum*, void*, void>)vtable.glGetProgramBinary)(program, bufSize, length, binaryFormat, binary);
+        public void ProgramBinary(ProgramHandle program, GLEnum binaryFormat, void* binary, int length) => ((delegate* unmanaged[Cdecl]<ProgramHandle, GLEnum, void*, int, void>)vtable.glProgramBinary)(program, binaryFormat, binary, length);
+        public void ProgramParameteri(ProgramHandle program, ProgramParameterPName pname, int value) => ((delegate* unmanaged[Cdecl]<ProgramHandle, ProgramParameterPName, int, void>)vtable.glProgramParameteri)(program, pname, value);
+        public void InvalidateFramebuffer(FramebufferTarget target, int numAttachments, InvalidateFramebufferAttachment* attachments) => ((delegate* unmanaged[Cdecl]<FramebufferTarget, int, InvalidateFramebufferAttachment*, void>)vtable.glInvalidateFramebuffer)(target, numAttachments, attachments);
+        public void InvalidateSubFramebuffer(FramebufferTarget target, int numAttachments, InvalidateFramebufferAttachment* attachments, int x, int y, int width, int height) => ((delegate* unmanaged[Cdecl]<FramebufferTarget, int, InvalidateFramebufferAttachment*, int, int, int, int, void>)vtable.glInvalidateSubFramebuffer)(target, numAttachments, attachments, x, y, width, height);
+        public void TexStorage2D(TextureTarget target, int levels, SizedInternalFormat internalformat, int width, int height) => ((delegate* unmanaged[Cdecl]<TextureTarget, int, SizedInternalFormat, int, int, void>)vtable.glTexStorage2D)(target, levels, internalformat, width, height);
+        public void TexStorage3D(TextureTarget target, int levels, SizedInternalFormat internalformat, int width, int height, int depth) => ((delegate* unmanaged[Cdecl]<TextureTarget, int, SizedInternalFormat, int, int, int, void>)vtable.glTexStorage3D)(target, levels, internalformat, width, height, depth);
+        public void GetInternalformativ(TextureTarget target, InternalFormat internalformat, InternalFormatPName pname, int count, int* parameters) => ((delegate* unmanaged[Cdecl]<TextureTarget, InternalFormat, InternalFormatPName, int, int*, void>)vtable.glGetInternalformativ)(target, internalformat, pname, count, parameters);
+        public void DispatchCompute(uint num_groups_x, uint num_groups_y, uint num_groups_z) => ((delegate* unmanaged[Cdecl]<uint, uint, uint, void>)vtable.glDispatchCompute)(num_groups_x, num_groups_y, num_groups_z);
+        public void DispatchComputeIndirect(IntPtr indirect) => ((delegate* unmanaged[Cdecl]<IntPtr, void>)vtable.glDispatchComputeIndirect)(indirect);
+        public void DrawArraysIndirect(PrimitiveType mode, void* indirect) => ((delegate* unmanaged[Cdecl]<PrimitiveType, void*, void>)vtable.glDrawArraysIndirect)(mode, indirect);
+        public void DrawElementsIndirect(PrimitiveType mode, DrawElementsType type, void* indirect) => ((delegate* unmanaged[Cdecl]<PrimitiveType, DrawElementsType, void*, void>)vtable.glDrawElementsIndirect)(mode, type, indirect);
+        public void FramebufferParameteri(FramebufferTarget target, FramebufferParameterName pname, int param) => ((delegate* unmanaged[Cdecl]<FramebufferTarget, FramebufferParameterName, int, void>)vtable.glFramebufferParameteri)(target, pname, param);
+        public void GetFramebufferParameteriv(FramebufferTarget target, FramebufferAttachmentParameterName pname, int* parameters) => ((delegate* unmanaged[Cdecl]<FramebufferTarget, FramebufferAttachmentParameterName, int*, void>)vtable.glGetFramebufferParameteriv)(target, pname, parameters);
+        public void GetProgramInterfaceiv(ProgramHandle program, ProgramInterface programInterface, ProgramInterfacePName pname, int* parameters) => ((delegate* unmanaged[Cdecl]<ProgramHandle, ProgramInterface, ProgramInterfacePName, int*, void>)vtable.glGetProgramInterfaceiv)(program, programInterface, pname, parameters);
+        public uint GetProgramResourceIndex(ProgramHandle program, ProgramInterface programInterface, byte* name) => ((delegate* unmanaged[Cdecl]<ProgramHandle, ProgramInterface, byte*, uint>)vtable.glGetProgramResourceIndex)(program, programInterface, name);
+        public void GetProgramResourceName(ProgramHandle program, ProgramInterface programInterface, uint index, int bufSize, int* length, byte* name) => ((delegate* unmanaged[Cdecl]<ProgramHandle, ProgramInterface, uint, int, int*, byte*, void>)vtable.glGetProgramResourceName)(program, programInterface, index, bufSize, length, name);
+        public void GetProgramResourceiv(ProgramHandle program, ProgramInterface programInterface, uint index, int propCount, ProgramResourceProperty* props, int count, int* length, int* parameters) => ((delegate* unmanaged[Cdecl]<ProgramHandle, ProgramInterface, uint, int, ProgramResourceProperty*, int, int*, int*, void>)vtable.glGetProgramResourceiv)(program, programInterface, index, propCount, props, count, length, parameters);
+        public int GetProgramResourceLocation(ProgramHandle program, ProgramInterface programInterface, byte* name) => ((delegate* unmanaged[Cdecl]<ProgramHandle, ProgramInterface, byte*, int>)vtable.glGetProgramResourceLocation)(program, programInterface, name);
+        public void UseProgramStages(ProgramPipelineHandle pipeline, UseProgramStageMask stages, ProgramHandle program) => ((delegate* unmanaged[Cdecl]<ProgramPipelineHandle, UseProgramStageMask, ProgramHandle, void>)vtable.glUseProgramStages)(pipeline, stages, program);
+        public void ActiveShaderProgram(ProgramPipelineHandle pipeline, ProgramHandle program) => ((delegate* unmanaged[Cdecl]<ProgramPipelineHandle, ProgramHandle, void>)vtable.glActiveShaderProgram)(pipeline, program);
+        public ProgramHandle CreateShaderProgramv(ShaderType type, int count, byte** strings) => (ProgramHandle)((delegate* unmanaged[Cdecl]<ShaderType, int, byte**, int>)vtable.glCreateShaderProgramv)(type, count, strings);
+        public void BindProgramPipeline(ProgramPipelineHandle pipeline) => ((delegate* unmanaged[Cdecl]<ProgramPipelineHandle, void>)vtable.glBindProgramPipeline)(pipeline);
+        public void DeleteProgramPipelines(int n, ProgramPipelineHandle* pipelines) => ((delegate* unmanaged[Cdecl]<int, ProgramPipelineHandle*, void>)vtable.glDeleteProgramPipelines)(n, pipelines);
+        public void GenProgramPipelines(int n, ProgramPipelineHandle* pipelines) => ((delegate* unmanaged[Cdecl]<int, ProgramPipelineHandle*, void>)vtable.glGenProgramPipelines)(n, pipelines);
+        public byte IsProgramPipeline(ProgramPipelineHandle pipeline) => ((delegate* unmanaged[Cdecl]<ProgramPipelineHandle, byte>)vtable.glIsProgramPipeline)(pipeline);
+        public void GetProgramPipelineiv(ProgramPipelineHandle pipeline, PipelineParameterName pname, int* parameters) => ((delegate* unmanaged[Cdecl]<ProgramPipelineHandle, PipelineParameterName, int*, void>)vtable.glGetProgramPipelineiv)(pipeline, pname, parameters);
+        public void ProgramUniform1i(ProgramHandle program, int location, int v0) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, int, void>)vtable.glProgramUniform1i)(program, location, v0);
+        public void ProgramUniform2i(ProgramHandle program, int location, int v0, int v1) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, int, int, void>)vtable.glProgramUniform2i)(program, location, v0, v1);
+        public void ProgramUniform3i(ProgramHandle program, int location, int v0, int v1, int v2) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, int, int, int, void>)vtable.glProgramUniform3i)(program, location, v0, v1, v2);
+        public void ProgramUniform4i(ProgramHandle program, int location, int v0, int v1, int v2, int v3) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, int, int, int, int, void>)vtable.glProgramUniform4i)(program, location, v0, v1, v2, v3);
+        public void ProgramUniform1ui(ProgramHandle program, int location, uint v0) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, uint, void>)vtable.glProgramUniform1ui)(program, location, v0);
+        public void ProgramUniform2ui(ProgramHandle program, int location, uint v0, uint v1) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, uint, uint, void>)vtable.glProgramUniform2ui)(program, location, v0, v1);
+        public void ProgramUniform3ui(ProgramHandle program, int location, uint v0, uint v1, uint v2) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, uint, uint, uint, void>)vtable.glProgramUniform3ui)(program, location, v0, v1, v2);
+        public void ProgramUniform4ui(ProgramHandle program, int location, uint v0, uint v1, uint v2, uint v3) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, uint, uint, uint, uint, void>)vtable.glProgramUniform4ui)(program, location, v0, v1, v2, v3);
+        public void ProgramUniform1f(ProgramHandle program, int location, float v0) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, float, void>)vtable.glProgramUniform1f)(program, location, v0);
+        public void ProgramUniform2f(ProgramHandle program, int location, float v0, float v1) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, float, float, void>)vtable.glProgramUniform2f)(program, location, v0, v1);
+        public void ProgramUniform3f(ProgramHandle program, int location, float v0, float v1, float v2) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, float, float, float, void>)vtable.glProgramUniform3f)(program, location, v0, v1, v2);
+        public void ProgramUniform4f(ProgramHandle program, int location, float v0, float v1, float v2, float v3) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, float, float, float, float, void>)vtable.glProgramUniform4f)(program, location, v0, v1, v2, v3);
+        public void ProgramUniform1iv(ProgramHandle program, int location, int count, int* value) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, int, int*, void>)vtable.glProgramUniform1iv)(program, location, count, value);
+        public void ProgramUniform2iv(ProgramHandle program, int location, int count, int* value) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, int, int*, void>)vtable.glProgramUniform2iv)(program, location, count, value);
+        public void ProgramUniform3iv(ProgramHandle program, int location, int count, int* value) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, int, int*, void>)vtable.glProgramUniform3iv)(program, location, count, value);
+        public void ProgramUniform4iv(ProgramHandle program, int location, int count, int* value) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, int, int*, void>)vtable.glProgramUniform4iv)(program, location, count, value);
+        public void ProgramUniform1uiv(ProgramHandle program, int location, int count, uint* value) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, int, uint*, void>)vtable.glProgramUniform1uiv)(program, location, count, value);
+        public void ProgramUniform2uiv(ProgramHandle program, int location, int count, uint* value) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, int, uint*, void>)vtable.glProgramUniform2uiv)(program, location, count, value);
+        public void ProgramUniform3uiv(ProgramHandle program, int location, int count, uint* value) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, int, uint*, void>)vtable.glProgramUniform3uiv)(program, location, count, value);
+        public void ProgramUniform4uiv(ProgramHandle program, int location, int count, uint* value) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, int, uint*, void>)vtable.glProgramUniform4uiv)(program, location, count, value);
+        public void ProgramUniform1fv(ProgramHandle program, int location, int count, float* value) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, int, float*, void>)vtable.glProgramUniform1fv)(program, location, count, value);
+        public void ProgramUniform2fv(ProgramHandle program, int location, int count, float* value) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, int, float*, void>)vtable.glProgramUniform2fv)(program, location, count, value);
+        public void ProgramUniform3fv(ProgramHandle program, int location, int count, float* value) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, int, float*, void>)vtable.glProgramUniform3fv)(program, location, count, value);
+        public void ProgramUniform4fv(ProgramHandle program, int location, int count, float* value) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, int, float*, void>)vtable.glProgramUniform4fv)(program, location, count, value);
+        public void ProgramUniformMatrix2fv(ProgramHandle program, int location, int count, byte transpose, float* value) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, int, byte, float*, void>)vtable.glProgramUniformMatrix2fv)(program, location, count, transpose, value);
+        public void ProgramUniformMatrix3fv(ProgramHandle program, int location, int count, byte transpose, float* value) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, int, byte, float*, void>)vtable.glProgramUniformMatrix3fv)(program, location, count, transpose, value);
+        public void ProgramUniformMatrix4fv(ProgramHandle program, int location, int count, byte transpose, float* value) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, int, byte, float*, void>)vtable.glProgramUniformMatrix4fv)(program, location, count, transpose, value);
+        public void ProgramUniformMatrix2x3fv(ProgramHandle program, int location, int count, byte transpose, float* value) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, int, byte, float*, void>)vtable.glProgramUniformMatrix2x3fv)(program, location, count, transpose, value);
+        public void ProgramUniformMatrix3x2fv(ProgramHandle program, int location, int count, byte transpose, float* value) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, int, byte, float*, void>)vtable.glProgramUniformMatrix3x2fv)(program, location, count, transpose, value);
+        public void ProgramUniformMatrix2x4fv(ProgramHandle program, int location, int count, byte transpose, float* value) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, int, byte, float*, void>)vtable.glProgramUniformMatrix2x4fv)(program, location, count, transpose, value);
+        public void ProgramUniformMatrix4x2fv(ProgramHandle program, int location, int count, byte transpose, float* value) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, int, byte, float*, void>)vtable.glProgramUniformMatrix4x2fv)(program, location, count, transpose, value);
+        public void ProgramUniformMatrix3x4fv(ProgramHandle program, int location, int count, byte transpose, float* value) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, int, byte, float*, void>)vtable.glProgramUniformMatrix3x4fv)(program, location, count, transpose, value);
+        public void ProgramUniformMatrix4x3fv(ProgramHandle program, int location, int count, byte transpose, float* value) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, int, byte, float*, void>)vtable.glProgramUniformMatrix4x3fv)(program, location, count, transpose, value);
+        public void ValidateProgramPipeline(ProgramPipelineHandle pipeline) => ((delegate* unmanaged[Cdecl]<ProgramPipelineHandle, void>)vtable.glValidateProgramPipeline)(pipeline);
+        public void GetProgramPipelineInfoLog(ProgramPipelineHandle pipeline, int bufSize, int* length, byte* infoLog) => ((delegate* unmanaged[Cdecl]<ProgramPipelineHandle, int, int*, byte*, void>)vtable.glGetProgramPipelineInfoLog)(pipeline, bufSize, length, infoLog);
+        public void BindImageTexture(uint unit, TextureHandle texture, int level, byte layered, int layer, BufferAccessARB access, InternalFormat format) => ((delegate* unmanaged[Cdecl]<uint, TextureHandle, int, byte, int, BufferAccessARB, InternalFormat, void>)vtable.glBindImageTexture)(unit, texture, level, layered, layer, access, format);
+        public void GetBooleani_v(BufferTargetARB target, uint index, byte* data) => ((delegate* unmanaged[Cdecl]<BufferTargetARB, uint, byte*, void>)vtable.glGetBooleani_v)(target, index, data);
+        public void MemoryBarrier(MemoryBarrierMask barriers) => ((delegate* unmanaged[Cdecl]<MemoryBarrierMask, void>)vtable.glMemoryBarrier)(barriers);
+        public void MemoryBarrierByRegion(MemoryBarrierMask barriers) => ((delegate* unmanaged[Cdecl]<MemoryBarrierMask, void>)vtable.glMemoryBarrierByRegion)(barriers);
+        public void TexStorage2DMultisample(TextureTarget target, int samples, SizedInternalFormat internalformat, int width, int height, byte fixedsamplelocations) => ((delegate* unmanaged[Cdecl]<TextureTarget, int, SizedInternalFormat, int, int, byte, void>)vtable.glTexStorage2DMultisample)(target, samples, internalformat, width, height, fixedsamplelocations);
+        public void GetMultisamplefv(GetMultisamplePNameNV pname, uint index, float* val) => ((delegate* unmanaged[Cdecl]<GetMultisamplePNameNV, uint, float*, void>)vtable.glGetMultisamplefv)(pname, index, val);
+        public void SampleMaski(uint maskNumber, GLEnum mask) => ((delegate* unmanaged[Cdecl]<uint, GLEnum, void>)vtable.glSampleMaski)(maskNumber, mask);
+        public void GetTexLevelParameteriv(TextureTarget target, int level, GetTextureParameter pname, int* parameters) => ((delegate* unmanaged[Cdecl]<TextureTarget, int, GetTextureParameter, int*, void>)vtable.glGetTexLevelParameteriv)(target, level, pname, parameters);
+        public void GetTexLevelParameterfv(TextureTarget target, int level, GetTextureParameter pname, float* parameters) => ((delegate* unmanaged[Cdecl]<TextureTarget, int, GetTextureParameter, float*, void>)vtable.glGetTexLevelParameterfv)(target, level, pname, parameters);
+        public void BindVertexBuffer(uint bindingindex, BufferHandle buffer, IntPtr offset, int stride) => ((delegate* unmanaged[Cdecl]<uint, BufferHandle, IntPtr, int, void>)vtable.glBindVertexBuffer)(bindingindex, buffer, offset, stride);
+        public void VertexAttribFormat(uint attribindex, int size, VertexAttribType type, byte normalized, uint relativeoffset) => ((delegate* unmanaged[Cdecl]<uint, int, VertexAttribType, byte, uint, void>)vtable.glVertexAttribFormat)(attribindex, size, type, normalized, relativeoffset);
+        public void VertexAttribIFormat(uint attribindex, int size, VertexAttribIType type, uint relativeoffset) => ((delegate* unmanaged[Cdecl]<uint, int, VertexAttribIType, uint, void>)vtable.glVertexAttribIFormat)(attribindex, size, type, relativeoffset);
+        public void VertexAttribBinding(uint attribindex, uint bindingindex) => ((delegate* unmanaged[Cdecl]<uint, uint, void>)vtable.glVertexAttribBinding)(attribindex, bindingindex);
+        public void VertexBindingDivisor(uint bindingindex, uint divisor) => ((delegate* unmanaged[Cdecl]<uint, uint, void>)vtable.glVertexBindingDivisor)(bindingindex, divisor);
+        public void BlendBarrier() => ((delegate* unmanaged[Cdecl]<void>)vtable.glBlendBarrier)();
+        public void CopyImageSubData(uint srcName, CopyImageSubDataTarget srcTarget, int srcLevel, int srcX, int srcY, int srcZ, uint dstName, CopyImageSubDataTarget dstTarget, int dstLevel, int dstX, int dstY, int dstZ, int srcWidth, int srcHeight, int srcDepth) => ((delegate* unmanaged[Cdecl]<uint, CopyImageSubDataTarget, int, int, int, int, uint, CopyImageSubDataTarget, int, int, int, int, int, int, int, void>)vtable.glCopyImageSubData)(srcName, srcTarget, srcLevel, srcX, srcY, srcZ, dstName, dstTarget, dstLevel, dstX, dstY, dstZ, srcWidth, srcHeight, srcDepth);
+        public void DebugMessageControl(DebugSource source, DebugType type, DebugSeverity severity, int count, uint* ids, byte enabled) => ((delegate* unmanaged[Cdecl]<DebugSource, DebugType, DebugSeverity, int, uint*, byte, void>)vtable.glDebugMessageControl)(source, type, severity, count, ids, enabled);
+        public void DebugMessageInsert(DebugSource source, DebugType type, uint id, DebugSeverity severity, int length, byte* buf) => ((delegate* unmanaged[Cdecl]<DebugSource, DebugType, uint, DebugSeverity, int, byte*, void>)vtable.glDebugMessageInsert)(source, type, id, severity, length, buf);
+        public void DebugMessageCallback(IntPtr callback, void* userParam) => ((delegate* unmanaged[Cdecl]<IntPtr, void*, void>)vtable.glDebugMessageCallback)(callback, userParam);
+        public uint GetDebugMessageLog(uint count, int bufSize, DebugSource* sources, DebugType* types, uint* ids, DebugSeverity* severities, int* lengths, byte* messageLog) => ((delegate* unmanaged[Cdecl]<uint, int, DebugSource*, DebugType*, uint*, DebugSeverity*, int*, byte*, uint>)vtable.glGetDebugMessageLog)(count, bufSize, sources, types, ids, severities, lengths, messageLog);
+        public void PushDebugGroup(DebugSource source, uint id, int length, byte* message) => ((delegate* unmanaged[Cdecl]<DebugSource, uint, int, byte*, void>)vtable.glPushDebugGroup)(source, id, length, message);
+        public void PopDebugGroup() => ((delegate* unmanaged[Cdecl]<void>)vtable.glPopDebugGroup)();
+        public void ObjectLabel(ObjectIdentifier identifier, uint name, int length, byte* label) => ((delegate* unmanaged[Cdecl]<ObjectIdentifier, uint, int, byte*, void>)vtable.glObjectLabel)(identifier, name, length, label);
+        public void GetObjectLabel(ObjectIdentifier identifier, uint name, int bufSize, int* length, byte* label) => ((delegate* unmanaged[Cdecl]<ObjectIdentifier, uint, int, int*, byte*, void>)vtable.glGetObjectLabel)(identifier, name, bufSize, length, label);
+        public void ObjectPtrLabel(void* ptr, int length, byte* label) => ((delegate* unmanaged[Cdecl]<void*, int, byte*, void>)vtable.glObjectPtrLabel)(ptr, length, label);
+        public void GetObjectPtrLabel(void* ptr, int bufSize, int* length, byte* label) => ((delegate* unmanaged[Cdecl]<void*, int, int*, byte*, void>)vtable.glGetObjectPtrLabel)(ptr, bufSize, length, label);
+        public void GetPointerv(GetPointervPName pname, void** parameters) => ((delegate* unmanaged[Cdecl]<GetPointervPName, void**, void>)vtable.glGetPointerv)(pname, parameters);
+        public void Enablei(EnableCap target, uint index) => ((delegate* unmanaged[Cdecl]<EnableCap, uint, void>)vtable.glEnablei)(target, index);
+        public void Disablei(EnableCap target, uint index) => ((delegate* unmanaged[Cdecl]<EnableCap, uint, void>)vtable.glDisablei)(target, index);
+        public void BlendEquationi(uint buf, BlendEquationModeEXT mode) => ((delegate* unmanaged[Cdecl]<uint, BlendEquationModeEXT, void>)vtable.glBlendEquationi)(buf, mode);
+        public void BlendEquationSeparatei(uint buf, BlendEquationModeEXT modeRGB, BlendEquationModeEXT modeAlpha) => ((delegate* unmanaged[Cdecl]<uint, BlendEquationModeEXT, BlendEquationModeEXT, void>)vtable.glBlendEquationSeparatei)(buf, modeRGB, modeAlpha);
+        public void BlendFunci(uint buf, BlendingFactor src, BlendingFactor dst) => ((delegate* unmanaged[Cdecl]<uint, BlendingFactor, BlendingFactor, void>)vtable.glBlendFunci)(buf, src, dst);
+        public void BlendFuncSeparatei(uint buf, BlendingFactor srcRGB, BlendingFactor dstRGB, BlendingFactor srcAlpha, BlendingFactor dstAlpha) => ((delegate* unmanaged[Cdecl]<uint, BlendingFactor, BlendingFactor, BlendingFactor, BlendingFactor, void>)vtable.glBlendFuncSeparatei)(buf, srcRGB, dstRGB, srcAlpha, dstAlpha);
+        public void ColorMaski(uint index, byte r, byte g, byte b, byte a) => ((delegate* unmanaged[Cdecl]<uint, byte, byte, byte, byte, void>)vtable.glColorMaski)(index, r, g, b, a);
+        public byte IsEnabledi(EnableCap target, uint index) => ((delegate* unmanaged[Cdecl]<EnableCap, uint, byte>)vtable.glIsEnabledi)(target, index);
+        public void DrawElementsBaseVertex(PrimitiveType mode, int count, DrawElementsType type, void* indices, int basevertex) => ((delegate* unmanaged[Cdecl]<PrimitiveType, int, DrawElementsType, void*, int, void>)vtable.glDrawElementsBaseVertex)(mode, count, type, indices, basevertex);
+        public void DrawRangeElementsBaseVertex(PrimitiveType mode, uint start, uint end, int count, DrawElementsType type, void* indices, int basevertex) => ((delegate* unmanaged[Cdecl]<PrimitiveType, uint, uint, int, DrawElementsType, void*, int, void>)vtable.glDrawRangeElementsBaseVertex)(mode, start, end, count, type, indices, basevertex);
+        public void DrawElementsInstancedBaseVertex(PrimitiveType mode, int count, DrawElementsType type, void* indices, int instancecount, int basevertex) => ((delegate* unmanaged[Cdecl]<PrimitiveType, int, DrawElementsType, void*, int, int, void>)vtable.glDrawElementsInstancedBaseVertex)(mode, count, type, indices, instancecount, basevertex);
+        public void FramebufferTexture(FramebufferTarget target, FramebufferAttachment attachment, TextureHandle texture, int level) => ((delegate* unmanaged[Cdecl]<FramebufferTarget, FramebufferAttachment, TextureHandle, int, void>)vtable.glFramebufferTexture)(target, attachment, texture, level);
+        public void PrimitiveBoundingBox(float minX, float minY, float minZ, float minW, float maxX, float maxY, float maxZ, float maxW) => ((delegate* unmanaged[Cdecl]<float, float, float, float, float, float, float, float, void>)vtable.glPrimitiveBoundingBox)(minX, minY, minZ, minW, maxX, maxY, maxZ, maxW);
+        public GraphicsResetStatus GetGraphicsResetStatus() => ((delegate* unmanaged[Cdecl]<GraphicsResetStatus>)vtable.glGetGraphicsResetStatus)();
+        public void ReadnPixels(int x, int y, int width, int height, PixelFormat format, PixelType type, int bufSize, void* data) => ((delegate* unmanaged[Cdecl]<int, int, int, int, PixelFormat, PixelType, int, void*, void>)vtable.glReadnPixels)(x, y, width, height, format, type, bufSize, data);
+        public void GetnUniformfv(ProgramHandle program, int location, int bufSize, float* parameters) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, int, float*, void>)vtable.glGetnUniformfv)(program, location, bufSize, parameters);
+        public void GetnUniformiv(ProgramHandle program, int location, int bufSize, int* parameters) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, int, int*, void>)vtable.glGetnUniformiv)(program, location, bufSize, parameters);
+        public void GetnUniformuiv(ProgramHandle program, int location, int bufSize, uint* parameters) => ((delegate* unmanaged[Cdecl]<ProgramHandle, int, int, uint*, void>)vtable.glGetnUniformuiv)(program, location, bufSize, parameters);
+        public void MinSampleShading(float value) => ((delegate* unmanaged[Cdecl]<float, void>)vtable.glMinSampleShading)(value);
+        public void PatchParameteri(PatchParameterName pname, int value) => ((delegate* unmanaged[Cdecl]<PatchParameterName, int, void>)vtable.glPatchParameteri)(pname, value);
+        public void TexParameterIiv(TextureTarget target, TextureParameterName pname, int* parameters) => ((delegate* unmanaged[Cdecl]<TextureTarget, TextureParameterName, int*, void>)vtable.glTexParameterIiv)(target, pname, parameters);
+        public void TexParameterIuiv(TextureTarget target, TextureParameterName pname, uint* parameters) => ((delegate* unmanaged[Cdecl]<TextureTarget, TextureParameterName, uint*, void>)vtable.glTexParameterIuiv)(target, pname, parameters);
+        public void GetTexParameterIiv(TextureTarget target, GetTextureParameter pname, int* parameters) => ((delegate* unmanaged[Cdecl]<TextureTarget, GetTextureParameter, int*, void>)vtable.glGetTexParameterIiv)(target, pname, parameters);
+        public void GetTexParameterIuiv(TextureTarget target, GetTextureParameter pname, uint* parameters) => ((delegate* unmanaged[Cdecl]<TextureTarget, GetTextureParameter, uint*, void>)vtable.glGetTexParameterIuiv)(target, pname, parameters);
+        public void SamplerParameterIiv(SamplerHandle sampler, SamplerParameterI pname, int* param) => ((delegate* unmanaged[Cdecl]<SamplerHandle, SamplerParameterI, int*, void>)vtable.glSamplerParameterIiv)(sampler, pname, param);
+        public void SamplerParameterIuiv(SamplerHandle sampler, SamplerParameterI pname, uint* param) => ((delegate* unmanaged[Cdecl]<SamplerHandle, SamplerParameterI, uint*, void>)vtable.glSamplerParameterIuiv)(sampler, pname, param);
+        public void GetSamplerParameterIiv(SamplerHandle sampler, SamplerParameterI pname, int* parameters) => ((delegate* unmanaged[Cdecl]<SamplerHandle, SamplerParameterI, int*, void>)vtable.glGetSamplerParameterIiv)(sampler, pname, parameters);
+        public void GetSamplerParameterIuiv(SamplerHandle sampler, SamplerParameterI pname, uint* parameters) => ((delegate* unmanaged[Cdecl]<SamplerHandle, SamplerParameterI, uint*, void>)vtable.glGetSamplerParameterIuiv)(sampler, pname, parameters);
+        public void TexBuffer(TextureTarget target, SizedInternalFormat internalformat, BufferHandle buffer) => ((delegate* unmanaged[Cdecl]<TextureTarget, SizedInternalFormat, BufferHandle, void>)vtable.glTexBuffer)(target, internalformat, buffer);
+        public void TexBufferRange(TextureTarget target, SizedInternalFormat internalformat, BufferHandle buffer, IntPtr offset, nint size) => ((delegate* unmanaged[Cdecl]<TextureTarget, SizedInternalFormat, BufferHandle, IntPtr, nint, void>)vtable.glTexBufferRange)(target, internalformat, buffer, offset, size);
+        public void TexStorage3DMultisample(TextureTarget target, int samples, SizedInternalFormat internalformat, int width, int height, int depth, byte fixedsamplelocations) => ((delegate* unmanaged[Cdecl]<TextureTarget, int, SizedInternalFormat, int, int, int, byte, void>)vtable.glTexStorage3DMultisample)(target, samples, internalformat, width, height, depth, fixedsamplelocations);
     }
 
 #pragma warning restore IDE1006 // Naming Styles
-#pragma warning restore S1121 // Assignments should not be made from within sub-expressions
-#pragma warning restore S1144 // Unused private types or members should be removed
 }

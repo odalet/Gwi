@@ -1,21 +1,24 @@
 // This file is auto generated, do not edit.
 using System;
-using System.Runtime.InteropServices;
 
 namespace Gwi.OpenGL.GL4
 {
-#pragma warning disable S1144 // Unused private types or members should be removed
-#pragma warning disable S1121 // Assignments should not be made from within sub-expressions
 #pragma warning disable IDE1006 // Naming Styles
 
     unsafe partial class GL
     {
-        public sealed unsafe partial class OVR
+        private OVRExtension? _OVR;
+        public OVRExtension OVR => _OVR ??= new OVRExtension(this);
+
+        public sealed unsafe partial class OVRExtension
         {
+            private readonly VTable vtable;
+
+            internal OVRExtension(GL gl) => vtable = new VTable(gl.Lib);
+
+            public void FramebufferTextureMultiviewOVR(FramebufferTarget target, FramebufferAttachment attachment, TextureHandle texture, int level, int baseViewIndex, int numViews) => ((delegate* unmanaged[Cdecl]<FramebufferTarget, FramebufferAttachment, TextureHandle, int, int, int, void>)vtable.glFramebufferTextureMultiviewOVR)(target, attachment, texture, level, baseViewIndex, numViews);
         }
     }
 
 #pragma warning restore IDE1006 // Naming Styles
-#pragma warning restore S1121 // Assignments should not be made from within sub-expressions
-#pragma warning restore S1144 // Unused private types or members should be removed
 }

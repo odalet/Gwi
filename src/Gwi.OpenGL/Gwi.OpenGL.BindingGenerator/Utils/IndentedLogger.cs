@@ -58,7 +58,6 @@ namespace Gwi.OpenGL.BindingGenerator.Utils
                 _ => ""
             };
 
-
             private static string GetEndMessage(IndentedLoggerStyle style, string message) => style switch
             {
                 IndentedLoggerStyle.Default => $"< {message}",
