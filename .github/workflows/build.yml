@@ -71,7 +71,7 @@ jobs:
         /key:"odalet_Gwi"
         /name:"Gwi"
         /version:"${{ steps.gitversion.outputs.majorMinorPatch }}"
-        /d:sonar.exclusions="**/gl.xml"
+        /d:sonar.exclusions="**/gl.xml,**/generated/**"
         /d:sonar.cs.vstest.reportsPaths="**/TestResults/**/*.trx"
         /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/*.opencover.xml"
         /d:sonar.coverage.exclusions="**Tests.cs"
