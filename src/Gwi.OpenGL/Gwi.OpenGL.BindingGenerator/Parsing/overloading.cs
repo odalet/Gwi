@@ -28,7 +28,7 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
             new TrimNameOverloader(),
             new StringReturnOverloader(),
             new BoolOverloader(),
-            new MathTypeOverloader(),
+            //new MathTypeOverloader(),
             new FunctionPtrToDelegateOverloader(),
             new PointerToOffsetOverloader(),
             new VoidPtrToIntPtrOverloader(),
@@ -82,7 +82,8 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
                 {
                     OverloadName = trimmedName,
                     NestedOverload = overload,
-                    MarshalLayerToNested = null
+                    MarshalLayerToNested = null,
+                    OverloaderType = GetType()
                 }
             };
 
@@ -98,7 +99,7 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
 
             public string WriteEpilogue(IndentedTextWriter writer, NameTable nameTable, string? returnName)
             {
-                writer.WriteLine($"{NewReturnName} = Marshal.PtrToStringAnsi((IntPtr){returnName});");
+                writer.WriteLine($"{NewReturnName} = Marshaller.PtrToString((nint){returnName});");
                 return NewReturnName;
             }
         }
@@ -123,7 +124,8 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
                     NestedOverload = overload,
                     MarshalLayerToNested = layer,
                     ReturnType = returnType,
-                    ReturnVariableName = newReturnName
+                    ReturnVariableName = newReturnName,
+                    OverloaderType = GetType()
                 }
             };
 
@@ -174,7 +176,8 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
                     NestedOverload = overload,
                     MarshalLayerToNested = new BoolLayer(overloadedParameters),
                     InputParameters = parameters,
-                    NameTable = nameTable
+                    NameTable = nameTable,
+                    OverloaderType = GetType()
                 }
             };
 
@@ -190,39 +193,39 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
 
         private record SingleVectorLayer(Parameter CountParameters, Parameter PtrParam, Parameter VectorParam) : IOverloadLayer
         {
-            private CsScope scope;
+            private IDisposable? scope;
 
             public void WritePrologue(IndentedTextWriter writer, NameTable nameTable)
             {
                 var vectorType = ((CSRef)VectorParam.Type).ReferencedType;
                 writer.WriteLine($"{CountParameters.Type.ToCSString()} {nameTable[CountParameters]} = 1;");
-                writer.WriteLine($"fixed ({vectorType.ToCSString()}* tmp_vecPtr = &{nameTable[VectorParam]})");
-                scope = writer.CsScope();
+                writer.WriteLine($"fixed ({vectorType.ToCSString()}* tmp_vecPtr = &{nameTable[VectorParam]}) // {GetType().Name}");
+                scope = writer.Indent();
                 writer.WriteLine($"{PtrParam.Type.ToCSString()} {nameTable[PtrParam]} = ({PtrParam.Type.ToCSString()})tmp_vecPtr;");
             }
 
             public string? WriteEpilogue(IndentedTextWriter writer, NameTable nameTable, string? returnName)
             {
-                scope.Dispose();
+                scope?.Dispose();
                 return returnName;
             }
         }
 
         private record SpanArrayVectorLayer(Parameter CountParameter, Parameter PtrParam, Parameter VectorParam) : IOverloadLayer
         {
-            private CsScope scope;
+            private IDisposable? scope;
 
             public void WritePrologue(IndentedTextWriter writer, NameTable nameTable)
             {
                 var vectorType = ((CSRef)VectorParam.Type).ReferencedType;
-                writer.WriteLine($"fixed ({vectorType.ToCSString()}* tmp_vecPtr = {nameTable[VectorParam]})");
-                scope = writer.CsScope();
+                writer.WriteLine($"fixed ({vectorType.ToCSString()}* tmp_vecPtr = {nameTable[VectorParam]}) // {GetType().Name}");
+                scope = writer.Indent();
                 writer.WriteLine($"{PtrParam.Type.ToCSString()} {nameTable[PtrParam]} = ({PtrParam.Type.ToCSString()})tmp_vecPtr;");
             }
 
             public string? WriteEpilogue(IndentedTextWriter writer, NameTable nameTable, string? returnName)
             {
-                scope.Dispose();
+                scope?.Dispose();
                 return returnName;
             }
         }
@@ -395,7 +398,8 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
                     InputParameters = singleParameters.Where(p => p != lengthParameter).ToArray(),
                     NameTable = nameTable,
                     NestedOverload = overload,
-                    MarshalLayerToNested = new SingleVectorLayer(lengthParameter, ptrParam, vectorParam)
+                    MarshalLayerToNested = new SingleVectorLayer(lengthParameter, ptrParam, vectorParam),
+                    OverloaderType = GetType()
                 },
                 overload with
                 {
@@ -403,7 +407,8 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
                     InputParameters = spanParameters,
                     NameTable = nameTable,
                     NestedOverload = overload,
-                    MarshalLayerToNested = new SpanArrayVectorLayer(lengthParameter, ptrParam, vectorParam)
+                    MarshalLayerToNested = new SpanArrayVectorLayer(lengthParameter, ptrParam, vectorParam),
+                    OverloaderType = GetType()
                 },
                 overload with
                 {
@@ -411,7 +416,8 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
                     InputParameters = arrayParameters,
                     NameTable = nameTable,
                     NestedOverload = overload,
-                    MarshalLayerToNested = new SpanArrayVectorLayer(lengthParameter, ptrParam, vectorParam)
+                    MarshalLayerToNested = new SpanArrayVectorLayer(lengthParameter, ptrParam, vectorParam),
+                    OverloaderType = GetType()
                 },
             };
 
@@ -472,7 +478,8 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
                     NestedOverload = overload,
                     MarshalLayerToNested = new FunctionPtrToDelegateLayer(changed, original),
                     InputParameters = parameters,
-                    NameTable = nameTable
+                    NameTable = nameTable,
+                    OverloaderType = GetType()
                 }
             };
 
@@ -559,7 +566,8 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
                     NestedOverload = overload,
                     MarshalLayerToNested = new PointerToOffsetLayer(pointerParameter, offsetParameter),
                     InputParameters = newParameters,
-                    NameTable = nameTable
+                    NameTable = nameTable,
+                    OverloaderType = GetType()
                 }
             };
 
@@ -574,7 +582,8 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
             public void WritePrologue(IndentedTextWriter writer, NameTable nameTable)
             {
                 foreach (var (vptr, iptr) in ParameterNames)
-                    writer.WriteLine($"void* {nameTable[vptr]} = (void*){nameTable[iptr]};");
+                    ////writer.WriteLine($"void* {nameTable[vptr]} = (void*){nameTable[iptr]};");
+                    writer.WriteLine($"var {nameTable[vptr]} = (void*){nameTable[iptr]};");
             }
 
             public string? WriteEpilogue(IndentedTextWriter writer, NameTable nameTable, string? returnName) => returnName;
@@ -610,7 +619,8 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
                     NestedOverload = overload,
                     InputParameters = parameters,
                     MarshalLayerToNested = new VoidPtrToIntPtrOverloadLayer(parameterNames),
-                    NameTable = nameTable
+                    NameTable = nameTable,
+                    OverloaderType = GetType()
                 },
                 overload,
             };
@@ -623,19 +633,18 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
     {
         private record DeleteOverloadLayer(Parameter LengthParameter, Parameter InParameter, Parameter PointerParameter) : IOverloadLayer
         {
-            private CsScope scope;
+            private IDisposable? scope;
 
             public void WritePrologue(IndentedTextWriter writer, NameTable nameTable)
             {
                 writer.WriteLine($"{LengthParameter.Type.ToCSString()} {nameTable[LengthParameter]} = 1;");
-                writer.WriteLine(
-                    $"fixed({PointerParameter.Type.ToCSString()} {nameTable[PointerParameter]} = &{nameTable[InParameter]})");
-                scope = writer.CsScope();
+                writer.WriteLine($"fixed({PointerParameter.Type.ToCSString()} {nameTable[PointerParameter]} = &{nameTable[InParameter]}) // {GetType().Name}");
+                scope = writer.Indent();
             }
 
             public string? WriteEpilogue(IndentedTextWriter writer, NameTable nameTable, string? returnName)
             {
-                scope.Dispose();
+                scope?.Dispose();
                 return returnName;
             }
         }
@@ -725,7 +734,8 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
                     NestedOverload = overload,
                     OverloadName = newName,
                     NameTable = nameTable,
-                    MarshalLayerToNested = layer
+                    MarshalLayerToNested = layer,
+                    OverloaderType = GetType()
                 },
                 overload,
             };
@@ -750,8 +760,21 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
 
         private sealed record OutStringLayer(Parameter PointerParameter, Parameter StringLengthParameter, Parameter StringParameter) : IOverloadLayer
         {
-            public void WritePrologue(IndentedTextWriter writer, NameTable nameTable) => writer.WriteLine(
-                $"var {nameTable[PointerParameter]} = (byte*)Marshal.AllocCoTaskMem({nameTable[StringLengthParameter]});");
+            public void WritePrologue(IndentedTextWriter writer, NameTable nameTable)
+            {
+                var isLengthParameterPointer = false; 
+                var lengthParameterType = StringLengthParameter.Type;
+                if (StringLengthParameter.Type is CSPointer ptr)
+                {
+                    isLengthParameterPointer = true;
+                    lengthParameterType = ptr.BaseType;
+                }
+
+                var castString = lengthParameterType.ToCSString() != "int" ? "(int)" : "";
+                var pointerString = isLengthParameterPointer ? "*" : "";
+
+                writer.WriteLine($"var {nameTable[PointerParameter]} = (byte*)Marshal.AllocCoTaskMem({castString}{pointerString}{nameTable[StringLengthParameter]});");
+            }
 
             public string? WriteEpilogue(IndentedTextWriter writer, NameTable nameTable, string? returnName)
             {
@@ -833,7 +856,8 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
                             NestedOverload = newOverload,
                             MarshalLayerToNested = stringLayer,
                             InputParameters = stringParams,
-                            NameTable = nameTable
+                            NameTable = nameTable,
+                            OverloaderType = GetType()
                         };
                     }
                 }
@@ -856,7 +880,7 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
             Parameter PointerParameter, Parameter SpanOrArrayParameter, Parameter? LengthParameter,
             Func<string, string> ParameterExpression, BaseCSType BaseType) : IOverloadLayer
         {
-            private CsScope scope;
+            private IDisposable? scope;
 
             public void WritePrologue(IndentedTextWriter writer, NameTable nameTable)
             {
@@ -869,16 +893,17 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
                 {
                     var byteSize = BaseType is CSGenericType ? $" * sizeof({BaseType.ToCSString()})" : "";
                     var lengthExpression = ParameterExpression(nameTable[SpanOrArrayParameter]);
-                    writer.WriteLine($"{LengthParameter.Type.ToCSString()} {nameTable[LengthParameter]} = ({LengthParameter.Type.ToCSString()})({lengthExpression}{byteSize});");
+                    ////writer.WriteLine($"{LengthParameter.Type.ToCSString()} {nameTable[LengthParameter]} = ({LengthParameter.Type.ToCSString()})({lengthExpression}{byteSize});");
+                    writer.WriteLine($"var {nameTable[LengthParameter]} = ({LengthParameter.Type.ToCSString()})({lengthExpression}{byteSize});");
                 }
 
-                writer.WriteLine($"fixed ({PointerParameter.Type.ToCSString()} {nameTable[PointerParameter]} = {nameTable[SpanOrArrayParameter]})");
+                writer.WriteLine($"fixed ({PointerParameter.Type.ToCSString()} {nameTable[PointerParameter]} = {nameTable[SpanOrArrayParameter]}) // {GetType().Name}");
                 scope = writer.CsScope();
             }
 
             public string? WriteEpilogue(IndentedTextWriter writer, NameTable nameTable, string? returnName)
             {
-                scope.Dispose();
+                scope?.Dispose();
                 return returnName;
             }
         }
@@ -975,7 +1000,8 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
                         MarshalLayerToNested = spanLayer,
                         InputParameters = newSpanParams,
                         NameTable = spanNameTable,
-                        GenericTypes = genericTypes
+                        GenericTypes = genericTypes,
+                        OverloaderType = GetType()
                     };
 
                     arrayOverload = arrayOverload with
@@ -984,7 +1010,8 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
                         MarshalLayerToNested = arrayLayer,
                         InputParameters = newArrayParams,
                         NameTable = arrayNameTable,
-                        GenericTypes = genericTypes
+                        GenericTypes = genericTypes,
+                        OverloaderType = GetType()
                     };
                 }
             }
@@ -1010,13 +1037,14 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
     {
         private record RefInsteadOfPointerLayer(List<Parameter> RefParameters, List<Parameter> PointerParameters) : IOverloadLayer
         {
-            private CsScope scope;
+            private IDisposable? scope;
+
             public void WritePrologue(IndentedTextWriter writer, NameTable nameTable)
             {
                 for (var i = 0; i < RefParameters.Count; i++)
                 {
                     var type = PointerParameters[i].Type.ToCSString();
-                    writer.WriteLine($"fixed ({type} {nameTable[PointerParameters[i]]} = &{nameTable[RefParameters[i]]})");
+                    writer.WriteLine($"fixed ({type} {nameTable[PointerParameters[i]]} = &{nameTable[RefParameters[i]]}) // {GetType().Name}");
                 }
 
                 scope = writer.CsScope();
@@ -1024,7 +1052,7 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
 
             public string? WriteEpilogue(IndentedTextWriter writer, NameTable nameTable, string? returnName)
             {
-                scope.Dispose();
+                scope?.Dispose();
                 return returnName;
             }
         }
@@ -1096,7 +1124,15 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
             var layer = new RefInsteadOfPointerLayer(changed, original);
             newOverloads = new List<Overload>()
             {
-                overload with { NestedOverload = overload, MarshalLayerToNested = layer, InputParameters = parameters, NameTable = nameTable, GenericTypes = genericTypes }
+                overload with
+                {
+                    NestedOverload = overload,
+                    MarshalLayerToNested = layer,
+                    InputParameters = parameters,
+                    NameTable = nameTable,
+                    GenericTypes = genericTypes,
+                    OverloaderType = GetType()
+                }
             };
 
             return true;
@@ -1160,7 +1196,8 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
                 {
                     NestedOverload = overload, InputParameters = newParameters,
                     ReturnType = outType!.ReferencedType,
-                    MarshalLayerToNested = new OutToReturnOverloadLayer(outParameter, outType)
+                    MarshalLayerToNested = new OutToReturnOverloadLayer(outParameter, outType),
+                    OverloaderType = GetType()
                 },
                 overload
             };

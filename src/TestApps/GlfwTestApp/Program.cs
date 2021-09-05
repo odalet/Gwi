@@ -12,9 +12,10 @@ namespace GlfwTestApp
 
     class Program
     {
+        private static bool showExtensions = false;
         private static Window window;
         private static GL gl;
-        private static Random rand = new();
+        private static readonly Random rand = new();
 
         static void Main(string[] args)
         {
@@ -43,6 +44,19 @@ namespace GlfwTestApp
 
             var lib = new GlfwNativeLib();
             gl = new GL(lib);
+
+            // Info
+            Console.WriteLine("Version   : " + gl.GetString(StringName.Version));
+            Console.WriteLine("Vendor    : " + gl.GetString(StringName.Vendor));
+            Console.WriteLine("GLSL      : " + gl.GetString(StringName.ShadingLanguageVersion));
+            Console.WriteLine("Renderer  : " + gl.GetString(StringName.Renderer));
+            if (showExtensions)
+            {
+                Console.WriteLine("Extensions: ");
+                var extensions = (gl.GetString(StringName.Extensions) ?? "").Split(" ");
+                foreach (var extension in extensions)
+                    Console.WriteLine($"\t{extension}");
+            }
 
             // Set a key callback
             _ = Glfw.SetKeyCallback(window, KeyCallback);

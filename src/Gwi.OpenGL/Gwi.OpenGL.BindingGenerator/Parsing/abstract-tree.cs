@@ -34,7 +34,8 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
         NameTable NameTable,
         string ReturnVariableName,
         string[] GenericTypes,
-        string OverloadName);
+        string OverloadName,
+        Type OverloaderType);
 
     public enum OutputApi
     {

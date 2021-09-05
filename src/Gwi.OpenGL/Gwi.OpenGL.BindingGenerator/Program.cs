@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
 using Gwi.OpenGL.BindingGenerator.Parsing;
 using NLog;
 
@@ -44,30 +43,8 @@ namespace Gwi.OpenGL.BindingGenerator
 
             var here = AppDomain.CurrentDomain.BaseDirectory;
             var target = Path.Combine(here, "../../../..", "Gwi.OpenGL", "generated");
-            var writer = new CodeWriter(target);
+            var writer = new CodeWriter(target, debug: true);
             writer.Write(specification);
-
-            ////////// Let's extract the expressions
-            //////////var exprs = specification.Commands.SelectMany(c => c.Parameters).Select(p => p.Length).Where(x => x != null && x is CompSize c && c.Parameters.Length > 3).ToArray();
-
-            ////////// glClearTexImage
-            ////////var exprs = specification.Commands.Where(c => c.EntryPoint == "glClearTexImage").SelectMany(c => c.Parameters).Select(p => p.Length)
-            ////////    //.Where(x => x != null && x is CompSize c && c.Parameters.Length > 3)
-            ////////    .ToArray();
-
-            //////////// Reading the gl.xml file.
-            //////////using var stream = Reader.ReadSpecFromGithub();
-
-            //////////// TODO: Documentation.
-
-            //////////// Parsing into data structures.
-            //////////var specification = Parser.Parse(stream);
-
-            //////////// Processer/overloading
-            //////////var outputSpec = Processor.ProcessSpec(specification);
-
-            //////////// Writing cs files.
-            //////////Writer.Write(outputSpec);
         }
 
         private static void DumpParseTree(ParseTree tree)

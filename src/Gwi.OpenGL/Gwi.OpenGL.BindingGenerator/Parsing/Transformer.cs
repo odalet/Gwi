@@ -149,8 +149,17 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
             var currentOverloads = new List<Overload>
             {
                 // Make a "base" overload
-                new Overload(null, null, nativeFunction.Parameters.ToArray(), nativeFunction, nativeFunction.ReturnType,
-                    new NameTable(), "returnValue", Array.Empty<string>(), nativeFunction.Name),
+                new Overload(
+                    null,
+                    null,
+                    nativeFunction.Parameters.ToArray(), 
+                    nativeFunction, 
+                    nativeFunction.ReturnType,
+                    new NameTable(), 
+                    "returnValue", 
+                    Array.Empty<string>(), 
+                    nativeFunction.Name,
+                    typeof(Transformer))
             };
 
             var overloadedOnce = false;

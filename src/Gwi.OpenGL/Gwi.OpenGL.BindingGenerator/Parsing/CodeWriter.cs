@@ -3,7 +3,6 @@ using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using Gwi.OpenGL.BindingGenerator.Utils;
 using NLog;
 
@@ -13,13 +12,15 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
     {
         private const string baseNamespace = "Gwi";
         private const string rootNamespace = baseNamespace + ".OpenGL";
-        private const string LoaderClass = "GLLoader";
-        private const string LoaderBindingsContext = LoaderClass + ".BindingsContext";
 
-        public CodeWriter(string outputDirectory) : base(LogManager.GetCurrentClassLogger()) =>
+        public CodeWriter(string outputDirectory, bool debug) : base(LogManager.GetCurrentClassLogger())
+        {
             OutputDirectory = Path.IsPathRooted(outputDirectory) ? outputDirectory : Path.Combine(Environment.CurrentDirectory, outputDirectory);
+            EmitDebugComments = debug;
+        }
 
         private string OutputDirectory { get; }
+        private bool EmitDebugComments { get; }
 
         public void Write(Specification specification)
         {
@@ -55,14 +56,14 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
                 using (NewLogScope($"Processing {api.Api} API"))
                 {
                     LogScoped(() => WriteNativeFunctions(directory, api.Api, api.Vendors), "Write Functions");
-                    ////LogScoped(() => WriteOverloads(apiDirectory, apiNamespace, api.Vendors), "Write Overloads");
+                    LogScoped(() => WriteOverloads(directory, api.Api, api.Vendors), "Write Overloads");
                     LogScoped(() => WriteGLEnum(directory, api.Api, api.EnumEntries), "Write GLEnum");
                     LogScoped(() => WriteOtherEnums(directory, api.Api, api.EnumGroups), "Write other Enums");
                 }
             }
         }
 
-        private static void WriteNativeFunctions(string directory, OutputApi api, IReadOnlyDictionary<string, GLVendorFunctions> groups)
+        private void WriteNativeFunctions(string directory, OutputApi api, IReadOnlyDictionary<string, GLVendorFunctions> groups)
         {
             WriteVTables(directory, api, groups);
 
@@ -131,7 +132,7 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
             }
         }
 
-        private static void WriteVTables(string directory, OutputApi api, IReadOnlyDictionary<string, GLVendorFunctions> groups)
+        private void WriteVTables(string directory, OutputApi api, IReadOnlyDictionary<string, GLVendorFunctions> groups)
         {
             foreach (var vendor in groups.Keys)
             {
@@ -200,7 +201,7 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
             }
         }
 
-        private static void WriteVTable(IndentedTextWriter writer, NativeFunction function)
+        private void WriteVTable(IndentedTextWriter writer, NativeFunction function)
         {
             // Write the VTable
             var ep = function.EntryPoint;
@@ -208,7 +209,7 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
             writer.WriteLine($"private nint _{ep};");
         }
 
-        private static void WriteMethod(IndentedTextWriter writer, NativeFunction function, bool hasPostfix)
+        private void WriteMethod(IndentedTextWriter writer, NativeFunction function, bool hasPostfix)
         {
             var functionName = function.Name;
             if (hasPostfix) functionName += "_";
@@ -253,88 +254,168 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
                 writer.WriteLine($"public {returnType} {functionName}({signature}) => {body};");
         }
 
-        private static void __WriteNativeMethod(IndentedTextWriter apiWriter, IndentedTextWriter vtableWriter, NativeFunction function, bool hasPostfix)
+        private void WriteOverloads(string directory, OutputApi api, IReadOnlyDictionary<string, GLVendorFunctions> groups)
         {
-            var name = function.Name;
-            if (hasPostfix) name += "_";
-
-            var paramNames = new StringBuilder();
-            var delegateTypes = new StringBuilder();
-            var signature = new StringBuilder();
-
-            for (var i = 0; i < function.Parameters.Count; i++)
+            foreach (var vendor in groups.Keys)
             {
-                var param = function.Parameters[i];
-                var type = param.Type.ToCSString();
+                var group = groups[vendor];
+                if (!group.OverloadsGroupedByNativeFunctions.SelectMany(o => o).Any())
+                    continue;
 
-                _ = paramNames.Append(param.Name);
-                _ = delegateTypes.Append(type);
-                _ = signature.Append($"{type} {param.Name}");
+                var isGeneralGroup = string.IsNullOrEmpty(vendor);
 
-                // If we are adding more types, append a ", "
-                if (i + 1 < function.Parameters.Count)
+                // Main file goes to generated/<api>/GL.api.cs
+                var filename = Path.Combine(directory, $"GL.overloads.cs");
+                if (!isGeneralGroup)
                 {
-                    _ = paramNames.Append(", ");
-                    _ = signature.Append(", ");
+                    var dir = Path.Combine(directory, vendor);
+                    if (!Directory.Exists(dir))
+                        _ = Directory.CreateDirectory(dir);
+
+                    // Extensions files goes to generated/<vendor>/<api>/GL.<vendor>.overloads.cs
+                    filename = Path.Combine(dir, $"GL.{vendor}.overloads.cs");
                 }
 
-                _ = delegateTypes.Append(", ");
-            }
+                using var stream = File.CreateText(filename);
+                using var writer = new IndentedTextWriter(stream);
 
-            // Because there might be ABI differences between returning a struct and a primitive type we can't assume the GL function is gonna return a struct,
-            // so we need to match the native function signature excactly, to avoid a mismatch in the ABI.
-            // - 2021-06-22
-            bool handleAbiDifferenceForTypesafeHandles;
-            string returnType;
+                writer.WriteLine("// This file is auto generated, do not edit.");
+                writer.WriteLine("using System;");
+                writer.WriteLine("using System.Runtime.CompilerServices;");
+                writer.WriteLine("using System.Runtime.InteropServices;");
+                writer.WriteLine();
+                writer.WriteLine($"namespace {rootNamespace}.{api.GetNameInCode()}");
 
-            if (function.ReturnType is CSStruct returnStruct)
-            {
-                if (returnStruct.UnderlyingType == null) throw new ParsingException("A function returned a struct, but didn't have an underlying representation.");
-                returnType = returnStruct.UnderlyingType.ToCSString();
-                handleAbiDifferenceForTypesafeHandles = true;
-            }
-            else
-            {
-                returnType = function.ReturnType.ToCSString();
-                handleAbiDifferenceForTypesafeHandles = false;
-            }
+                using (writer.CsScope())
+                {
+                    // pragmas
+                    writer.WriteLineNoTabs("#pragma warning disable IDE1006 // Naming Styles");
+                    writer.WriteLineNoTabs("");
 
-            _ = delegateTypes.Append(returnType);
+                    var targetClass = isGeneralGroup ? "GL" : $"GL.{vendor}Extension";
+                    writer.WriteLine($"public static class {(isGeneralGroup ? "GLOverloads" : $"{vendor}Overloads")}");
+                    using (writer.CsScope())
+                    {
+                        var first = true;
+                        foreach (var nativeFunctionOverloads in group.OverloadsGroupedByNativeFunctions)
+                        {
+                            if (nativeFunctionOverloads.Length == 0)
+                                continue;
 
-            // Write the public method
-            if (handleAbiDifferenceForTypesafeHandles)
-                // Here we just cast and return the correct return type in the public facing function.
-                // This works because all of the structs that get here should have a defined cast from the primitive type to the struct type.
-                // These casts need to be added manually for this to work correctly.
-                // - 2021-06-22
-                apiWriter.WriteLine($"public static {function.ReturnType.ToCSString()} {name}({signature}) => ({function.ReturnType.ToCSString()}) _{name}_fnptr({paramNames});");
-            else
-                apiWriter.WriteLine($"public static {returnType} {name}({signature}) => _{name}_fnptr({paramNames});");
+                            if (first)
+                                first = false;
+                            else
+                                writer.WriteLineNoTabs("");
 
-            // Write the delegate
-            apiWriter.WriteLine($"private static delegate* unmanaged<{delegateTypes}> _{name}_fnptr = &{name}_Lazy;");
+                            var functionName = nativeFunctionOverloads[0].NativeFunction.Name;
+                            var hasPostfix = group.NativeFunctionsWithPostfix.Contains(nativeFunctionOverloads[0].NativeFunction);
+                            if (hasPostfix) functionName += "_";
+                            writer.WriteLine($"// {functionName} overloads");
+                            writer.WriteLineNoTabs("");
 
-            // Write the lazy loader
-            apiWriter.WriteLine($"[UnmanagedCallersOnly]");
-            apiWriter.WriteLine($"private static {returnType} {name}_Lazy({signature})");
-            using (apiWriter.CsScope())
-            {
-                // Dotnet gurantees you can't get torn values when assigning function pointers, assuming proper allignment which is default.
-                apiWriter.WriteLine($"_{name}_fnptr = (delegate* unmanaged<{delegateTypes}>){LoaderBindingsContext}.GetProcAddress(\"{function.EntryPoint}\");");
+                            var count = 0;
+                            foreach (var overload in nativeFunctionOverloads)
+                            {
+                                WriteOverloadMethod(writer, overload, targetClass, hasPostfix);
+                                count++;
+                                if (count != nativeFunctionOverloads.Length)
+                                    writer.WriteLineNoTabs("");
+                            }
+                        }
+                    }
 
-                if (function.ReturnType is not CSVoid)
-                    apiWriter.WriteLine($"return _{name}_fnptr({paramNames});");
-                else
-                    apiWriter.WriteLine($"_{name}_fnptr({paramNames});");
+                    // pragmas
+                    writer.WriteLineNoTabs("");
+                    writer.WriteLineNoTabs("#pragma warning restore IDE1006 // Naming Styles");
+                }
+
+                writer.Flush();
             }
         }
 
-        private static void WriteOverloads(string directoryPath, OutputApi api, IReadOnlyDictionary<string, GLVendorFunctions> groups)
+        private void WriteOverloadMethod(IndentedTextWriter writer, Overload overload, string targetClass, bool hasPostfix)
         {
+            if (EmitDebugComments)
+                writer.WriteLine($"// Generated by {overload.OverloaderType}");
 
+            // if we don't have a MarshalLayerToNested field, the method can be written as a one-liner
+            var isOneLiner = overload.MarshalLayerToNested == null && overload.ReturnType is CSVoid;
+            var hasGenericTypes = overload.GenericTypes.Length != 0;
+
+            var genericTypes = overload.GenericTypes.Length <= 0 ? "" : $"<{string.Join(", ", overload.GenericTypes)}>";
+            var parameters = string.Join(", ", overload.InputParameters.Select(p => $"{p.Type.ToCSString()} {p.Name}"));
+            var allParameters = string.IsNullOrEmpty(parameters) ?
+                $"this {targetClass} glInstance" :
+                $"this {targetClass} glInstance, {parameters}";
+            writer.WriteLine($"public static unsafe {overload.ReturnType.ToCSString()} {overload.OverloadName}{genericTypes}({allParameters}){(isOneLiner && !hasGenericTypes ? " =>" : "")}");
+
+            if (hasGenericTypes)
+                using (writer.Indent())
+                {
+                    foreach (var type in overload.GenericTypes)
+                        writer.WriteLine($"where {type} : unmanaged");
+                    if (isOneLiner)
+                        writer.WriteLine($"=>");
+                }
+
+            if (isOneLiner) using (writer.Indent())
+                    _ = WriteNestedOverload(writer, overload, new NameTable(), hasPostfix);
+            else using (writer.CsScope())
+                {
+                    if (overload.ReturnType is not CSVoid && overload.NativeFunction.ReturnType is not CSVoid)
+                        writer.WriteLine($"{overload.NativeFunction.ReturnType.ToCSString()} returnValue;");
+
+                    var returnName = WriteNestedOverload(writer, overload, new NameTable(), hasPostfix);
+                    if (returnName != null)
+                        writer.WriteLine($"return {returnName};");
+                }
+
+            ////var scope = isOneLiner ? default(CsScope?) : writer.CsScope();
+
+            ////if (overload.ReturnType is not CSVoid && overload.NativeFunction.ReturnType is not CSVoid)
+            ////    writer.WriteLine($"{overload.NativeFunction.ReturnType.ToCSString()} returnValue;");
+
+            ////var returnName = WriteNestedOverload(writer, overload, new NameTable(), hasPostfix);
+            ////if (returnName != null)
+            ////    writer.WriteLine($"return {returnName};");
+
+            ////scope?.Dispose();
         }
 
-        private static void WriteGLEnum(string directory, OutputApi api, IReadOnlyCollection<EnumEntry> allEnumEntries)
+        private string? WriteNestedOverload(IndentedTextWriter writer, Overload overload, NameTable nameTable, bool postfixNativeCall)
+        {
+            // Update the name table with the names for this overload.
+            nameTable.Apply(overload.NameTable);
+            overload.MarshalLayerToNested?.WritePrologue(writer, nameTable);
+
+            string? returnName;
+            if (overload.NestedOverload != null)
+                returnName = WriteNestedOverload(writer, overload.NestedOverload, nameTable, postfixNativeCall);
+            else
+            {
+                // Writes the native call.
+                var nativeFunction = overload.NativeFunction;
+                var name = nativeFunction.Name;
+                if (postfixNativeCall) name += "_";
+
+                var arguments = string.Join(", ", nativeFunction.Parameters.Select(p => nameTable[p]));
+
+                if (nativeFunction.ReturnType is CSVoid)
+                {
+                    writer.WriteLine($"glInstance.{name}({arguments});");
+                    return null;
+                }
+                else
+                {
+                    writer.WriteLine($"returnValue = glInstance.{name}({arguments});");
+                    return "returnValue";
+                }
+            }
+
+            return overload.MarshalLayerToNested?.WriteEpilogue(writer, nameTable, returnName) ?? returnName;
+        }
+
+        private void WriteGLEnum(string directory, OutputApi api, IReadOnlyCollection<EnumEntry> allEnumEntries)
         {
             var filename = Path.Combine(directory, $"{Constants.GLEnumName}.cs");
             using var stream = File.CreateText(filename);
@@ -369,7 +450,7 @@ namespace Gwi.OpenGL.BindingGenerator.Parsing
             writer.Flush();
         }
 
-        private static void WriteOtherEnums(string directory, OutputApi api, IReadOnlyCollection<EnumGroup> enumGroups)
+        private void WriteOtherEnums(string directory, OutputApi api, IReadOnlyCollection<EnumGroup> enumGroups)
         {
             var filename = Path.Combine(directory, "enums.cs");
             using var stream = File.CreateText(filename);
