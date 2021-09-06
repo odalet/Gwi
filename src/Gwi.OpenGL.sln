@@ -16,7 +16,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gwi.OpenGL", "Gwi.OpenGL\Gw
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestApps", "TestApps", "{857EBA3A-436A-4F71-A8B1-3D1A59F7C695}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlfwTestApp", "TestApps\GlfwTestApp\GlfwTestApp.csproj", "{43EB18A4-4BC2-4C78-95CD-C7145701943D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GlfwTestApp", "TestApps\GlfwTestApp\GlfwTestApp.csproj", "{43EB18A4-4BC2-4C78-95CD-C7145701943D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlfwSlikTestApp", "TestApps\GlfwSlikTestApp\GlfwSlikTestApp.csproj", "{40359287-F5D7-474C-936C-F793B6F0923D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,12 +38,17 @@ Global
 		{43EB18A4-4BC2-4C78-95CD-C7145701943D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{43EB18A4-4BC2-4C78-95CD-C7145701943D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{43EB18A4-4BC2-4C78-95CD-C7145701943D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40359287-F5D7-474C-936C-F793B6F0923D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40359287-F5D7-474C-936C-F793B6F0923D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40359287-F5D7-474C-936C-F793B6F0923D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40359287-F5D7-474C-936C-F793B6F0923D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{43EB18A4-4BC2-4C78-95CD-C7145701943D} = {857EBA3A-436A-4F71-A8B1-3D1A59F7C695}
+		{40359287-F5D7-474C-936C-F793B6F0923D} = {857EBA3A-436A-4F71-A8B1-3D1A59F7C695}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A90FCCD7-4266-41F4-9411-935664326AE1}
