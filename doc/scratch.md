@@ -3,6 +3,18 @@
 ## Articles
 
 * From the authors of [Gio](https://gioui.org/): [Immediate Mode GUI Programming](https://eliasnaur.com/blog/immediate-mode-gui-programming)
+* [Gui Architecture with Graphics APIs](https://alain.xyz/blog/gui-architecture-with-graphics-apis)
+
+### MVU
+
+* <https://github.com/dotnet/Comet>
+* <https://github.com/elmish/elmish>
+* <https://github.com/JaggerJo/Avalonia.FuncUI>
+* Elm
+  * <https://elm-lang.org/>
+  * <https://elm-ui.netlify.app/>
+  * <https://package.elm-lang.org/packages/mdgriffith/elm-ui/latest/>
+* <https://github.com/hecrj/iced>
 
 ## Libraries
 
@@ -31,6 +43,15 @@
 
 * [scratch.cs](./scratch.cs)
 * SDL-based text editor: <https://github.com/rxi/lite>
+
+## Vulkan
+
+* [Vulkan Tutorial Series](https://vulkan-tutorial.com/Introduction)
+* [Integrating Dear ImGui in a custom Vulkan renderer](https://frguthmann.github.io/posts/vulkan_imgui/)
+
+## ImGui
+
+* <https://lighttracer.org/app.html>
 
 ## GlfwTestApp
 
