@@ -53,6 +53,13 @@
 
 * <https://lighttracer.org/app.html>
 
+## Misc
+
+* [CppCon 2017: Nicolas Guillemot “Design Patterns for Low-Level Real-Time Rendering”](https://www.youtube.com/watch?v=mdPeXJ0eiGc)
+  * Slides: <https://github.com/CppCon/CppCon2017>
+  * ![1](./images/cppcon-2017-1.png)
+  * ![2](./images/cppcon-2017-2.png)
+
 ## GlfwTestApp
 
 ### WSL
