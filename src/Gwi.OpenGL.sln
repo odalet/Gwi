@@ -18,7 +18,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestApps", "TestApps", "{85
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GlfwTestApp", "TestApps\GlfwTestApp\GlfwTestApp.csproj", "{43EB18A4-4BC2-4C78-95CD-C7145701943D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlfwSlikTestApp", "TestApps\GlfwSlikTestApp\GlfwSlikTestApp.csproj", "{40359287-F5D7-474C-936C-F793B6F0923D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GlfwSlikTestApp", "TestApps\GlfwSlikTestApp\GlfwSlikTestApp.csproj", "{40359287-F5D7-474C-936C-F793B6F0923D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gwi.OpenGL.BindingGenerator.V1", "Gwi.OpenGL\Gwi.OpenGL.BindingGenerator.V1\Gwi.OpenGL.BindingGenerator.V1.csproj", "{FA067230-CC42-4C4B-B6DE-57701C111013}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,6 +44,10 @@ Global
 		{40359287-F5D7-474C-936C-F793B6F0923D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40359287-F5D7-474C-936C-F793B6F0923D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40359287-F5D7-474C-936C-F793B6F0923D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA067230-CC42-4C4B-B6DE-57701C111013}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA067230-CC42-4C4B-B6DE-57701C111013}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA067230-CC42-4C4B-B6DE-57701C111013}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA067230-CC42-4C4B-B6DE-57701C111013}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

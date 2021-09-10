@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using Gwi.OpenGL.BindingGenerator.Parsing;
 using NLog;
 
 namespace Gwi.OpenGL.BindingGenerator
@@ -34,26 +35,22 @@ namespace Gwi.OpenGL.BindingGenerator
             var glXmlSourceFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "input", "gl.xml");
 
             var parser = new Parser(glXmlSourceFile);
-            //parser.DumpStatistics();
-
             var tree = parser.Parse();
+            DumpParseTree(tree); // for debugging purpose
 
-            var done = 42;
-            //DumpParseTree(tree); // for debugging purpose
+            var transformer = new Transformer(tree);
+            var specification = transformer.Transform();
 
-            //var transformer = new Transformer(tree);
-            //var specification = transformer.Transform();
-
-            //var here = AppDomain.CurrentDomain.BaseDirectory;
-            //var target = Path.Combine(here, "../../../..", "Gwi.OpenGL", "generated");
-            //var writer = new CodeWriter(target, debug: true);
-            //writer.Write(specification);
+            var here = AppDomain.CurrentDomain.BaseDirectory;
+            var target = Path.Combine(here, "../../../..", "Gwi.OpenGL", "generated");
+            var writer = new CodeWriter(target, debug: true);
+            writer.Write(specification);
         }
 
-        //private static void DumpParseTree(ParseTree tree)
-        //{
-        //    using var file = File.CreateText(@"c:\temp\gl.md");
-        //    ParseTreeDumper.DumpToMarkdown(file, tree);
-        //}
+        private static void DumpParseTree(ParseTree tree)
+        {
+            using var file = File.CreateText(@"c:\temp\gl.md");
+            ParseTreeDumper.DumpToMarkdown(file, tree);
+        }
     }
 }

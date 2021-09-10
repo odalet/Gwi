@@ -1,0 +1,102 @@
+    <enums namespace="GL" group="MapBufferAccessMask" type="bitmask">
+        <enum value="0x0001" name="GL_MAP_READ_BIT" group="MapBufferAccessMask,BufferStorageMask"/>
+        <enum value="0x0001" name="GL_MAP_READ_BIT_EXT" group="MapBufferAccessMask,BufferStorageMask"/>
+        <enum value="0x0002" name="GL_MAP_WRITE_BIT" group="MapBufferAccessMask,BufferStorageMask"/>
+        <enum value="0x0002" name="GL_MAP_WRITE_BIT_EXT" group="MapBufferAccessMask,BufferStorageMask"/>
+        <enum value="0x0004" name="GL_MAP_INVALIDATE_RANGE_BIT" group="MapBufferAccessMask"/>
+        <enum value="0x0004" name="GL_MAP_INVALIDATE_RANGE_BIT_EXT" group="MapBufferAccessMask"/>
+        <enum value="0x0008" name="GL_MAP_INVALIDATE_BUFFER_BIT" group="MapBufferAccessMask"/>
+        <enum value="0x0008" name="GL_MAP_INVALIDATE_BUFFER_BIT_EXT" group="MapBufferAccessMask"/>
+        <enum value="0x0010" name="GL_MAP_FLUSH_EXPLICIT_BIT" group="MapBufferAccessMask"/>
+        <enum value="0x0010" name="GL_MAP_FLUSH_EXPLICIT_BIT_EXT" group="MapBufferAccessMask"/>
+        <enum value="0x0020" name="GL_MAP_UNSYNCHRONIZED_BIT" group="MapBufferAccessMask"/>
+        <enum value="0x0020" name="GL_MAP_UNSYNCHRONIZED_BIT_EXT" group="MapBufferAccessMask"/>
+        <enum value="0x0040" name="GL_MAP_PERSISTENT_BIT" group="MapBufferAccessMask,BufferStorageMask"/>
+        <enum value="0x0040" name="GL_MAP_PERSISTENT_BIT_EXT" group="MapBufferAccessMask,BufferStorageMask"/>
+        <enum value="0x0080" name="GL_MAP_COHERENT_BIT" group="MapBufferAccessMask,BufferStorageMask"/>
+        <enum value="0x0080" name="GL_MAP_COHERENT_BIT_EXT" group="MapBufferAccessMask,BufferStorageMask"/>
+    </enums>
+
+    <enums namespace="GL" group="BufferStorageMask" type="bitmask" comment="GL_MAP_{COHERENT,PERSISTENT,READ,WRITE}_{BIT,BIT_EXT} also lie in this namespace">
+        <enum value="0x0100" name="GL_DYNAMIC_STORAGE_BIT" group="BufferStorageMask"/>
+        <enum value="0x0100" name="GL_DYNAMIC_STORAGE_BIT_EXT" group="BufferStorageMask"/>
+        <enum value="0x0200" name="GL_CLIENT_STORAGE_BIT" group="BufferStorageMask"/>
+        <enum value="0x0200" name="GL_CLIENT_STORAGE_BIT_EXT" group="BufferStorageMask"/>
+        <enum value="0x0400" name="GL_SPARSE_STORAGE_BIT_ARB" group="BufferStorageMask"/>
+        <enum value="0x0800" name="GL_LGPU_SEPARATE_STORAGE_BIT_NVX" group="BufferStorageMask"/>
+        <enum value="0x0800" name="GL_PER_GPU_STORAGE_BIT_NV" group="BufferStorageMask"/>
+            <unused start="0x1000" end="0x1000" comment="Reserved for NVIDIA"/>
+        <enum value="0x2000" name="GL_EXTERNAL_STORAGE_BIT_NVX" group="BufferStorageMask"/>
+            <!-- Also used: 0x000000ff for bits reused from MapBufferAccessMask below -->
+    </enums>    
+
+
+<!--
+    [Flags]
+    public enum BufferStorageMask : uint
+    {
+        MapReadBit = 1,
+        MapWriteBit = 2,
+        MapPersistentBit = 64,
+        MapCoherentBit = 128,
+        DynamicStorageBit = 256,
+        ClientStorageBit = 512,
+        SparseStorageBitArb = 1024,
+        LgpuSeparateStorageBitNvx = 2048,
+        PerGpuStorageBitNv = 2048
+    }
+
+    [Flags]
+    public enum MapBufferAccessMask : uint
+    {
+        MapReadBit = 1,
+        MapWriteBit = 2,
+        MapInvalidateRangeBit = 4,
+        MapInvalidateBufferBit = 8,
+        MapFlushExplicitBit = 16,
+        MapUnsynchronizedBit = 32,
+        MapPersistentBit = 64,
+        MapCoherentBit = 128
+    }    
+
+    [Flags]
+    public enum MemoryBarrierMask : uint
+    {
+        VertexAttribArrayBarrierBit = 1,
+        VertexAttribArrayBarrierBitExt = 1,
+        ElementArrayBarrierBit = 2,
+        ElementArrayBarrierBitExt = 2,
+        UniformBarrierBit = 4,
+        UniformBarrierBitExt = 4,
+        TextureFetchBarrierBit = 8,
+        TextureFetchBarrierBitExt = 8,
+        ShaderGlobalAccessBarrierBitNv = 16,
+        ShaderImageAccessBarrierBit = 32,
+        ShaderImageAccessBarrierBitExt = 32,
+        CommandBarrierBit = 64,
+        CommandBarrierBitExt = 64,
+        PixelBufferBarrierBit = 128,
+        PixelBufferBarrierBitExt = 128,
+        TextureUpdateBarrierBit = 256,
+        TextureUpdateBarrierBitExt = 256,
+        BufferUpdateBarrierBit = 512,
+        BufferUpdateBarrierBitExt = 512,
+        FramebufferBarrierBit = 1024,
+        FramebufferBarrierBitExt = 1024,
+        TransformFeedbackBarrierBit = 2048,
+        TransformFeedbackBarrierBitExt = 2048,
+        AtomicCounterBarrierBit = 4096,
+        AtomicCounterBarrierBitExt = 4096,
+        ShaderStorageBarrierBit = 8192,
+        ClientMappedBufferBarrierBit = 16384,
+        QueryBufferBarrierBit = 32768,
+        AllBarrierBits = 4294967295,
+        AllBarrierBitsExt = 4294967295
+    }
+    
+public void BufferStorageExternalEXT(GLEnum target, IntPtr offset, nint size, void* clientBuffer, BufferStorageMask flags) => 
+    ((delegate* unmanaged[Cdecl]<GLEnum, IntPtr, nint, void*, BufferStorageMask, void>)vtable.glBufferStorageExternalEXT)(target, offset, size, clientBuffer, flags);
+public void NamedBufferStorageExternalEXT(BufferHandle buffer, IntPtr offset, nint size, void* clientBuffer, BufferStorageMask flags) => 
+    ((delegate* unmanaged[Cdecl]<BufferHandle, IntPtr, nint, void*, BufferStorageMask, void>)vtable.glNamedBufferStorageExternalEXT)(buffer, offset, size, clientBuffer, flags);
+
+-->    
