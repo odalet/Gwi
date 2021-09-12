@@ -35,10 +35,16 @@ namespace Gwi.OpenGL.BindingGenerator
 
             var parser = new Parser(glXmlSourceFile);
             //parser.DumpStatistics();
+            //return;
 
             var tree = parser.Parse();
 
-            var done = 42;
+            var here = AppDomain.CurrentDomain.BaseDirectory;
+            var target = Path.Combine(here, "../../../..", "Gwi.OpenGL", "generated");
+            var generator = new CodeGenerator(target, debug: true);
+            generator.Write(tree);
+
+
             //DumpParseTree(tree); // for debugging purpose
 
             //var transformer = new Transformer(tree);

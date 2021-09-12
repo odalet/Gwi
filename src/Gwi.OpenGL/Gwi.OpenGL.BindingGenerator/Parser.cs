@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -10,43 +11,6 @@ using NLog;
 
 namespace Gwi.OpenGL.BindingGenerator
 {
-    internal abstract class BaseProcessor
-    {
-        private readonly ILogger log;
-        private const string tab = "\t";
-        private int indentationLevel;
-
-        protected BaseProcessor(ILogger logger)
-        {
-            log = logger;
-            LogIndentation = "";
-        }
-
-        protected string LogIndentation { get; private set; }
-
-        protected void LogInfo(string text) => log.Info($"{LogIndentation}{text}");
-
-        protected void IndentLog() 
-        {
-            indentationLevel++; 
-            ApplyIndent(); 
-        }
-        
-        protected void DedentLog() 
-        {
-            indentationLevel--; 
-            ApplyIndent(); 
-        }
-
-        private void ApplyIndent()
-        {
-            if (indentationLevel < 0) indentationLevel = 0;
-            if (indentationLevel == 0) LogIndentation = "";
-            for (var i = 0; i < indentationLevel; i++)
-                LogIndentation += tab;
-        }
-    }
-
     internal sealed class Parser : BaseProcessor
     {
         private static readonly ILogger log = LogManager.GetCurrentClassLogger();
@@ -62,7 +26,6 @@ namespace Gwi.OpenGL.BindingGenerator
 
         private string FileName { get; }
         private XElement Root { get; }
-
 
         public void DumpStatistics()
         {
@@ -80,20 +43,29 @@ namespace Gwi.OpenGL.BindingGenerator
             var distinctSupportedApis = distinctSupportedValues.SelectMany(s => s.Split('|')).Distinct().OrderBy(x => x).ToArray();
             log.Info($"Distinct supported APIs: {string.Join(", ", distinctSupportedApis)}");
 
-            var coreProfileRemoveElements = descendants.Where(xe => xe.Name == "remove" && xe.Attribute("profile")?.Value == "core");
-            var removedCommands = coreProfileRemoveElements.SelectMany(xe => xe.Elements("command")).Select(xe => xe.Attribute("name")?.Value ?? "");
-            var removedEnums = coreProfileRemoveElements.SelectMany(xe => xe.Elements("enum")).Select(xe => xe.Attribute("name")?.Value ?? "");
-            var allRemoved = removedCommands.Concat(removedEnums).Where(s => !string.IsNullOrEmpty(s)).Distinct().OrderBy(x => x).ToArray();
-            //log.Info($"Core Profile - Removed commands and enums:\r\n\t{string.Join("\r\n\t", allRemoved)}");
+            //var coreProfileRemoveElements = descendants.Where(xe => xe.Name == "remove" && xe.Attribute("profile")?.Value == "core");
+            //var removedCommands = coreProfileRemoveElements.SelectMany(xe => xe.Elements("command")).Select(xe => xe.Attribute("name")?.Value ?? "");
+            //var removedEnums = coreProfileRemoveElements.SelectMany(xe => xe.Elements("enum")).Select(xe => xe.Attribute("name")?.Value ?? "");
+            //var allRemoved = removedCommands.Concat(removedEnums).Where(s => !string.IsNullOrEmpty(s)).Distinct().OrderBy(x => x).ToArray();
+            ////log.Info($"Core Profile - Removed commands and enums:\r\n\t{string.Join("\r\n\t", allRemoved)}");
 
-            var compatibilityProfileRequiredElements = descendants.Where(xe => xe.Name == "require" && xe.Attribute("profile")?.Value == "compatibility");
-            var requiredCommands = compatibilityProfileRequiredElements.SelectMany(xe => xe.Elements("command")).Select(xe => xe.Attribute("name")?.Value ?? "");
-            var requiredEnums = compatibilityProfileRequiredElements.SelectMany(xe => xe.Elements("enum")).Select(xe => xe.Attribute("name")?.Value ?? "");
-            var allRequired = requiredCommands.Concat(requiredEnums).Where(s => !string.IsNullOrEmpty(s)).Distinct().OrderBy(x => x).ToArray();
-            //log.Info($"Compatibility Profile - Required commands and enums:\r\n\t{string.Join("\r\n\t", allRequired)}");
+            //var compatibilityProfileRequiredElements = descendants.Where(xe => xe.Name == "require" && xe.Attribute("profile")?.Value == "compatibility");
+            //var requiredCommands = compatibilityProfileRequiredElements.SelectMany(xe => xe.Elements("command")).Select(xe => xe.Attribute("name")?.Value ?? "");
+            //var requiredEnums = compatibilityProfileRequiredElements.SelectMany(xe => xe.Elements("enum")).Select(xe => xe.Attribute("name")?.Value ?? "");
+            //var allRequired = requiredCommands.Concat(requiredEnums).Where(s => !string.IsNullOrEmpty(s)).Distinct().OrderBy(x => x).ToArray();
+            ////log.Info($"Compatibility Profile - Required commands and enums:\r\n\t{string.Join("\r\n\t", allRequired)}");
 
-            var removedThenRequired = allRequired.Where(x => allRemoved.Contains(x)).ToArray();
-            log.Info($"Commands and enums removed in core profile and required in compatibility profile:\r\n\t{string.Join("\r\n\t", removedThenRequired)}");
+            //var removedThenRequired = allRequired.Where(x => allRemoved.Contains(x)).ToArray();
+            //log.Info($"Commands and enums removed in core profile and required in compatibility profile:\r\n\t{string.Join("\r\n\t", removedThenRequired)}");
+
+            //var distinctLens = descendants.Where(xe => xe.Name == "param" && xe.Attribute("len") != null).Select(xe => xe.Attribute("len")?.Value ?? "").Distinct().ToArray();
+            //log.Info($"Distinct Len Expressions:\r\n\t{string.Join("\r\n\t", distinctLens)}");
+
+            var distinctPTypes = descendants.Where(xe => xe.Name == "param").Select(ParsePType).Select(p => p.Declaration).Distinct().ToArray();
+            log.Info($"Distinct PTypes:\r\n\t{string.Join("\r\n\t", distinctPTypes)}");
+
+            //var distinctReturnTypes = descendants.Where(xe => xe.Name == "proto").Select(xe => GetXmlText(xe, e => e.Name == "name" ? string.Empty : e.Value).Trim()).Distinct().ToArray();
+            //log.Info($"Distinct Return Types:\r\n\t{string.Join("\r\n\t", distinctReturnTypes)}");
         }
 
         public ParseTree Parse() => Parse(Root);
@@ -110,30 +82,50 @@ namespace Gwi.OpenGL.BindingGenerator
             //return new ParseTree(commands, enumerations, features, extensions);
 
             IndentLog();
+            var vendors = ParseVendors(root);
             var commands = ParseCommands(root);
+            var enums = ParseEnums(root);
             DedentLog();
-            return new ParseTree(commands);
+            return new ParseTree(vendors, commands, enums);
+        }
+
+        private static List<string> ParseVendors(XElement root)
+        {
+            var descendants = root.XPathSelectElements("descendant::*").ToArray();
+            var vendors = new HashSet<string>();
+            foreach (var vendor in descendants.SelectMany(xe => xe.Attributes("vendor")).Select(xa => xa.Value).Distinct().OrderBy(x => x))
+            {
+                if (vendor.Contains("/")) // There is 1 such case: "AMD/NV"
+                    foreach (var v in vendor.Split('/').Select(x => x.Trim()))
+                        _ = vendors.Add(v);
+                else _ = vendors.Add(vendor);
+            }
+
+            // The strings below do not appear in any vendor attribute, but they appear as suffix in enums and commands
+            _ = vendors.Add("ATI"); 
+            _ = vendors.Add("SGIX");
+            _ = vendors.Add("EXT");
+
+            return vendors.ToList();
         }
 
         private List<Command> ParseCommands(XElement xe)
         {
             LogInfo($"Parsing commands");
             var commands = new List<Command>();
+
             foreach (var xeCommands in xe.Elements("commands"))
-            {
-                var ns = xeCommands.Attribute("namespace")?.Value ?? "";
                 foreach (var element in xeCommands.Elements("command"))
                 {
-                    var command = ParseCommand(element, ns);
+                    var command = ParseCommand(element);
                     commands.Add(command);
                 }
-            }
 
             LogInfo($"{commands.Count} commands were parsed");
             return commands;
         }
 
-        private static Command ParseCommand(XElement xe, string commandNamespace)
+        private static Command ParseCommand(XElement xe)
         {
             var xeProto = xe.Element("proto");
             if (xeProto == null) throw new ParsingException("Missing proto in command");
@@ -142,291 +134,28 @@ namespace Gwi.OpenGL.BindingGenerator
             var entryPoint = xeProto.Element("name")?.Value;
             if (string.IsNullOrEmpty(entryPoint)) throw new ParsingException("Missing name in command/proto");
 
-            return new Command(commandNamespace, entryPoint, returnType);
+            var parameters = new List<CommandParameter>(xe.Elements("param").Select(ParseCommandParameter));
+            return new Command(entryPoint, returnType, parameters);
+        }
+
+        private static CommandParameter ParseCommandParameter(XElement xe)
+        {
+            var name = xe.Element("name")?.Value;
+            if (string.IsNullOrEmpty(name)) throw new ParsingException("Missing parameter name in command/param");
+
+            var ptype = ParsePType(xe);
+            var len = xe.Attribute("len")?.Value ?? "";
+            return new CommandParameter(name, ptype, len);
         }
 
         private static PType ParsePType(XElement xe)
         {
-            var parameterType = GetXmlText(xe, e => e.Name == "name" ? string.Empty : e.Value).Trim();
-            return new PType(parameterType);
+            var group = xe.Attribute("group")?.Value ?? "";
+            var className = xe.Attribute("class")?.Value ?? "";
+            var declaration = GetXmlText(xe, e => e.Name == "name" ? string.Empty : e.Value).Trim();
+            var glType = PTypeParser.Parse(declaration);
+            return new PType(glType, declaration, group, className);
         }
-
-        //private static Command ParseCommand(XElement xe, string commandNamespace)
-        //{
-        //    var xeProto = xe.Element("proto");
-        //    if (xeProto == null) throw new ParsingException("Missing proto in command");
-        //    var returnType = ParsePType(xeProto);
-
-        //    var entryPoint = xeProto.Element("name")?.Value;
-        //    if (string.IsNullOrEmpty(entryPoint)) throw new ParsingException("Missing name command/proto");
-
-        //    var parameters = new List<GLParameter>();
-        //    foreach (var element in xe.Elements("param"))
-        //    {
-        //        var paramName = element.Element("name")?.Value;
-        //        if (string.IsNullOrEmpty(paramName)) throw new ParsingException("Missing parameter name in command/param");
-
-        //        var ptype = ParsePType(element);
-
-        //        var len = element.Attribute("len")?.Value ?? "";
-        //        var paramLength = string.IsNullOrEmpty(len) ? null : ExprParser.Parse(len);
-
-        //        parameters.Add(new GLParameter(ptype, paramName, paramLength));
-        //    }
-
-        //    return new(commandNamespace, entryPoint, returnType, parameters.ToArray());
-        //}
-
-        //private static PType ParsePType(XElement xe)
-        //{
-        //    var group = xe.Attribute("group")?.Value;
-        //    var className = xe.Attribute("class")?.Value;
-        //    var handle = className switch
-        //    {
-        //        null => (HandleType?)null,
-        //        "program" => HandleType.ProgramHandle,
-        //        "program pipeline" => HandleType.ProgramPipelineHandle,
-        //        "texture" => HandleType.TextureHandle,
-        //        "buffer" => HandleType.BufferHandle,
-        //        "shader" => HandleType.ShaderHandle,
-        //        "query" => HandleType.QueryHandle,
-        //        "framebuffer" => HandleType.FramebufferHandle,
-        //        "renderbuffer" => HandleType.RenderbufferHandle,
-        //        "sampler" => HandleType.SamplerHandle,
-        //        "transform feedback" => HandleType.TransformFeedbackHandle,
-        //        "vertex array" => HandleType.VertexArrayHandle,
-        //        // The "Sync" class is already marked with the "GLSync" type which is handled differently from the other types
-        //        // We leave it null here to let the "GLSync" handling do this.
-        //        "sync" => null,
-        //        "display list" => HandleType.DisplayListHandle,
-        //        _ => throw new ParsingException(className + " is not a supported handle type yet!"),
-        //    };
-
-        //    var parameterType = GetXmlText(xe, e => e.Name == "name" ? string.Empty : e.Value).Trim();
-        //    return new PType(GLTypeParser.Parse(parameterType), handle, group);
-        //}
-
-        //private IReadOnlyCollection<Enumerant> ParseEnumerants(XElement xe)
-        //{
-        //    static EnumerantType parseEnumerantType(string value) => value switch
-        //    {
-        //        "" => EnumerantType.None,
-        //        "bitmask" => EnumerantType.Bitmask,
-        //        _ => EnumerantType.Invalid,
-        //    };
-
-        //    var enums = new List<Enumerant>();
-        //    foreach (var xeEnums in xe.Elements("enums"))
-        //    {
-        //        var ns = xeEnums.Attribute("namespace")?.Value;
-        //        if (string.IsNullOrEmpty(ns)) throw new ParsingException($"Enum '{xeEnums}' is missing a namespace attribute.");
-
-        //        var groups = xeEnums.Attribute("group")?.Value?.Split(',', StringSplitOptions.RemoveEmptyEntries) ?? Array.Empty<string>();
-        //        var vendor = xeEnums.Attribute("vendor")?.Value ?? "";
-        //        var enumType = parseEnumerantType(xeEnums.Attribute("type")?.Value ?? "");
-
-        //        // An Enums either has both start/end or none
-        //        var startString = xeEnums.Attribute("start")?.Value;
-        //        var endString = xeEnums.Attribute("end")?.Value;
-        //        if (startString == null && endString != null || startString != null && endString == null)
-        //            throw new ParsingException($"Enums '{xeEnums}' is missing either a start or an end attribute.");
-
-        //        Range? range = null;
-        //        if (startString != null && endString != null)
-        //        {
-        //            var start = ParseInt(startString);
-        //            var end = ParseInt(endString);
-        //            range = new Range(start, end);
-        //        }
-
-        //        var comment = xeEnums.Attribute("comment")?.Value ?? "";
-
-        //        // Should we parse 'unused' entries?
-        //        var entries = new List<EnumerantEntry>();
-        //        foreach (var xeEnum in xeEnums.Elements("enum"))
-        //            entries.Add(ParseEnumerantEntry(xeEnum));
-
-        //        enums.Add(new Enumerant(ns, groups, enumType, vendor, range, comment, entries));
-        //    }
-
-        //    Log.Info($"{enums.Count} enums were parsed");
-        //    return enums;
-        //}
-
-        //private static EnumerantEntry ParseEnumerantEntry(XElement xe)
-        //{
-        //    static TypeSuffix parseSuffix(string suffix) => suffix switch
-        //    {
-        //        "" => TypeSuffix.None,
-        //        "u" => TypeSuffix.U,
-        //        "ull" => TypeSuffix.Ull,
-        //        _ => TypeSuffix.Invalid,
-        //    };
-
-        //    static ulong convertToUInt64(string value, TypeSuffix type) => type switch
-        //    {
-        //        TypeSuffix.None => (uint)(int)new Int32Converter().ConvertFromString(value),
-        //        TypeSuffix.Ull => (ulong)(long)new Int64Converter().ConvertFromString(value),
-        //        TypeSuffix.U => (uint)new UInt32Converter().ConvertFromString(value),
-        //        TypeSuffix.Invalid or _ => throw new ParsingException($"Invalid type suffix '{type}'!"),
-        //    };
-
-        //    var name = xe.Attribute("name")?.Value;
-        //    if (string.IsNullOrEmpty(name)) throw new ParsingException($"Enum entry has no name");
-
-        //    var valueString = xe.Attribute("value")?.Value;
-        //    if (string.IsNullOrEmpty(valueString)) throw new ParsingException($"Enum entry '{name}' has no value");
-
-        //    var suffix = parseSuffix(xe.Attribute("type")?.Value ?? "");
-        //    var value = convertToUInt64(valueString, suffix);
-        //    var alias = xe.Attribute("alias")?.Value ?? "";
-        //    var groups = xe.Attribute("group")?.Value?.Split(',', StringSplitOptions.RemoveEmptyEntries) ?? Array.Empty<string>();
-        //    var comment = xe.Attribute("comment")?.Value ?? "";
-        //    var api = ParseGLApi(xe.Attribute("api")?.Value ?? "");
-
-        //    return new EnumerantEntry(name, api, value, alias, comment, groups, suffix);
-        //}
-
-        //private IReadOnlyCollection<Feature> ParseFeatures(XElement xe)
-        //{
-        //    var features = new List<Feature>();
-        //    foreach (var xeFeature in xe.Elements("feature"))
-        //    {
-        //        var name = xeFeature.Attribute("name")?.Value;
-        //        if (string.IsNullOrEmpty(name)) throw new ParsingException($"Feature has no name.");
-
-        //        var apiString = xeFeature.Attribute("api")?.Value;
-        //        if (string.IsNullOrEmpty(apiString)) throw new ParsingException($"Feature '{name}' is missing an api attribute.");
-
-        //        var number = xeFeature.Attribute("number")?.Value;
-        //        if (string.IsNullOrEmpty(number)) throw new ParsingException($"Feature '{name}' is missing a version number attribute.");
-
-        //        var version = Version.Parse(number);
-        //        var api = ParseGLApi(apiString);
-
-        //        var requireEntries = new List<RequireEntry>();
-        //        foreach (var xeRequire in xeFeature.Elements("require"))
-        //            requireEntries.Add(ParseRequire(xeRequire));
-
-        //        var removeEntries = new List<RemoveEntry>();
-        //        foreach (var xeRemove in xeFeature.Elements("remove"))
-        //            removeEntries.Add(ParseRemove(xeRemove));
-
-        //        features.Add(new Feature(api, version, name, requireEntries, removeEntries));
-        //    }
-
-        //    Log.Info($"{features.Count} features were parsed");
-        //    return features;
-        //}
-
-        //private IReadOnlyCollection<Extension> ParseExtensions(XElement xe)
-        //{
-        //    var extensions = new List<Extension>();
-        //    foreach (var xeExtension in xe.Element("extensions")!.Elements("extension"))
-        //    {
-        //        var name = xeExtension.Attribute("name")?.Value;
-        //        if (string.IsNullOrEmpty(name)) throw new ParsingException($"Extension has no name.");
-
-        //        // Remove "GL_" and get the vendor name from the first part of the extension name
-        //        // Extension name convention: "GL_VENDOR_EXTENSION_NAME"
-        //        var nameWithoutPrefix = NameMangler.RemoveStart(name, "GL_");
-        //        var vendor = nameWithoutPrefix[..nameWithoutPrefix.IndexOf("_")];
-        //        if (string.IsNullOrEmpty(vendor)) throw new ParsingException($"Extension '{name}' doesn't define a vendor in its name!");
-
-        //        // 3DFX is a vendor...
-        //        if (char.IsDigit(vendor[0])) vendor = "_" + vendor;
-
-        //        var comment = xeExtension.Attribute("comment")?.Value ?? "";
-
-        //        var supportedApis = xeExtension
-        //            .Attribute("supported")?.Value?
-        //            .Split('|', StringSplitOptions.RemoveEmptyEntries)
-        //            .Select(ParseGLApi).ToArray();
-
-        //        if (supportedApis == null || supportedApis.Length == 0)
-        //            throw new ParsingException($"Extension '{name}' did not specify any supported APIs.");
-
-        //        var requires = new List<RequireEntry>();
-        //        foreach (var xeRequire in xeExtension.Elements("require"))
-        //            requires.Add(ParseRequire(xeRequire));
-
-        //        extensions.Add(new Extension(name, vendor, supportedApis, comment, requires));
-        //    }
-
-        //    Log.Info($"{extensions.Count} extensions were parsed");
-        //    return extensions;
-        //}
-
-        //private static RequireEntry ParseRequire(XElement xe)
-        //{
-        //    var api = ParseGLApi(xe.Attribute("api")?.Value ?? "");
-        //    var profile = ParseGLProfile(xe.Attribute("profile")?.Value ?? "");
-        //    var comment = xe.Attribute("comment")?.Value ?? "";
-
-        //    var commands = new List<string>();
-        //    var enums = new List<string>();
-
-        //    foreach (var xeEntry in xe.Elements())
-        //    {
-        //        // A few entries here have a comment attribute, but we don't bother with it yet
-        //        var name = xeEntry.Attribute("name")?.Value;
-        //        if (string.IsNullOrEmpty(name)) throw new ParsingException($"The Require entry '{xeEntry}' does not have a name attribute.");
-
-        //        switch (xeEntry.Name.LocalName)
-        //        {
-        //            case "command": commands.Add(name); break;
-        //            case "enum": enums.Add(name); break;
-        //            default: continue;
-        //        }
-        //    }
-
-        //    return new RequireEntry(api, profile, comment, commands, enums);
-        //}
-
-        //private static RemoveEntry ParseRemove(XElement xe)
-        //{
-        //    var profile = ParseGLProfile(xe.Attribute("profile")?.Value ?? "");
-        //    var comment = xe.Attribute("comment")?.Value ?? "";
-
-        //    var removeCommands = new List<string>();
-        //    var removeEnums = new List<string>();
-
-        //    foreach (var xeEntry in xe.Elements())
-        //    {
-        //        // A few entries here have a comment attribute, but we don't bother with it yet
-        //        var name = xeEntry.Attribute("name")?.Value;
-        //        if (string.IsNullOrEmpty(name)) throw new ParsingException($"The Remove entry '{xeEntry}' does not have a name attribute.");
-
-        //        switch (xeEntry.Name.LocalName)
-        //        {
-        //            case "command": removeCommands.Add(name); break;
-        //            case "enum": removeEnums.Add(name); break;
-        //            default: continue;
-        //        }
-        //    }
-
-        //    return new RemoveEntry(profile, comment, removeCommands, removeEnums);
-        //}
-
-        //private static GLApi ParseGLApi(string api) => api switch
-        //{
-        //    "" or "disabled" => GLApi.None,
-        //    "gl" => GLApi.GL,
-        //    "gles1" => GLApi.GLES1,
-        //    "gles2" => GLApi.GLES2,
-        //    "glsc2" => GLApi.GLSC2,
-        //    "glcore" => GLApi.GLCore,
-        //    _ => GLApi.Invalid,
-        //};
-
-        //public static GLProfile ParseGLProfile(string profile) => profile switch
-        //{
-        //    "" => GLProfile.None,
-        //    "core" => GLProfile.Core,
-        //    "compatibility" => GLProfile.Compatibility,
-        //    "common" => GLProfile.Common,
-        //    _ => GLProfile.Invalid,
-        //};
 
         private static int ParseInt(string str)
         {
@@ -434,6 +163,109 @@ namespace Gwi.OpenGL.BindingGenerator
             if (isHex) str = str[2..];
             return int.Parse(str, isHex ? NumberStyles.HexNumber : NumberStyles.Integer);
         }
+
+        private Enums ParseEnums(XElement xe)
+        {
+            static ulong convertToUInt64(string value, string type) => (type ?? "") switch
+            {
+                "" => (uint)(int)new Int32Converter().ConvertFromString(value),
+                "ull" => (ulong)(long)new Int64Converter().ConvertFromString(value),
+                "u" => (uint)new UInt32Converter().ConvertFromString(value),
+                _ => throw new ParsingException($"Invalid type suffix '{type}'!"),
+            };
+
+            var entries = new Dictionary<string, EnumEntry>();
+            var groupsByName = new Dictionary<string, EnumGroup>();
+            var entriesByGroupName = new Dictionary<string, Dictionary<string, EnumEntry>>();
+
+            void addOrUpdateGroup(string name, string vendor = "", bool bitmask = false)
+            {
+                if (!groupsByName.ContainsKey(name))
+                    groupsByName.Add(name, new EnumGroup(name, vendor, bitmask));
+
+                var targetGroup = groupsByName[name];
+                if (!string.IsNullOrEmpty(vendor) && string.IsNullOrEmpty(targetGroup.Vendor))
+                    targetGroup.Vendor = vendor;
+                if (bitmask && !targetGroup.IsBitMask)
+                    targetGroup.IsBitMask = true;
+            }
+
+            foreach (var xeEnums in xe.Elements("enums"))
+            {
+                var groupNames = SplitOnComma(xeEnums.Attribute("group")?.Value);
+                var vendor = xeEnums.Attribute("vendor")?.Value ?? "";
+                var isBitmask = xeEnums.Attribute("type")?.Value == "bitmask";
+                foreach (var groupName in groupNames)
+                    addOrUpdateGroup(groupName, vendor, isBitmask);
+
+                foreach (var xeEnum in xeEnums.Elements("enum"))
+                {
+                    var name = xeEnum.Attribute("name")?.Value;
+                    if (string.IsNullOrEmpty(name)) throw new ParsingException($"Enum entry has no name");
+
+                    var entryValue = xeEnum.Attribute("value")?.Value;
+                    if (string.IsNullOrEmpty(entryValue)) throw new ParsingException($"Enum entry '{name}' has no value");
+
+                    var entryType = xeEnum.Attribute("type")?.Value ?? "";
+                    var isULong = entryType.Trim() == "ull"; // nothing or "u" -> uint
+
+                    var value = convertToUInt64(entryValue, entryType);
+
+                    var alias = xeEnum.Attribute("alias")?.Value ?? "";
+                    var entryGroupNames = SplitOnComma(xeEnum.Attribute("group")?.Value);
+                    foreach (var entryGroupName in entryGroupNames)
+                        addOrUpdateGroup(entryGroupName);
+
+                    var api = ParseGLApi(xeEnum.Attribute("api")?.Value ?? "");
+
+                    if (api is GLApi.GL or GLApi.GLCore or GLApi.None)
+                    {
+                        var entry = new EnumEntry(name, alias, value, entryValue, api, isULong);
+
+                        // Add to the global list
+                        if (!entries.ContainsKey(name))
+                            entries.Add(name, entry);
+                        else
+                            LogWarn($"Enum Entry {name} was already encountered");
+
+                        // Dispatch in groups
+                        var allGroups = groupNames.Concat(entryGroupNames).Distinct().ToArray();
+                        foreach (var key in allGroups)
+                        {
+                            if (!entriesByGroupName.ContainsKey(key))
+                                entriesByGroupName.Add(key, new Dictionary<string, EnumEntry>());
+                            var groupEntries = entriesByGroupName[key];
+                            if (!groupEntries.ContainsKey(name))
+                                groupEntries.Add(name, entry);
+                            else
+                                LogWarn($"Enum Entry {name} was already encountered in Enum Group {key}");
+                        }
+                    }
+                    else LogInfo($"Ignoring Enum Entry {name} belonging to API {api}");
+                }
+            }
+
+            return new Enums(
+                entries.Select(kvp => kvp.Value).ToList(),
+                entriesByGroupName.ToDictionary(kvp => groupsByName[kvp.Key], kvp => kvp.Value.Select(kvp2 => kvp2.Value).ToList())
+                );
+        }
+
+        private static GLApi ParseGLApi(string api) => api switch
+        {
+            "" or "disabled" => GLApi.None,
+            "gl" => GLApi.GL,
+            "gles1" => GLApi.GLES1,
+            "gles2" => GLApi.GLES2,
+            "glsc2" => GLApi.GLSC2,
+            "glcore" => GLApi.GLCore,
+            _ => GLApi.Invalid,
+        };
+
+        private static string[] SplitOnComma(string? input) =>
+            string.IsNullOrEmpty(input) ?
+            Array.Empty<string>() :
+            input.Split(',').Where(e => !string.IsNullOrWhiteSpace(e)).Select(e => e.Trim()).ToArray();
 
         private static string GetXmlText(XElement element, Func<XElement, string> elementTransformer)
         {

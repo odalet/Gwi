@@ -7,3 +7,4 @@ using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("Major Code Smell", "S3925:\"ISerializable\" should be implemented correctly", Justification = "<Pending>", Scope = "type", Target = "~T:Gwi.OpenGL.BindingGenerator.ParsingException")]
 [assembly: SuppressMessage("Minor Code Smell", "S1643:Strings should not be concatenated using '+' in a loop", Justification = "<Pending>", Scope = "member", Target = "~M:Gwi.OpenGL.BindingGenerator.BaseProcessor.ApplyIndent")]
+[assembly: SuppressMessage("Style", "IDE0046:Convert to conditional expression", Justification = "<Pending>", Scope = "member", Target = "~M:Gwi.OpenGL.BindingGenerator.Utils.TransformVendor(System.String)~System.String")]

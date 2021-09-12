@@ -1,0 +1,150 @@
+Return Types:
+
+	void
+	GLboolean
+	GLuint
+	GLenum
+	GLhandleARB
+	GLsync
+	GLint
+	GLsizei
+	GLuint64
+	GLfloat
+	GLushort
+	const GLubyte *
+	GLintptr
+	void *
+	GLbitfield
+	GLvdpauSurfaceNV
+	GLVULKANPROCNV
+-----------------------------
+Parameter Types:
+
+	GLenum
+	GLfloat
+	GLfixed
+	GLuint
+	GLchar
+	GLclampf
+	GLboolean
+	GLuint64
+	GLsizei
+	GLint
+	GLbitfield
+	GLintptr
+	GLsizeiptr
+	GLhandleARB
+	GLcharARB
+	GLintptrARB
+	GLbyte
+	GLdouble
+	GLshort
+	GLubyte
+	GLuint64EXT
+	GLsizeiptrARB
+	GLeglClientBufferEXT
+	GLsync
+	GLhalfNV
+	GLushort
+	struct _cl_context
+	struct _cl_event
+	GLDEBUGPROC
+	GLDEBUGPROCAMD
+	GLDEBUGPROCARB
+	GLDEBUGPROCKHR
+	GLclampd
+	GLeglImageOES
+	GLint64
+	GLint64EXT
+	GLclampx
+	GLvdpauSurfaceNV
+	GLVULKANPROCNV
+------------------------------
+Types Definitions:
+
+GLenum
+GLfloat
+GLfixed
+GLuint
+const GLchar *
+GLclampf
+GLuint64
+GLsizei
+const GLuint *
+GLboolean *
+GLint
+const GLuint64 *
+GLbitfield
+GLintptr
+GLsizeiptr
+GLhandleARB
+const GLcharARB *
+const GLintptr *
+const GLsizeiptr *
+GLboolean
+const GLsizei *
+GLintptrARB
+GLbyte
+const GLbyte *
+GLdouble
+const GLdouble *
+const GLfloat *
+const GLint *
+GLshort
+const GLshort *
+const void *
+const GLubyte *
+GLuint64EXT
+GLsizeiptrARB
+GLeglClientBufferEXT
+GLsync
+const GLfixed *
+GLhalfNV
+const GLhalfNV *
+GLubyte
+GLushort
+const GLushort *
+const void **
+const GLchar *const*
+GLuint *
+const GLchar **
+struct _cl_context *
+struct _cl_event *
+GLdouble *
+GLfloat *
+GLDEBUGPROC
+GLDEBUGPROCAMD
+void *
+GLDEBUGPROCARB
+GLDEBUGPROCKHR
+GLclampd
+const GLenum *
+GLeglImageOES
+const GLint*
+const GLboolean *
+const GLboolean **
+void **
+GLint *
+GLchar *
+GLsizei *
+GLenum *
+GLcharARB *
+GLhandleARB *
+GLint64 *
+GLuint64EXT *
+GLfixed *
+GLubyte *
+GLuint64 *
+GLushort *
+GLint64EXT *
+const void *const*
+const GLclampf *
+GLint64
+GLint64EXT
+const GLint64 *
+const GLint64EXT *
+const GLuint64EXT *
+GLclampx
+const GLcharARB **
+GLvdpauSurfaceNV
+const GLvdpauSurfaceNV *
