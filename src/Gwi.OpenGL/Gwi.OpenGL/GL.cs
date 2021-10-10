@@ -2,17 +2,10 @@
 
 namespace Gwi.OpenGL
 {
-    public abstract class BaseLibrary
-    {
-        private readonly Func<string, nint> getProcAddress;
-        protected BaseLibrary(Func<string, nint> getProcAddressFunc) => getProcAddress = getProcAddressFunc;
-        protected nint GetProcAddress(string name) => getProcAddress(name);
-    }
+    public unsafe partial interface IGLApi { }
 
-    public sealed partial class GL : BaseLibrary
+    public sealed partial class GL
     {
-        public unsafe partial interface IGLApi { }
-
         private sealed unsafe partial class GLApi : IGLApi
         {
             private sealed unsafe partial class VTable
@@ -29,8 +22,7 @@ namespace Gwi.OpenGL
             public GLApi(Func<string, nint> getProcAddressFunc) => vtable = new VTable(getProcAddressFunc);
         }
 
-        public GL(Func<string, nint> getProcAddressFunc) : base(getProcAddressFunc) =>
-            Api = new GLApi(getProcAddressFunc);
+        public GL(Func<string, nint> getProcAddressFunc) => Api = new GLApi(getProcAddressFunc);
 
         public IGLApi Api { get; }
     }

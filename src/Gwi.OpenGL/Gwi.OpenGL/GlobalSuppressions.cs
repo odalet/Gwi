@@ -11,3 +11,4 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage("Minor Code Smell", "S2344:Enumeration type names should not have \"Flags\" or \"Enum\" suffixes", Justification = "<Pending>", Scope = "type", Target = "~T:Gwi.OpenGL.GLCompat.GLEnum")]
 [assembly: SuppressMessage("Minor Code Smell", "S2344:Enumeration type names should not have \"Flags\" or \"Enum\" suffixes", Justification = "<Pending>", Scope = "type", Target = "~T:Gwi.OpenGL.GLES1.GLEnum")]
 [assembly: SuppressMessage("Minor Code Smell", "S2344:Enumeration type names should not have \"Flags\" or \"Enum\" suffixes", Justification = "<Pending>", Scope = "type", Target = "~T:Gwi.OpenGL.GLES3.GLEnum")]
+[assembly: SuppressMessage("Design", "CA1069:Enums values should not be duplicated", Justification = "<Pending>", Scope = "type", Target = "~T:Gwi.OpenGL.NativeStringEncoding")]

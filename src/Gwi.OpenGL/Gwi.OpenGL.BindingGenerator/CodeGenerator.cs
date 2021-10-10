@@ -162,14 +162,28 @@ namespace Gwi.OpenGL.BindingGenerator
             writer.WriteLine($"namespace {rootNamespace}");
             using (writer.CsScope())
             {
-                writer.WriteLine($"unsafe partial class GL");
-                using (writer.CsScope())
+                if (isInterface)
                 {
-                    writer.WriteLine($"unsafe partial {(isInterface ? "interface IGLApi" : "class GLApi")}");
+                    // IGLApi is a top-level type
+                    writer.WriteLine($"unsafe partial interface IGLApi");
                     using (writer.CsScope())
                     {
-                        foreach (var (declaration, implementation) in methods)
-                            writer.WriteLine(isInterface ? $"{declaration};" : $"public {declaration} => {implementation};");
+                        foreach (var (declaration, _) in methods)
+                            writer.WriteLine($"{declaration};");
+                    }
+                }
+                else
+                {
+                    // GLApi is nested inside GL
+                    writer.WriteLine($"unsafe partial class GL");
+                    using (writer.CsScope())
+                    {
+                        writer.WriteLine($"unsafe partial class GLApi");
+                        using (writer.CsScope())
+                        {
+                            foreach (var (declaration, implementation) in methods)
+                                writer.WriteLine($"public {declaration} => {implementation};");
+                        }
                     }
                 }
             }
